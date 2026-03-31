@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Anvizent — Super Admin Console</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    /* Anvizent brand palette */
+    --navy:        #1a2340;
+    --navy-dark:   #141b33;
+    --navy-hover:  #243052;
+    --navy-active: #2d3d6b;
+    --orange:      #f47920;
+    --orange-dk:   #d96a15;
+    --orange-lt:   #fff3e8;
+    --orange-mid:  #fde8d0;
+
+    /* Light theme surfaces */
+    --bg:          #f4f6fa;
+    --surface:     #ffffff;
+    --surface-2:   #f9fafc;
+    --border:      #e2e8f0;
+    --border-md:   #d0d8e8;
+
+    /* Text */
+    --tx-1:        #1a2340;
+    --tx-2:        #4a5878;
+    --tx-3:        #8896b0;
+    --tx-inv:      #ffffff;
+    --tx-inv-2:    rgba(255,255,255,0.65);
+
+    /* Status */
+    --green:       #16a34a;
+    --green-bg:    #f0fdf4;
+    --green-bd:    #bbf7d0;
+    --red:         #dc2626;
+    --red-bg:      #fef2f2;
+    --red-bd:      #fecaca;
+    --amber:       #d97706;
+    --amber-bg:    #fffbeb;
+    --amber-bd:    #fde68a;
+    --blue:        #2563eb;
+    --blue-bg:     #eff6ff;
+    --blue-bd:     #bfdbfe;
+    --purple:      #7c3aed;
+    --purple-bg:   #f5f3ff;
+    --purple-bd:   #ddd6fe;
+
+    --sidebar-w:   222px;
+    --header-h:    56px;
+    --font:        'Inter', sans-serif;
+    --mono:        'Roboto Mono', monospace;
+    --radius:      8px;
+    --shadow-sm:   0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.05);
+    --shadow:      0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--tx-1); font-family: var(--font); font-size: 13.5px; overflow-x: hidden; }
+
+  /* ───── SIDEBAR ───── */
+  #sidebar {
+    position: fixed; top: 0; left: 0; width: 245px; height: 100vh;
+    background: var(--navy); display: flex; flex-direction: column; z-index: 200;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.15);
+  }
+  .brand {
+    height: var(--header-h); display: flex; align-items: center; gap: 10px;
+    padding: 0 18px; border-bottom: 1px solid rgba(255,255,255,0.08);
+    flex-shrink: 0;
+  }
+  .brand-logo {
+    width: 32px; height: 32px; background: var(--orange); border-radius: 7px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .brand-logo i { color: #fff; font-size: 17px; }
+  .brand-text { font-size: 16px; font-weight: 700; color: #fff; letter-spacing: -0.2px; }
+  .brand-sup {
+    margin-left: auto; font-family: var(--mono); font-size: 8.5px; font-weight: 500;
+    background: rgba(244,121,32,0.2); color: var(--orange); border: 1px solid rgba(244,121,32,0.35);
+    border-radius: 4px; padding: 2px 6px; white-space: nowrap; letter-spacing: 0.5px;
+  }
+
+  .nav-scroll { flex: 1; overflow-y: auto; padding: 8px 0; }
+  .nav-scroll::-webkit-scrollbar { width: 0; }
+
+  .nav-section {
+    font-family: var(--mono); font-size: 9px; font-weight: 500; letter-spacing: 1.4px;
+    text-transform: uppercase; color: rgba(255,255,255,0.3);
+    padding: 14px 18px 5px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    margin: 1px 8px; padding: 8px 12px;
+    border-radius: 6px; cursor: pointer; color: rgba(255,255,255,0.62);
+    transition: all .16s ease; text-decoration: none; position: relative;
+    font-size: 13px; font-weight: 400;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.07); color: #fff; }
+  .nav-item.active {
+    background: var(--orange); color: #fff; font-weight: 500;
+    box-shadow: 0 2px 8px rgba(244,121,32,0.4);
+  }
+  .nav-item i { width: 18px; font-size: 15px; text-align: center; flex-shrink: 0; }
+  .nav-badge {
+    margin-left: auto; font-family: var(--mono); font-size: 9.5px;
+    padding: 1px 7px; border-radius: 20px; font-weight: 500;
+  }
+  .nb-orange { background: rgba(244,121,32,0.22); color: #ffb07c; }
+  .nb-red    { background: rgba(220,38,38,0.22);  color: #fca5a5; }
+  .nb-green  { background: rgba(22,163,74,0.22);  color: #86efac; }
+  .nb-blue   { background: rgba(37,99,235,0.22);  color: #93c5fd; }
+  .nb-purple { background: rgba(124,58,237,0.22); color: #c4b5fd; }
+
+  .nav-item.active .nav-badge { background: rgba(255,255,255,0.22); color: #fff; }
+
+  .sidebar-footer {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 12px 10px;
+  }
+  .user-card {
+    display: flex; align-items: center; gap: 9px;
+    padding: 8px 10px; border-radius: 6px; cursor: pointer;
+    transition: background .16s;
+  }
+  .user-card:hover { background: rgba(255,255,255,0.07); }
+  .avatar {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--orange), #ff9a4d);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0;
+  }
+  .u-name { font-size: 12.5px; font-weight: 500; color: #fff; }
+  .u-role { font-size: 10.5px; color: rgba(255,255,255,0.4); font-family: var(--mono); }
+
+  /* ───── TOPBAR ───── */
+  #topbar {
+    position: fixed; top: 0; left: var(--sidebar-w); right: 0;
+    height: var(--header-h); background: var(--surface); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; padding: 0 24px; gap: 12px; z-index: 100;
+    box-shadow: var(--shadow-sm);
+  }
+  .page-breadcrumb {
+    display: flex; align-items: center; gap: 7px; font-size: 12px;
+    color: var(--tx-3); flex: 1;
+  }
+  .page-breadcrumb .current { color: var(--tx-1); font-weight: 600; font-size: 14px; }
+  .topbar-btn {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--tx-2); border-radius: var(--radius);
+    padding: 6px 13px; font-size: 12.5px; font-family: var(--font);
+    cursor: pointer; transition: all .15s; white-space: nowrap;
+  }
+  .topbar-btn:hover { border-color: var(--border-md); background: var(--bg); color: var(--tx-1); }
+  .topbar-btn.primary {
+    background: var(--orange); border-color: var(--orange); color: #fff; font-weight: 500;
+    box-shadow: 0 2px 6px rgba(244,121,32,0.35);
+  }
+  .topbar-btn.primary:hover { background: var(--orange-dk); border-color: var(--orange-dk); }
+  .notif-wrap { position: relative; }
+  .notif-dot {
+    position: absolute; top: -2px; right: -2px;
+    width: 7px; height: 7px; background: var(--red); border-radius: 50%;
+    border: 1.5px solid var(--surface);
+  }
+  .search-box {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 6px 12px; width: 220px;
+  }
+  .search-box input {
+    border: none; background: none; outline: none; font-size: 12.5px;
+    color: var(--tx-1); font-family: var(--font); width: 100%;
+  }
+  .search-box input::placeholder { color: var(--tx-3); }
+  .search-box i { color: var(--tx-3); font-size: 13px; }
+
+  /* ───── MAIN ───── */
+  #main {
+    margin-left: var(--sidebar-w); margin-top: var(--header-h);
+    padding: 22px 24px; min-height: calc(100vh - var(--header-h));
+  }
+
+  /* ───── CARD ───── */
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); box-shadow: var(--shadow-sm);
+  }
+  .card-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 18px; border-bottom: 1px solid var(--border);
+  }
+  .card-title { font-size: 13.5px; font-weight: 600; color: var(--tx-1); }
+  .card-action {
+    font-size: 12px; color: var(--orange); cursor: pointer; font-weight: 500;
+  }
+  .card-action:hover { color: var(--orange-dk); text-decoration: underline; }
+  .card-body { padding: 18px; }
+
+  /* ───── STAT CARDS ───── */
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); box-shadow: var(--shadow-sm);
+    padding: 18px 20px; display: flex; align-items: flex-start; gap: 14px;
+    transition: box-shadow .2s, border-color .2s;
+  }
+  .stat-card:hover { box-shadow: var(--shadow); border-color: var(--border-md); }
+  .stat-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .si-orange { background: var(--orange-lt); color: var(--orange); }
+  .si-green  { background: var(--green-bg);  color: var(--green); }
+  .si-blue   { background: var(--blue-bg);   color: var(--blue); }
+  .si-red    { background: var(--red-bg);    color: var(--red); }
+  .si-purple { background: var(--purple-bg); color: var(--purple); }
+  .si-amber  { background: var(--amber-bg);  color: var(--amber); }
+  .stat-info { flex: 1; }
+  .stat-val { font-size: 24px; font-weight: 700; color: var(--tx-1); line-height: 1; letter-spacing: -0.5px; }
+  .stat-label { font-size: 12px; color: var(--tx-3); margin-top: 4px; }
+  .stat-delta { font-family: var(--mono); font-size: 10.5px; margin-top: 8px; }
+  .dlt-up { color: var(--green); }
+  .dlt-dn { color: var(--red); }
+
+  /* ───── TABLE ───── */
+  .tbl-wrap { overflow-x: auto; }
+  table.atbl { width: 100%; border-collapse: collapse; }
+  .atbl thead th {
+    font-family: var(--mono); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.8px; text-transform: uppercase; color: var(--tx-3);
+    padding: 9px 16px; border-bottom: 2px solid var(--border);
+    background: var(--surface-2); text-align: left; white-space: nowrap;
+  }
+  .atbl tbody td {
+    padding: 11px 16px; border-bottom: 1px solid var(--border);
+    font-size: 13px; vertical-align: middle; color: var(--tx-1);
+  }
+  .atbl tbody tr:last-child td { border-bottom: none; }
+  .atbl tbody tr:hover td { background: #fafbfd; }
+
+  /* ───── STATUS PILLS ───── */
+  .pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 500; padding: 3px 9px;
+    border-radius: 20px; white-space: nowrap; font-family: var(--mono);
+  }
+  .pill::before { content: ''; width: 5px; height: 5px; border-radius: 50%; }
+  .pill-green  { background: var(--green-bg);  color: var(--green);  border: 1px solid var(--green-bd); }
+  .pill-green::before  { background: var(--green); }
+  .pill-red    { background: var(--red-bg);    color: var(--red);    border: 1px solid var(--red-bd); }
+  .pill-red::before    { background: var(--red); }
+  .pill-amber  { background: var(--amber-bg);  color: var(--amber);  border: 1px solid var(--amber-bd); }
+  .pill-amber::before  { background: var(--amber); }
+  .pill-blue   { background: var(--blue-bg);   color: var(--blue);   border: 1px solid var(--blue-bd); }
+  .pill-blue::before   { background: var(--blue); }
+  .pill-purple { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-bd); }
+  .pill-purple::before { background: var(--purple); }
+  .pill-orange { background: var(--orange-lt); color: var(--orange); border: 1px solid var(--orange-mid); }
+  .pill-orange::before { background: var(--orange); }
+
+  /* ───── BUTTONS ───── */
+  .btn-tbl {
+    font-size: 11.5px; padding: 4px 10px; border-radius: 5px;
+    border: 1px solid var(--border); background: var(--surface);
+    color: var(--tx-2); cursor: pointer; font-family: var(--font);
+    transition: all .14s;
+  }
+  .btn-tbl:hover { border-color: var(--orange); color: var(--orange); background: var(--orange-lt); }
+  .btn-tbl.danger:hover { border-color: var(--red); color: var(--red); background: var(--red-bg); }
+
+  /* ───── FORM CONTROLS ───── */
+  .f-label {
+    font-family: var(--mono); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.7px; text-transform: uppercase; color: var(--tx-3);
+    margin-bottom: 5px; display: block;
+  }
+  .f-input, .f-select {
+    width: 100%; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 7px 11px; font-size: 13px; font-family: var(--font);
+    color: var(--tx-1); transition: border-color .15s, box-shadow .15s;
+  }
+  .f-input:focus, .f-select:focus {
+    outline: none; border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(244,121,32,0.12);
+  }
+  .f-input::placeholder { color: var(--tx-3); }
+
+  /* ───── TOGGLE ───── */
+  .tog { position: relative; display: inline-block; width: 36px; height: 20px; }
+  .tog input { opacity: 0; width: 0; height: 0; }
+  .tog-sl {
+    position: absolute; inset: 0; background: var(--border-md);
+    border-radius: 20px; cursor: pointer; transition: .2s;
+  }
+  .tog-sl::before {
+    content: ''; position: absolute; width: 14px; height: 14px;
+    left: 3px; bottom: 3px; background: #fff; border-radius: 50%;
+    transition: .2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .tog input:checked + .tog-sl { background: var(--orange); }
+  .tog input:checked + .tog-sl::before { transform: translateX(16px); }
+
+  /* ───── PROGRESS BAR ───── */
+  .prog-wrap { height: 6px; background: var(--bg); border-radius: 4px; overflow: hidden; }
+  .prog-bar  { height: 100%; border-radius: 4px; }
+  .pb-green  { background: linear-gradient(90deg, #16a34a, #22c55e); }
+  .pb-orange { background: linear-gradient(90deg, var(--orange), #ff9a4d); }
+  .pb-blue   { background: linear-gradient(90deg, #2563eb, #60a5fa); }
+  .pb-red    { background: linear-gradient(90deg, #dc2626, #f87171); }
+
+  /* ───── LAYOUT HELPERS ───── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .g-7-5  { display: grid; grid-template-columns: 7fr 5fr; gap: 16px; }
+  .g-5-7  { display: grid; grid-template-columns: 5fr 7fr; gap: 16px; }
+  .mb16   { margin-bottom: 16px; }
+  .mb20   { margin-bottom: 20px; }
+  .divider { height: 1px; background: var(--border); margin: 16px 0; }
+  .mono   { font-family: var(--mono); }
+
+  /* ───── PAGE SECTIONS ───── */
+  .p-section { display: none; }
+  .p-section.active { display: block; }
+  @keyframes fadeSlide { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+  .fade-in { animation: fadeSlide .25s ease forwards; }
+
+  /* ───── LIVE DOT ───── */
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+  .live { display: inline-block; width: 7px; height: 7px; background: var(--green); border-radius: 50%; animation: blink 1.6s infinite; margin-right: 5px; vertical-align: middle; }
+
+  /* ───── PIPELINE ROW ───── */
+  .pipe-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 18px; border-bottom: 1px solid var(--border);
+    transition: background .14s;
+  }
+  .pipe-row:last-child { border-bottom: none; }
+  .pipe-row:hover { background: #fafbfd; }
+  .pipe-name  { width: 165px; font-size: 13px; font-weight: 500; flex-shrink: 0; }
+  .pipe-tenant{ width: 110px; font-size: 12px; color: var(--tx-3); flex-shrink: 0; font-family: var(--mono); }
+  .pipe-flex  { flex: 1; }
+  .pipe-pct   { width: 38px; font-family: var(--mono); font-size: 11px; color: var(--tx-2); text-align: right; flex-shrink: 0; }
+  .pipe-rows  { width: 80px; font-family: var(--mono); font-size: 11px; color: var(--tx-3); text-align: right; flex-shrink: 0; }
+
+  /* ───── AUDIT LOG ───── */
+  .log-row {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px 18px; border-bottom: 1px solid var(--border);
+    transition: background .12s;
+  }
+  .log-row:last-child { border-bottom: none; }
+  .log-row:hover { background: #fafbfd; }
+  .log-ts { font-family: var(--mono); font-size: 10.5px; color: var(--tx-3); width: 126px; flex-shrink: 0; padding-top: 2px; }
+  .log-ico { width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+  .log-msg { font-size: 13px; font-weight: 500; }
+  .log-sub { font-size: 11px; color: var(--tx-3); font-family: var(--mono); margin-top: 2px; }
+
+  /* ───── CONN CARD ───── */
+  .conn-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px 18px;
+    box-shadow: var(--shadow-sm); transition: all .18s;
+  }
+  .conn-card:hover { border-color: var(--orange); box-shadow: var(--shadow); }
+  .conn-logo { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 10px; }
+
+  /* ───── AI CARD ───── */
+  .ai-model {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px; border: 1px solid var(--border);
+    border-radius: var(--radius); background: var(--surface); cursor: pointer;
+    transition: all .16s;
+  }
+  .ai-model:hover { border-color: var(--border-md); box-shadow: var(--shadow-sm); }
+  .ai-model.on { border-color: var(--orange); background: var(--orange-lt); }
+  .ai-badge { font-family: var(--mono); font-size: 9px; padding: 2px 7px; border-radius: 4px; font-weight: 500; }
+
+  /* ───── MCP ROW ───── */
+  .mcp-row { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-bottom: 1px solid var(--border); }
+  .mcp-row:last-child { border-bottom: none; }
+  .mcp-url { font-family: var(--mono); font-size: 11.5px; color: var(--tx-3); flex: 1; }
+
+  /* ───── WORKSPACE STEP ───── */
+  .ws-step { display: flex; gap: 14px; padding: 13px 0; border-bottom: 1px solid var(--border); }
+  .ws-step:last-child { border-bottom: none; }
+  .step-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    flex-shrink: 0; border: 2px solid var(--border-md); color: var(--tx-3);
+  }
+  .step-num.done { background: var(--orange); border-color: var(--orange); color: #fff; }
+  .step-title { font-size: 13px; font-weight: 600; }
+  .step-desc  { font-size: 12px; color: var(--tx-3); margin-top: 2px; }
+
+  /* ───── SCROLLBAR ───── */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border-md); border-radius: 4px; }
+
+  /* ───── SECTION DIVIDER HEADER ───── */
+  .sec-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .sec-title { font-size: 14px; font-weight: 600; color: var(--tx-1); }
+
+  /* ───── ORANGE TOP STRIP on stat card ───── */
+  .stat-card.featured { border-top: 3px solid var(--orange); }
+</style>
+</head>
+<body>
+
+<!-- ════════ SIDEBAR ════════ -->
+<aside id="sidebar">
+  <div class="brand">
+    <div class="brand-logo"><i class="bi bi-layers-fill"></i></div>
+    <span class="brand-text">Anvizent</span>
+    <span class="brand-sup">SUPER ADMIN</span>
+  </div>
+
+  <div class="nav-scroll">
+    <div class="nav-section">Main</div>
+    <a class="nav-item active" onclick="gotoPage('dashboard')">
+      <i class="bi bi-grid-fill"></i> Dashboard
+    </a>
+
+    <div class="nav-section">Management</div>
+    <a class="nav-item" onclick="gotoPage('partners')">
+      <i class="bi bi-building"></i> Partner Mgmt
+      <span class="nav-badge nb-orange">12</span>
+    </a>
+    <a class="nav-item" onclick="gotoPage('tenants')">
+      <i class="bi bi-people-fill"></i> Tenant Mgmt
+      <span class="nav-badge nb-green">47</span>
+    </a>
+    <a class="nav-item" onclick="gotoPage('workspace')">
+      <i class="bi bi-boxes"></i> Default Workspace
+      <span class="nav-badge nb-purple">NEW</span>
+    </a>
+
+    <div class="nav-section">Infrastructure</div>
+    <a class="nav-item" onclick="gotoPage('connections')">
+      <i class="bi bi-diagram-3-fill"></i> Global Connections
+    </a>
+    <a class="nav-item" onclick="gotoPage('monitoring')">
+      <i class="bi bi-activity"></i> Pipeline Monitoring
+      <span class="nav-badge nb-red">3</span>
+    </a>
+
+    <div class="nav-section">Finance & AI</div>
+    <a class="nav-item" onclick="gotoPage('billing')">
+      <i class="bi bi-credit-card-fill"></i> Billing
+    </a>
+    <a class="nav-item" onclick="gotoPage('ai')">
+      <i class="bi bi-cpu-fill"></i> AI / MCP Config
+    </a>
+
+    <div class="nav-section">Compliance</div>
+    <a class="nav-item" onclick="gotoPage('audit')">
+      <i class="bi bi-shield-lock-fill"></i> Audit Logs
+      <span class="nav-badge nb-orange">New</span>
+    </a>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="user-card">
+      <div class="avatar">SA</div>
+      <div>
+        <div class="u-name">System Admin</div>
+        <div class="u-role">superadmin@anvizent.com</div>
+      </div>
+      <i class="bi bi-chevron-expand" style="color:rgba(255,255,255,0.3);font-size:12px;margin-left:auto;"></i>
+    </div>
+  </div>
+</aside>
+
+<!-- ════════ TOPBAR ════════ -->
+<header id="topbar">
+  <div class="page-breadcrumb">
+    <i class="bi bi-house-fill" style="font-size:12px;"></i>
+    <i class="bi bi-chevron-right" style="font-size:10px;"></i>
+    <span class="current" id="pgTitle">Dashboard</span>
+  </div>
+
+  <div class="search-box">
+    <i class="bi bi-search"></i>
+    <input placeholder="Search tenants, pipelines…"/>
+  </div>
+
+  <button class="topbar-btn" onclick="refreshPage()"><i class="bi bi-arrow-clockwise" id="refIco"></i> Refresh</button>
+
+  <div class="notif-wrap">
+    <button class="topbar-btn" onclick="gotoPage('audit')">
+      <i class="bi bi-bell"></i>
+    </button>
+    <span class="notif-dot"></span>
+  </div>
+
+  <button class="topbar-btn primary" onclick="primaryAction()">
+    <i class="bi bi-plus-lg"></i> <span id="primaryLbl">New Partner</span>
+  </button>
+</header>
+
+<!-- ════════ MAIN ════════ -->
+<main id="main">
+
+<!-- ─────────── DASHBOARD ─────────── -->
+<section class="p-section active fade-in" id="pg-dashboard">
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-icon si-orange"><i class="bi bi-building"></i></div>
+      <div class="stat-info">
+        <div class="stat-val">12</div>
+        <div class="stat-label">Active Partners</div>
+        <div class="stat-delta dlt-up">↑ 2 this month</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon si-green"><i class="bi bi-people-fill"></i></div>
+      <div class="stat-info">
+        <div class="stat-val">47</div>
+        <div class="stat-label">Total Tenants</div>
+        <div class="stat-delta dlt-up">↑ 5 this month</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon si-blue"><i class="bi bi-lightning-fill"></i></div>
+      <div class="stat-info">
+        <div class="stat-val">1,284</div>
+        <div class="stat-label">Pipelines Running</div>
+        <div class="stat-delta dlt-up">↑ 98 today</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon si-red"><i class="bi bi-exclamation-triangle-fill"></i></div>
+      <div class="stat-info">
+        <div class="stat-val">3</div>
+        <div class="stat-label">Critical Failures</div>
+        <div class="stat-delta dlt-dn">↑ 2 vs yesterday</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="g-7-5 mb16">
+    <!-- Live Pipeline Feed -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title"><span class="live"></span>Live Pipeline Activity</span>
+        <span class="card-action" onclick="gotoPage('monitoring')">View All →</span>
+      </div>
+      <!-- header row -->
+      <div class="pipe-row" style="background:var(--surface-2);padding:7px 18px;border-bottom:2px solid var(--border);">
+        <span class="pipe-name" style="font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--tx-3);font-weight:500;">Pipeline</span>
+        <span class="pipe-tenant" style="font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--tx-3);font-weight:500;">Tenant</span>
+        <span class="pipe-flex" style="font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--tx-3);font-weight:500;">Progress</span>
+        <span class="pipe-rows" style="font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--tx-3);font-weight:500;">Rows/s</span>
+      </div>
+      <div class="pipe-row">
+        <span class="pipe-name">Salesforce → Snowflake</span>
+        <span class="pipe-tenant">TechCorp Inc</span>
+        <div class="pipe-flex"><div class="prog-wrap"><div class="prog-bar pb-green" style="width:82%"></div></div></div>
+        <span class="pipe-pct">82%</span>
+        <span class="pipe-rows">4,200</span>
+      </div>
+      <div class="pipe-row">
+        <span class="pipe-name">MySQL → BigQuery</span>
+        <span class="pipe-tenant">Retail Plus</span>
+        <div class="pipe-flex"><div class="prog-wrap"><div class="prog-bar pb-blue" style="width:61%"></div></div></div>
+        <span class="pipe-pct">61%</span>
+        <span class="pipe-rows">8,750</span>
+      </div>
+      <div class="pipe-row">
+        <span class="pipe-name">S3 → Redshift</span>
+        <span class="pipe-tenant">FinBank Ltd</span>
+        <div class="pipe-flex"><div class="prog-wrap"><div class="prog-bar pb-orange" style="width:38%"></div></div></div>
+        <span class="pipe-pct">38%</span>
+        <span class="pipe-rows">12,300</span>
+      </div>
+      <div class="pipe-row">
+        <span class="pipe-name">HubSpot → Postgres</span>
+        <span class="pipe-tenant">GrowthCo</span>
+        <div class="pipe-flex"><div class="prog-wrap"><div class="prog-bar pb-red" style="width:5%"></div></div></div>
+        <span class="pipe-pct" style="color:var(--red);">ERR</span>
+        <span class="pipe-rows" style="color:var(--red);">—</span>
+      </div>
+      <div class="pipe-row">
+        <span class="pipe-name">Oracle → Databricks</span>
+        <span class="pipe-tenant">ManuTech</span>
+        <div class="pipe-flex"><div class="prog-wrap"><div class="prog-bar pb-green" style="width:96%"></div></div></div>
+        <span class="pipe-pct">96%</span>
+        <span class="pipe-rows">2,100</span>
+      </div>
+    </div>
+
+    <!-- Right col -->
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <!-- Throughput -->
+      <div class="card card-body" style="padding:16px 18px;">
+        <div class="sec-hdr"><span class="sec-title">Data Throughput</span><span style="font-family:var(--mono);font-size:10.5px;color:var(--orange);cursor:pointer;">7 days</span></div>
+        <div style="display:flex;align-items:flex-end;gap:5px;height:56px;">
+          <div style="flex:1;background:var(--orange-mid);border-radius:3px 3px 0 0;height:40%;"></div>
+          <div style="flex:1;background:var(--orange-mid);border-radius:3px 3px 0 0;height:62%;"></div>
+          <div style="flex:1;background:var(--orange-mid);border-radius:3px 3px 0 0;height:52%;"></div>
+          <div style="flex:1;background:var(--orange-mid);border-radius:3px 3px 0 0;height:75%;"></div>
+          <div style="flex:1;background:var(--orange-mid);border-radius:3px 3px 0 0;height:68%;"></div>
+          <div style="flex:1;background:var(--orange);border-radius:3px 3px 0 0;height:88%;opacity:.7"></div>
+          <div style="flex:1;background:var(--orange);border-radius:3px 3px 0 0;height:100%;"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:5px;">
+          <span style="font-family:var(--mono);font-size:9.5px;color:var(--tx-3);">Mon</span>
+          <span style="font-family:var(--mono);font-size:9.5px;color:var(--tx-3);">Today</span>
+        </div>
+        <div style="margin-top:10px;font-size:22px;font-weight:700;color:var(--tx-1);">4.8 TB <span style="font-size:11.5px;color:var(--green);font-family:var(--mono);font-weight:400;">↑ 18%</span></div>
+        <div style="font-size:11.5px;color:var(--tx-3);margin-top:2px;">Total processed this week</div>
+      </div>
+
+      <!-- System Health -->
+      <div class="card card-body" style="padding:16px 18px;">
+        <div class="sec-hdr mb16"><span class="sec-title">System Health</span></div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:12.5px;">
+              <span>API Gateway</span><span style="font-family:var(--mono);font-size:11px;color:var(--green);font-weight:500;">99.98%</span>
+            </div>
+            <div class="prog-wrap"><div class="prog-bar pb-green" style="width:99.98%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:12.5px;">
+              <span>Pipeline Engine</span><span style="font-family:var(--mono);font-size:11px;color:var(--green);font-weight:500;">99.82%</span>
+            </div>
+            <div class="prog-wrap"><div class="prog-bar pb-green" style="width:99.82%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:12.5px;">
+              <span>Metadata Store</span><span style="font-family:var(--mono);font-size:11px;color:var(--amber);font-weight:500;">96.1%</span>
+            </div>
+            <div class="prog-wrap"><div class="prog-bar pb-orange" style="width:96.1%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom row -->
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Recent Tenants</span>
+        <span class="card-action" onclick="gotoPage('tenants')">View All →</span>
+      </div>
+      <div class="tbl-wrap">
+        <table class="atbl">
+          <thead><tr><th>Tenant</th><th>Partner</th><th>Plan</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td><b>TechCorp Inc</b></td><td style="color:var(--tx-3)">SysInt Partners</td><td><span class="pill pill-purple">Enterprise</span></td><td><span class="pill pill-green">Active</span></td></tr>
+            <tr><td><b>FinBank Ltd</b></td><td style="color:var(--tx-3)">DataBridge</td><td><span class="pill pill-blue">Pro</span></td><td><span class="pill pill-green">Active</span></td></tr>
+            <tr><td><b>GrowthCo</b></td><td style="color:var(--tx-3)">SysInt Partners</td><td><span class="pill pill-orange">Starter</span></td><td><span class="pill pill-amber">Trial</span></td></tr>
+            <tr><td><b>LogiCore</b></td><td style="color:var(--tx-3)">InfoFusion</td><td><span class="pill pill-blue">Pro</span></td><td><span class="pill pill-red">Suspended</span></td></tr>
+            <tr><td><b>ManuTech</b></td><td style="color:var(--tx-3)">DataBridge</td><td><span class="pill pill-purple">Enterprise</span></td><td><span class="pill pill-green">Active</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Audit Highlights</span>
+        <span class="card-action" onclick="gotoPage('audit')">View All →</span>
+      </div>
+      <div class="log-row">
+        <span class="log-ts">Today 09:42:18</span>
+        <div class="log-ico" style="background:var(--red-bg);"><i class="bi bi-exclamation-triangle-fill" style="color:var(--red)"></i></div>
+        <div><div class="log-msg">Pipeline failure — HubSpot → Postgres</div><div class="log-sub">GrowthCo · PL-00382</div></div>
+      </div>
+      <div class="log-row">
+        <span class="log-ts">Today 08:15:04</span>
+        <div class="log-ico" style="background:var(--green-bg);"><i class="bi bi-person-plus-fill" style="color:var(--green)"></i></div>
+        <div><div class="log-msg">New tenant provisioned</div><div class="log-sub">ManuTech · By: admin@databridge.com</div></div>
+      </div>
+      <div class="log-row">
+        <span class="log-ts">Yesterday 22:11</span>
+        <div class="log-ico" style="background:var(--amber-bg);"><i class="bi bi-key-fill" style="color:var(--amber)"></i></div>
+        <div><div class="log-msg">API key rotated</div><div class="log-sub">FinBank Ltd · Policy triggered</div></div>
+      </div>
+      <div class="log-row">
+        <span class="log-ts">Yesterday 18:05</span>
+        <div class="log-ico" style="background:var(--blue-bg);"><i class="bi bi-cloud-upload-fill" style="color:var(--blue)"></i></div>
+        <div><div class="log-msg">Global connection updated</div><div class="log-sub">Snowflake-PROD · By: superadmin</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ─────────── PARTNER MGMT ─────────── -->
+<section class="p-section fade-in" id="pg-partners">
+  <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;">
+    <input class="f-input" placeholder="Search partners…" style="max-width:260px;"/>
+    <select class="f-select" style="max-width:140px;"><option>All Status</option><option>Active</option><option>Inactive</option></select>
+    <select class="f-select" style="max-width:140px;"><option>All Types</option><option>Reseller</option><option>OEM</option></select>
+    <span style="margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--tx-3);">12 partners total</span>
+  </div>
+  <div class="card">
+    <div class="tbl-wrap">
+      <table class="atbl">
+        <thead><tr><th>Partner</th><th>Code</th><th>Type</th><th>Tenants</th><th>MRR</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div style="font-weight:600;">SysInt Partners</div><div style="font-family:var(--mono);font-size:10.5px;color:var(--tx-3);">contact@sysint.io</div></td>
+            <td class="mono" style="color:var(--tx-3);font-size:12px;">SIP</td>
+            <td><span class="pill pill-purple">Reseller</span></td>
+            <td style="font-weight:500;">18</td>
+            <td style="font-family:var(--mono);color:var(--green);font-weight:600;">$24,800</td>
+            <td><span class="pill pill-green">Active</span></td>
+            <td><button class="btn-tbl">Edit</button> <button class="btn-tbl">Tenants</button></td>
+          </tr>
+          <tr>
+            <td><div style="font-weight:600;">DataBridge LLC</div><div style="font-family:var(--mono);font-size:10.5px;color:var(--tx-3);">ops@databridge.com</div></td>
+            <td class="mono" style="color:var(--tx-3);font-size:12px;">DBR</td>
+            <td><span class="pill pill-blue">OEM</span></td>
+            <td style="font-weight:500;">14</td>
+            <td style="font-family:var(--mono);color:var(--green);font-weight:600;">$19,200</td>
+            <td><span class="pill pill-green">Active</span></td>
+            <td><button class="btn-tbl">Edit</button> <button class="btn-tbl">Tenants</button></td>
+          </tr>
+          <tr>
+            <td><div style="font-weight:600;">InfoFusion Inc</div><div style="font-family:var(--mono);font-size:10.5px;color:var(--tx-3);">admin@infofusion.co</div></td>
+            <td class="mono" style="color:var(--tx-3);font-size:12px;">IFI</td>
+            <td><span class="pill pill-purple">Reseller</span></td>
+            <td style="font-weight:500;">9</td>
+            <td style="font-family:var(--mono);color:var(--green);font-weight:600;">$11,400</td>
+            <td><span class="pill pill-green">Active</span></td>
+            <td><button class="btn-tbl">Edit</button> <button class="btn-tbl">Tenants</button></td>
+          </tr>
+          <tr>
+            <td><div style="font-weight:600;">CloudAxis Co</div><div style="font-family:var(--mono);font-size:10.5px;color:var(--tx-3);">support@cloudaxis.net</div></td>
+            <td class="mono" style="color:var(--tx-3);font-size:12px;">CAX</td>
+            <td><span class="pill pill-orange">Trial</span></td>
+            <td style="font-weight:500;">4</td>
+            <td style="font-family:var(--mono);color:var(--tx-3);">—</td>
+            <td><span class="pill pill-amber">Trial</span></td>
+            <td><button class="btn-tbl">Edit</button> <button class="btn-tbl danger">Suspend</button></td>
+          </tr>
+          <tr>
+            <td><div style="font-weight:600;">NexaFlow</div><div style="font-family:var(--mono);font-size:10.5px;color:var(--tx-3);">hello@nexaflow.ai</div></td>
+            <td class="mono" style="color:var(--tx-3);font-size:12px;">NFW</td>
+            <td><span class="pill pill-blue">OEM</span></td>
+            <td style="font-weight:500;">2</td>
+            <td style="font-family:var(--mono);color:var(--tx-3);">$3,200</td>
+            <td><span class="pill pill-red">Suspended</span></td>
+            <td><button class="btn-tbl">Edit</button> <button class="btn-tbl">Activate</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── TENANT MGMT ─────────── -->
+<section class="p-section fade-in" id="pg-tenants">
+  <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;">
+    <input class="f-input" placeholder="Search tenants…" style="max-width:260px;"/>
+    <select class="f-select" style="max-width:140px;"><option>All Partners</option><option>SysInt</option><option>DataBridge</option></select>
+    <select class="f-select" style="max-width:140px;"><option>All Plans</option><option>Enterprise</option><option>Pro</option><option>Starter</option></select>
+    <select class="f-select" style="max-width:130px;"><option>All Status</option><option>Active</option><option>Trial</option><option>Suspended</option></select>
+    <span style="margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--tx-3);">47 tenants total</span>
+  </div>
+  <div class="card">
+    <div class="tbl-wrap">
+      <table class="atbl">
+        <thead><tr><th>Tenant</th><th>Partner</th><th>Plan</th><th>Pipelines</th><th>Storage</th><th>Created</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div style="font-weight:600;">TechCorp Inc</div><div style="font-family:var(--mono);font-size:10px;color:var(--tx-3);">admin@techcorp.com</div></td>
+            <td style="color:var(--tx-2);">SysInt Partners</td>
+            <td><span class="pill pill-purple">Enterprise</span></td>
+            <td style="font-family:var(--mono);font-weight:600;">284</td>
+            <td style="font-family:var(--mono);">1.2 TB</td>
+            <td style="font-family:var(--mono);font-size:11.5px;color:var(--tx-3);">Jan 12, 2024</td>
+            <td><span class="pill pill-green">Active</span></td>
+            <td><button class="btn-tbl">Manage</button></td>
+          </tr>
+          <tr>
+            <td><div style="font-weight:600;">FinBank Ltd</div><div style="font-family:var(--mono);font-size:10px;color:var(--tx-3);">ops@finbank.com</div></td>
+            <td style="color:var(--tx-2);">DataBridge LLC</td>
+            <td><span class="pill pill-blue">Pro</span></td>
+            <td style="font-family:var(--mono);font-weight:600;">142</td>
+            <td style="font-family:var(--mono);">780 GB</td>
+            <td style="font-family:var(--mono);font-size:11.5px;color:var(--tx-3);">Mar 3, 2024</td>
+            <td><span class="pill pill-green">Active</span></td>
+            <td><button class="btn-tbl">Manage</button></td>
+          </tr>
+          <tr>
+            <td><div style="font-weight:600;">GrowthCo</div><div style="font-family:var(--mono);font-size:10px;color:var(--tx-3);">it@growthco.io</div></td>
+            <td style="color:var(--tx-2);">SysInt Partners</td>
+            <td><span class="pill pill-orange">Starter</span></td>
+            <td style="font-family:var(--mono);font-weight:600;">28</td>
+            <td style="font-family:var(--mono);">42 GB</td>
+            <td style="font-family:var(--mono);font-size:11.5px;color:var(--tx-3);">Jun 20, 2024</td>
+            <td><span class="pill pill-amber">Trial</span></td>
+            <td><button class="btn-tbl">Manage</button></td>
+          </tr>
+          <tr>
+            <td><div style="font-weight:600;">LogiCore</div><div style="font-family:var(--mono);font-size:10px;color:var(--tx-3);">admin@logicore.net</div></td>
+            <td style="color:var(--tx-2);">InfoFusion Inc</td>
+            <td><span class="pill pill-blue">Pro</span></td>
+            <td style="font-family:var(--mono);font-weight:600;">0</td>
+            <td style="font-family:var(--mono);">220 GB</td>
+            <td style="font-family:var(--mono);font-size:11.5px;color:var(--tx-3);">Nov 5, 2023</td>
+            <td><span class="pill pill-red">Suspended</span></td>
+            <td><button class="btn-tbl">Manage</button></td>
+          </tr>
+          <tr>
+            <td><div style="font-weight:600;">ManuTech</div><div style="font-family:var(--mono);font-size:10px;color:var(--tx-3);">data@manutech.de</div></td>
+            <td style="color:var(--tx-2);">DataBridge LLC</td>
+            <td><span class="pill pill-purple">Enterprise</span></td>
+            <td style="font-family:var(--mono);font-weight:600;">398</td>
+            <td style="font-family:var(--mono);">3.1 TB</td>
+            <td style="font-family:var(--mono);font-size:11.5px;color:var(--tx-3);">Feb 28, 2024</td>
+            <td><span class="pill pill-green">Active</span></td>
+            <td><button class="btn-tbl">Manage</button></td>
+          </tr>
+          <tr>
+            <td><div style="font-weight:600;">Retail Plus</div><div style="font-family:var(--mono);font-size:10px;color:var(--tx-3);">etl@retailplus.com</div></td>
+            <td style="color:var(--tx-2);">SysInt Partners</td>
+            <td><span class="pill pill-blue">Pro</span></td>
+            <td style="font-family:var(--mono);font-weight:600;">96</td>
+            <td style="font-family:var(--mono);">530 GB</td>
+            <td style="font-family:var(--mono);font-size:11.5px;color:var(--tx-3);">Apr 17, 2024</td>
+            <td><span class="pill pill-green">Active</span></td>
+            <td><button class="btn-tbl">Manage</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── DEFAULT WORKSPACE ─────────── -->
+<section class="p-section fade-in" id="pg-workspace">
+  <!-- Orange highlight banner -->
+  <div style="background:var(--orange-lt);border:1px solid var(--orange-mid);border-radius:var(--radius);padding:12px 16px;display:flex;align-items:center;gap:10px;margin-bottom:18px;">
+    <i class="bi bi-stars" style="color:var(--orange);font-size:16px;"></i>
+    <div>
+      <strong style="font-size:13px;color:var(--orange);">New Feature — Default Workspace Setup</strong>
+      <div style="font-size:12px;color:var(--tx-2);margin-top:1px;">Configure the workspace template applied automatically when a new tenant is provisioned.</div>
+    </div>
+    <span class="pill pill-orange" style="margin-left:auto;">4 / 5 Complete</span>
+  </div>
+
+  <div class="g-7-5">
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <!-- Wizard -->
+      <div class="card">
+        <div class="card-head"><span class="card-title">Setup Wizard</span></div>
+        <div class="card-body">
+          <div class="ws-step"><div class="step-num done"><i class="bi bi-check" style="font-size:12px;"></i></div><div><div class="step-title">Default Connections</div><div class="step-desc">Pre-configured source & destination connectors</div></div></div>
+          <div class="ws-step"><div class="step-num done"><i class="bi bi-check" style="font-size:12px;"></i></div><div><div class="step-title">Pipeline Templates</div><div class="step-desc">Starter pipelines for common use cases</div></div></div>
+          <div class="ws-step"><div class="step-num done"><i class="bi bi-check" style="font-size:12px;"></i></div><div><div class="step-title">Role & Permission Matrix</div><div class="step-desc">Default RBAC roles assigned on tenant creation</div></div></div>
+          <div class="ws-step"><div class="step-num done"><i class="bi bi-check" style="font-size:12px;"></i></div><div><div class="step-title">Notification Rules</div><div class="step-desc">Default alert channels and thresholds</div></div></div>
+          <div class="ws-step"><div class="step-num">5</div><div><div class="step-title">AI Assist Settings</div><div class="step-desc">Enable AI-powered pipeline suggestions for tenants</div></div></div>
+        </div>
+      </div>
+
+      <!-- Defaults form -->
+      <div class="card card-body" style="padding:18px;">
+        <div class="sec-title mb16">Template Defaults</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div><label class="f-label">Pipeline Timeout (min)</label><input class="f-input" type="number" value="120"/></div>
+          <div><label class="f-label">Max Concurrent Pipelines</label><input class="f-input" type="number" value="10"/></div>
+          <div><label class="f-label">Default Storage Quota</label><select class="f-select"><option>50 GB</option><option selected>100 GB</option><option>500 GB</option><option>1 TB</option></select></div>
+          <div><label class="f-label">Default Timezone</label><select class="f-select"><option>UTC</option><option>Asia/Kolkata</option><option>America/New_York</option><option>Europe/London</option></select></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right col -->
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <!-- Feature flags -->
+      <div class="card card-body" style="padding:18px;">
+        <div class="sec-title mb16">Feature Flags (Default)</div>
+        <div style="display:flex;flex-direction:column;gap:13px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div><div style="font-size:13px;font-weight:500;">AI Pipeline Suggestions</div><div style="font-size:11.5px;color:var(--tx-3);">Auto-recommend transformations</div></div>
+            <label class="tog"><input type="checkbox" checked/><span class="tog-sl"></span></label>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div><div style="font-size:13px;font-weight:500;">Data Lineage Tracking</div><div style="font-size:11.5px;color:var(--tx-3);">Column-level lineage enabled</div></div>
+            <label class="tog"><input type="checkbox" checked/><span class="tog-sl"></span></label>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div><div style="font-size:13px;font-weight:500;">Auto-scaling Compute</div><div style="font-size:11.5px;color:var(--tx-3);">Dynamic resource allocation</div></div>
+            <label class="tog"><input type="checkbox"/><span class="tog-sl"></span></label>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div><div style="font-size:13px;font-weight:500;">PII Detection & Masking</div><div style="font-size:11.5px;color:var(--tx-3);">Auto-detect sensitive fields</div></div>
+            <label class="tog"><input type="checkbox" checked/><span class="tog-sl"></span></label>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div><div style="font-size:13px;font-weight:500;">Audit Log Retention (90d)</div><div style="font-size:11.5px;color:var(--tx-3);">Extended log history</div></div>
+            <label class="tog"><input type="checkbox" checked/><span class="tog-sl"></span></label>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div><div style="font-size:13px;font-weight:500;">MCP Tool Integration</div><div style="font-size:11.5px;color:var(--tx-3);">Enable AI agent access</div></div>
+            <label class="tog"><input type="checkbox"/><span class="tog-sl"></span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- JSON preview -->
+      <div class="card card-body" style="padding:18px;">
+        <div class="sec-title mb16">Template Preview</div>
+        <div style="background:var(--navy);border-radius:6px;padding:14px;font-family:var(--mono);font-size:11px;line-height:1.8;">
+          <span style="color:#f59e0b;">{</span><br>
+          &nbsp;&nbsp;<span style="color:#93c5fd;">"workspace"</span><span style="color:#e2e8f0;">: </span><span style="color:#86efac;">"default-v2"</span>,<br>
+          &nbsp;&nbsp;<span style="color:#93c5fd;">"max_pipelines"</span><span style="color:#e2e8f0;">: </span><span style="color:#fca5a5;">10</span>,<br>
+          &nbsp;&nbsp;<span style="color:#93c5fd;">"storage_gb"</span><span style="color:#e2e8f0;">: </span><span style="color:#fca5a5;">100</span>,<br>
+          &nbsp;&nbsp;<span style="color:#93c5fd;">"ai_assist"</span><span style="color:#e2e8f0;">: </span><span style="color:#f59e0b;">true</span>,<br>
+          &nbsp;&nbsp;<span style="color:#93c5fd;">"pii_masking"</span><span style="color:#e2e8f0;">: </span><span style="color:#f59e0b;">true</span>,<br>
+          &nbsp;&nbsp;<span style="color:#93c5fd;">"timezone"</span><span style="color:#e2e8f0;">: </span><span style="color:#86efac;">"UTC"</span><br>
+          <span style="color:#f59e0b;">}</span>
+        </div>
+        <button class="topbar-btn primary" style="margin-top:12px;width:100%;justify-content:center;">
+          <i class="bi bi-check-circle"></i> Save Default Workspace
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── GLOBAL CONNECTIONS ─────────── -->
+<section class="p-section fade-in" id="pg-connections">
+  <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;">
+    <input class="f-input" placeholder="Search connections…" style="max-width:260px;"/>
+    <select class="f-select" style="max-width:160px;"><option>All Types</option><option>Database</option><option>Cloud Storage</option><option>SaaS</option><option>Data Warehouse</option></select>
+    <span style="margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--tx-3);">18 connections</span>
+    <button class="topbar-btn primary"><i class="bi bi-plus-lg"></i> Add Connection</button>
+  </div>
+  <div class="grid-3">
+    <div class="conn-card"><div class="conn-logo" style="background:#e0f0ff;">❄️</div><div style="font-weight:600;font-size:13.5px;margin-bottom:2px;">Snowflake PROD</div><div style="font-family:var(--mono);font-size:10.5px;color:var(--tx-3);margin-bottom:10px;">account.snowflakecomputing.com</div><div style="display:flex;align-items:center;justify-content:space-between;"><span class="pill pill-green">Connected</span><span style="font-family:var(--mono);font-size:10px;color:var(--tx-3);">23 pipelines</span></div></div>
+    <div class="conn-card"><div class="conn-logo" style="background:#fff8e0;">☁️</div><div style="font-weight:600;font-size:13.5px;margin-bottom:2px;">AWS S3 Prod</div><div style="font-family:var(--mono);font-size:10.5px;color:var(--tx-3);margin-bottom:10px;">s3://anvizent-prod-data</div><div style="display:flex;align-items:center;justify-content:space-between;"><span class="pill pill-green">Connected</span><span style="font-family:var(--mono);font-size:10px;color:var(--tx-3);">41 pipelines</span></div></div>
+    <div class="conn-card"><div class="conn-logo" style="background:#e6fff6;">🔵</div><div style="font-weight:600;font-size:13.5px;margin-bottom:2px;">BigQuery Global</div><div style="font-family:var(--mono);font-size:10.5px;color:var(--tx-3);margin-bottom:10px;">project: anvizent-bq-prod</div><div style="display:flex;align-items:center;justify-content:space-between;"><span class="pill pill-green">Connected</span><span style="font-family:var(--mono);font-size:10px;color:var(--tx-3);">18 pipelines</span></div></div>
+    <div class="conn-card"><div class="conn-logo" style="background:#fff0f0;">🐘</div><div style="font-weight:600;font-size:13.5px;margin-bottom:2px;">Postgres Replica</div><div style="font-family:var(--mono);font-size:10.5px;color:var(--tx-3);margin-bottom:10px;">pg-replica.internal:5432</div><div style="display:flex;align-items:center;justify-content:space-between;"><span class="pill pill-amber">Degraded</span><span style="font-family:var(--mono);font-size:10px;color:var(--tx-3);">9 pipelines</span></div></div>
+    <div class="conn-card"><div class="conn-logo" style="background:#f5f0ff;">🔗</div><div style="font-weight:600;font-size:13.5px;margin-bottom:2px;">Salesforce Org</div><div style="font-family:var(--mono);font-size:10.5px;color:var(--tx-3);margin-bottom:10px;">anvizent.salesforce.com</div><div style="display:flex;align-items:center;justify-content:space-between;"><span class="pill pill-green">Connected</span><span style="font-family:var(--mono);font-size:10px;color:var(--tx-3);">6 pipelines</span></div></div>
+    <div class="conn-card" style="border:2px dashed var(--border);box-shadow:none;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;min-height:130px;cursor:pointer;background:var(--surface-2);" onmouseover="this.style.borderColor='var(--orange)'" onmouseout="this.style.borderColor='var(--border)'"><i class="bi bi-plus-circle" style="font-size:26px;color:var(--tx-3);"></i><span style="font-size:13px;color:var(--tx-3);">Add New Connection</span></div>
+  </div>
+</section>
+
+<!-- ─────────── PIPELINE MONITORING ─────────── -->
+<section class="p-section fade-in" id="pg-monitoring">
+  <div class="stat-grid" style="grid-template-columns:repeat(5,1fr);">
+    <div class="stat-card"><div class="stat-icon si-green"><i class="bi bi-check-circle-fill"></i></div><div class="stat-info"><div class="stat-val">1,247</div><div class="stat-label">Completed</div></div></div>
+    <div class="stat-card"><div class="stat-icon si-blue"><i class="bi bi-play-circle-fill"></i></div><div class="stat-info"><div class="stat-val">37</div><div class="stat-label">Running</div></div></div>
+    <div class="stat-card"><div class="stat-icon si-amber"><i class="bi bi-pause-circle-fill"></i></div><div class="stat-info"><div class="stat-val">14</div><div class="stat-label">Queued</div></div></div>
+    <div class="stat-card"><div class="stat-icon si-red"><i class="bi bi-x-circle-fill"></i></div><div class="stat-info"><div class="stat-val">3</div><div class="stat-label">Failed</div></div></div>
+    <div class="stat-card"><div class="stat-icon si-orange"><i class="bi bi-stopwatch-fill"></i></div><div class="stat-info"><div class="stat-val">4.2s</div><div class="stat-label">Avg Latency</div></div></div>
+  </div>
+
+  <div class="g-7-5">
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title"><span class="live"></span>All Pipelines</span>
+        <div style="display:flex;gap:8px;">
+          <select class="f-select" style="max-width:130px;padding:5px 10px;font-size:12px;"><option>All Tenants</option></select>
+          <select class="f-select" style="max-width:110px;padding:5px 10px;font-size:12px;"><option>All Status</option></select>
+        </div>
+      </div>
+      <div class="tbl-wrap">
+        <table class="atbl">
+          <thead><tr><th>ID</th><th>Tenant</th><th>Source → Destination</th><th>Status</th><th>Rows</th><th>Duration</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td class="mono" style="font-size:11px;color:var(--tx-3);">PL-00291</td><td>TechCorp Inc</td><td>Salesforce → Snowflake</td><td><span class="pill pill-green">Running</span></td><td class="mono">4.2M</td><td class="mono" style="font-size:11.5px;">1h 22m</td><td><button class="btn-tbl danger">Stop</button></td></tr>
+            <tr><td class="mono" style="font-size:11px;color:var(--tx-3);">PL-00382</td><td>GrowthCo</td><td>HubSpot → Postgres</td><td><span class="pill pill-red">Failed</span></td><td class="mono">12K</td><td class="mono" style="font-size:11.5px;">4m 11s</td><td><button class="btn-tbl">Retry</button> <button class="btn-tbl">Logs</button></td></tr>
+            <tr><td class="mono" style="font-size:11px;color:var(--tx-3);">PL-00374</td><td>ManuTech</td><td>Oracle → Databricks</td><td><span class="pill pill-green">Running</span></td><td class="mono">18.4M</td><td class="mono" style="font-size:11.5px;">3h 41m</td><td><button class="btn-tbl danger">Stop</button></td></tr>
+            <tr><td class="mono" style="font-size:11px;color:var(--tx-3);">PL-00368</td><td>Retail Plus</td><td>MySQL → BigQuery</td><td><span class="pill pill-blue">Queued</span></td><td class="mono">—</td><td class="mono" style="font-size:11.5px;">—</td><td><button class="btn-tbl">Details</button></td></tr>
+            <tr><td class="mono" style="font-size:11px;color:var(--tx-3);">PL-00355</td><td>FinBank Ltd</td><td>S3 → Redshift</td><td><span class="pill pill-green">Running</span></td><td class="mono">9.8M</td><td class="mono" style="font-size:11.5px;">2h 8m</td><td><button class="btn-tbl danger">Stop</button></td></tr>
+            <tr><td class="mono" style="font-size:11px;color:var(--tx-3);">PL-00349</td><td>TechCorp Inc</td><td>Kafka → Snowflake</td><td><span class="pill pill-red">Failed</span></td><td class="mono">280K</td><td class="mono" style="font-size:11.5px;">12m 4s</td><td><button class="btn-tbl">Retry</button> <button class="btn-tbl">Logs</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card card-body" style="padding:16px 18px;">
+        <div class="sec-title mb16" style="color:var(--red);">⚠ Failure Analysis</div>
+        <div style="background:var(--red-bg);border:1px solid var(--red-bd);border-radius:6px;padding:12px;margin-bottom:10px;">
+          <div style="font-size:12.5px;font-weight:600;margin-bottom:4px;">PL-00382 — HubSpot → Postgres</div>
+          <div style="font-family:var(--mono);font-size:10.5px;color:var(--red);">ERROR: Connection timeout after 30s</div>
+          <div style="font-family:var(--mono);font-size:10.5px;color:var(--tx-3);margin-top:3px;">at step: LOAD · row 12,403</div>
+        </div>
+        <div style="background:var(--red-bg);border:1px solid var(--red-bd);border-radius:6px;padding:12px;">
+          <div style="font-size:12.5px;font-weight:600;margin-bottom:4px;">PL-00349 — Kafka → Snowflake</div>
+          <div style="font-family:var(--mono);font-size:10.5px;color:var(--red);">ERROR: Schema mismatch — col "event_ts"</div>
+          <div style="font-family:var(--mono);font-size:10.5px;color:var(--tx-3);margin-top:3px;">at step: TRANSFORM · row 280,120</div>
+        </div>
+      </div>
+      <div class="card card-body" style="padding:16px 18px;">
+        <div class="sec-title mb16">Top Throughput Today</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div><div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:12.5px;"><span>Oracle → Databricks</span><span style="font-family:var(--mono);color:var(--green);font-weight:600;">18.4M</span></div><div class="prog-wrap"><div class="prog-bar pb-green" style="width:92%"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:12.5px;"><span>S3 → Redshift</span><span style="font-family:var(--mono);color:var(--green);font-weight:600;">9.8M</span></div><div class="prog-wrap"><div class="prog-bar pb-orange" style="width:57%"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:12.5px;"><span>Salesforce → Snowflake</span><span style="font-family:var(--mono);color:var(--green);font-weight:600;">4.2M</span></div><div class="prog-wrap"><div class="prog-bar pb-blue" style="width:29%"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── BILLING ─────────── -->
+<section class="p-section fade-in" id="pg-billing">
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-icon si-green"><i class="bi bi-currency-dollar"></i></div><div class="stat-info"><div class="stat-val">$86,400</div><div class="stat-label">MRR</div><div class="stat-delta dlt-up">↑ 12% MoM</div></div></div>
+    <div class="stat-card"><div class="stat-icon si-orange"><i class="bi bi-graph-up-arrow"></i></div><div class="stat-info"><div class="stat-val">$1.04M</div><div class="stat-label">ARR</div><div class="stat-delta dlt-up">On track</div></div></div>
+    <div class="stat-card"><div class="stat-icon si-amber"><i class="bi bi-hourglass-split"></i></div><div class="stat-info"><div class="stat-val">8</div><div class="stat-label">Invoices Due</div><div class="stat-delta dlt-dn">3 overdue</div></div></div>
+    <div class="stat-card"><div class="stat-icon si-purple"><i class="bi bi-person-fill"></i></div><div class="stat-info"><div class="stat-val">$92</div><div class="stat-label">Avg ARPU</div><div class="stat-delta dlt-up">↑ $4 vs last mo</div></div></div>
+  </div>
+
+  <div class="g-7-5">
+    <div class="card">
+      <div class="card-head"><span class="card-title">Invoice Register</span><button class="topbar-btn" style="padding:4px 10px;font-size:12px;"><i class="bi bi-download"></i> Export</button></div>
+      <div class="tbl-wrap">
+        <table class="atbl">
+          <thead><tr><th>Invoice</th><th>Tenant</th><th>Partner</th><th>Period</th><th>Amount</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            <tr><td class="mono" style="font-size:11px;">INV-20240329</td><td>TechCorp Inc</td><td style="color:var(--tx-3);">SysInt</td><td class="mono" style="font-size:11.5px;">Mar 2024</td><td style="font-family:var(--mono);font-weight:600;color:var(--green);">$4,200</td><td><span class="pill pill-green">Paid</span></td><td><button class="btn-tbl">PDF</button></td></tr>
+            <tr><td class="mono" style="font-size:11px;">INV-20240328</td><td>ManuTech</td><td style="color:var(--tx-3);">DataBridge</td><td class="mono" style="font-size:11.5px;">Mar 2024</td><td style="font-family:var(--mono);font-weight:600;color:var(--green);">$5,800</td><td><span class="pill pill-green">Paid</span></td><td><button class="btn-tbl">PDF</button></td></tr>
+            <tr><td class="mono" style="font-size:11px;">INV-20240327</td><td>FinBank Ltd</td><td style="color:var(--tx-3);">DataBridge</td><td class="mono" style="font-size:11.5px;">Mar 2024</td><td style="font-family:var(--mono);font-weight:600;color:var(--amber);">$3,100</td><td><span class="pill pill-amber">Pending</span></td><td><button class="btn-tbl">Remind</button></td></tr>
+            <tr><td class="mono" style="font-size:11px;">INV-20240320</td><td>LogiCore</td><td style="color:var(--tx-3);">InfoFusion</td><td class="mono" style="font-size:11.5px;">Feb 2024</td><td style="font-family:var(--mono);font-weight:600;color:var(--red);">$1,800</td><td><span class="pill pill-red">Overdue</span></td><td><button class="btn-tbl danger">Escalate</button></td></tr>
+            <tr><td class="mono" style="font-size:11px;">INV-20240319</td><td>Retail Plus</td><td style="color:var(--tx-3);">SysInt</td><td class="mono" style="font-size:11.5px;">Mar 2024</td><td style="font-family:var(--mono);font-weight:600;color:var(--green);">$2,400</td><td><span class="pill pill-green">Paid</span></td><td><button class="btn-tbl">PDF</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card card-body" style="padding:16px 18px;">
+        <div class="sec-title mb16">Revenue by Plan</div>
+        <div style="display:flex;align-items:center;gap:18px;">
+          <svg width="84" height="84" viewBox="0 0 84 84">
+            <circle cx="42" cy="42" r="32" fill="none" stroke="#f3f4f6" stroke-width="14"/>
+            <circle cx="42" cy="42" r="32" fill="none" stroke="#7c3aed" stroke-width="14" stroke-dasharray="104 97" stroke-dashoffset="-5" transform="rotate(-90 42 42)"/>
+            <circle cx="42" cy="42" r="32" fill="none" stroke="#2563eb" stroke-width="14" stroke-dasharray="70 131" stroke-dashoffset="-109" transform="rotate(-90 42 42)"/>
+            <circle cx="42" cy="42" r="32" fill="none" stroke="#f47920" stroke-width="14" stroke-dasharray="27 174" stroke-dashoffset="-179" transform="rotate(-90 42 42)"/>
+          </svg>
+          <div style="display:flex;flex-direction:column;gap:7px;">
+            <div style="display:flex;align-items:center;gap:7px;font-size:12.5px;"><div style="width:9px;height:9px;border-radius:50%;background:#7c3aed;"></div>Enterprise <span class="mono" style="color:var(--tx-3);margin-left:3px;">52%</span></div>
+            <div style="display:flex;align-items:center;gap:7px;font-size:12.5px;"><div style="width:9px;height:9px;border-radius:50%;background:#2563eb;"></div>Pro <span class="mono" style="color:var(--tx-3);margin-left:3px;">34%</span></div>
+            <div style="display:flex;align-items:center;gap:7px;font-size:12.5px;"><div style="width:9px;height:9px;border-radius:50%;background:#f47920;"></div>Starter <span class="mono" style="color:var(--tx-3);margin-left:3px;">14%</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card card-body" style="padding:16px 18px;">
+        <div class="sec-title mb16">Usage Pricing Config</div>
+        <div style="display:flex;flex-direction:column;gap:9px;font-size:13px;">
+          <div style="display:flex;justify-content:space-between;padding-bottom:9px;border-bottom:1px solid var(--border);"><span>Per-row price</span><span class="mono" style="color:var(--green);font-weight:600;">$0.00004</span></div>
+          <div style="display:flex;justify-content:space-between;padding-bottom:9px;border-bottom:1px solid var(--border);"><span>Storage / GB / mo</span><span class="mono" style="color:var(--green);font-weight:600;">$0.023</span></div>
+          <div style="display:flex;justify-content:space-between;padding-bottom:9px;border-bottom:1px solid var(--border);"><span>Compute / CPU-hr</span><span class="mono" style="color:var(--green);font-weight:600;">$0.048</span></div>
+          <div style="display:flex;justify-content:space-between;"><span>API calls / 1K</span><span class="mono" style="color:var(--green);font-weight:600;">$0.010</span></div>
+        </div>
+        <button class="topbar-btn" style="margin-top:12px;width:100%;justify-content:center;"><i class="bi bi-pencil"></i> Edit Pricing</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── AI / MCP CONFIG ─────────── -->
+<section class="p-section fade-in" id="pg-ai">
+  <div class="g-7-5">
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card card-body" style="padding:18px;">
+        <div class="sec-title mb16">AI Model Selection</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div class="ai-model on">
+            <div class="stat-icon si-purple" style="margin:0;width:36px;height:36px;flex-shrink:0;"><i class="bi bi-cpu-fill"></i></div>
+            <div style="flex:1;"><div style="display:flex;align-items:center;gap:8px;"><span style="font-weight:600;font-size:13px;">Claude Sonnet 4</span><span class="ai-badge" style="background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd);">ACTIVE</span></div><div style="font-size:11.5px;color:var(--tx-3);margin-top:2px;">Pipeline optimization, schema inference, anomaly detection</div></div>
+            <label class="tog"><input type="checkbox" checked/><span class="tog-sl"></span></label>
+          </div>
+          <div class="ai-model">
+            <div class="stat-icon si-blue" style="margin:0;width:36px;height:36px;flex-shrink:0;"><i class="bi bi-stars"></i></div>
+            <div style="flex:1;"><div style="display:flex;align-items:center;gap:8px;"><span style="font-weight:600;font-size:13px;">GPT-4o</span><span class="ai-badge" style="background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-bd);">AVAILABLE</span></div><div style="font-size:11.5px;color:var(--tx-3);margin-top:2px;">Natural language query translation, doc generation</div></div>
+            <label class="tog"><input type="checkbox"/><span class="tog-sl"></span></label>
+          </div>
+          <div class="ai-model">
+            <div class="stat-icon si-amber" style="margin:0;width:36px;height:36px;flex-shrink:0;"><i class="bi bi-gem"></i></div>
+            <div style="flex:1;"><div style="display:flex;align-items:center;gap:8px;"><span style="font-weight:600;font-size:13px;">Gemini 1.5 Pro</span><span class="ai-badge" style="background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd);">BETA</span></div><div style="font-size:11.5px;color:var(--tx-3);margin-top:2px;">Multimodal data profiling, visual lineage</div></div>
+            <label class="tog"><input type="checkbox"/><span class="tog-sl"></span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-body" style="padding:18px;">
+        <div class="sec-title mb16">AI Feature Toggles</div>
+        <div style="display:flex;flex-direction:column;gap:13px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:13px;">Auto-suggest transformations</span><label class="tog"><input type="checkbox" checked/><span class="tog-sl"></span></label></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:13px;">Anomaly detection alerts</span><label class="tog"><input type="checkbox" checked/><span class="tog-sl"></span></label></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:13px;">NL → SQL query builder</span><label class="tog"><input type="checkbox" checked/><span class="tog-sl"></span></label></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:13px;">Schema drift detection</span><label class="tog"><input type="checkbox"/><span class="tog-sl"></span></label></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:13px;">AI Cost Optimizer</span><label class="tog"><input type="checkbox" checked/><span class="tog-sl"></span></label></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card">
+        <div class="card-head"><span class="card-title">MCP Server Endpoints</span><button class="topbar-btn" style="padding:4px 10px;font-size:12px;"><i class="bi bi-plus"></i> Add</button></div>
+        <div class="mcp-row" style="background:var(--surface-2);border-bottom:2px solid var(--border);">
+          <span style="font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--tx-3);width:120px;flex-shrink:0;">Name</span>
+          <span class="mcp-url" style="font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--tx-3);">Endpoint URL</span>
+          <span style="font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--tx-3);">Status</span>
+        </div>
+        <div class="mcp-row"><span style="font-size:13px;font-weight:500;width:120px;flex-shrink:0;">Pipeline Agent</span><span class="mcp-url">mcp.anvizent.io/pipeline</span><span class="pill pill-green">Active</span></div>
+        <div class="mcp-row"><span style="font-size:13px;font-weight:500;width:120px;flex-shrink:0;">Schema Agent</span><span class="mcp-url">mcp.anvizent.io/schema</span><span class="pill pill-green">Active</span></div>
+        <div class="mcp-row"><span style="font-size:13px;font-weight:500;width:120px;flex-shrink:0;">Audit Agent</span><span class="mcp-url">mcp.anvizent.io/audit</span><span class="pill pill-amber">Degraded</span></div>
+        <div class="mcp-row"><span style="font-size:13px;font-weight:500;width:120px;flex-shrink:0;">Billing Agent</span><span class="mcp-url">mcp.anvizent.io/billing</span><span class="pill pill-red">Offline</span></div>
+      </div>
+
+      <div class="card card-body" style="padding:18px;">
+        <div class="sec-title mb16">API Key Management</div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div><label class="f-label">AI Provider API Key</label><div style="display:flex;gap:8px;"><input class="f-input" type="password" value="sk-ant-api-xxxx" style="font-family:var(--mono);font-size:11.5px;"/><button class="topbar-btn" style="flex-shrink:0;padding:6px 10px;"><i class="bi bi-eye"></i></button></div></div>
+          <div><label class="f-label">MCP Auth Token</label><div style="display:flex;gap:8px;"><input class="f-input" type="password" value="mcp_live_xxxx" style="font-family:var(--mono);font-size:11.5px;"/><button class="topbar-btn" style="flex-shrink:0;padding:6px 10px;"><i class="bi bi-arrow-clockwise"></i></button></div></div>
+        </div>
+        <button class="topbar-btn primary" style="margin-top:14px;width:100%;justify-content:center;"><i class="bi bi-check-circle"></i> Save Configuration</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── AUDIT LOGS ─────────── -->
+<section class="p-section fade-in" id="pg-audit">
+  <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;">
+    <input class="f-input" placeholder="Search events, users, IPs…" style="max-width:280px;"/>
+    <select class="f-select" style="max-width:150px;"><option>All Events</option><option>Auth</option><option>Pipeline</option><option>Admin</option><option>Billing</option><option>Security</option></select>
+    <select class="f-select" style="max-width:130px;"><option>Last 24h</option><option>Last 7d</option><option>Last 30d</option></select>
+    <button class="topbar-btn" style="margin-left:auto;"><i class="bi bi-download"></i> Export CSV</button>
+  </div>
+
+  <div class="g-7-5">
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title"><span class="live"></span>Event Stream</span>
+        <span style="font-family:var(--mono);font-size:10px;color:var(--green);font-weight:500;">LIVE</span>
+      </div>
+      <div class="log-row">
+        <span class="log-ts">2024-03-31 09:42:18</span>
+        <div class="log-ico" style="background:var(--red-bg);"><i class="bi bi-exclamation-triangle-fill" style="color:var(--red);"></i></div>
+        <div style="flex:1;"><div class="log-msg">Pipeline execution failed</div><div class="log-sub">PL-00382 · GrowthCo · IP: 10.0.1.42</div></div>
+        <span class="pill pill-red">PIPELINE</span>
+      </div>
+      <div class="log-row">
+        <span class="log-ts">2024-03-31 09:38:55</span>
+        <div class="log-ico" style="background:var(--blue-bg);"><i class="bi bi-person-check-fill" style="color:var(--blue);"></i></div>
+        <div style="flex:1;"><div class="log-msg">User login successful</div><div class="log-sub">admin@manutech.de · IP: 203.0.113.12 · Chrome</div></div>
+        <span class="pill pill-blue">AUTH</span>
+      </div>
+      <div class="log-row">
+        <span class="log-ts">2024-03-31 08:15:04</span>
+        <div class="log-ico" style="background:var(--green-bg);"><i class="bi bi-building-add" style="color:var(--green);"></i></div>
+        <div style="flex:1;"><div class="log-msg">New tenant provisioned</div><div class="log-sub">ManuTech · by admin@databridge.com · API</div></div>
+        <span class="pill pill-green">ADMIN</span>
+      </div>
+      <div class="log-row">
+        <span class="log-ts">2024-03-30 22:11:30</span>
+        <div class="log-ico" style="background:var(--amber-bg);"><i class="bi bi-key-fill" style="color:var(--amber);"></i></div>
+        <div style="flex:1;"><div class="log-msg">API key auto-rotated (policy: 90d)</div><div class="log-sub">FinBank Ltd · Key ID: tk_fb_0012 · SYSTEM</div></div>
+        <span class="pill pill-amber">SECURITY</span>
+      </div>
+      <div class="log-row">
+        <span class="log-ts">2024-03-30 18:05:52</span>
+        <div class="log-ico" style="background:var(--blue-bg);"><i class="bi bi-cloud-upload-fill" style="color:var(--blue);"></i></div>
+        <div style="flex:1;"><div class="log-msg">Global connection updated</div><div class="log-sub">Snowflake-PROD · by superadmin · UI</div></div>
+        <span class="pill pill-blue">ADMIN</span>
+      </div>
+      <div class="log-row">
+        <span class="log-ts">2024-03-30 16:44:12</span>
+        <div class="log-ico" style="background:var(--red-bg);"><i class="bi bi-person-x-fill" style="color:var(--red);"></i></div>
+        <div style="flex:1;"><div class="log-msg">Failed login attempt (3×) — account locked</div><div class="log-sub">unknown@logicore.net · IP: 185.220.101.8</div></div>
+        <span class="pill pill-red">AUTH</span>
+      </div>
+      <div class="log-row">
+        <span class="log-ts">2024-03-30 14:22:03</span>
+        <div class="log-ico" style="background:var(--purple-bg);"><i class="bi bi-receipt-cutoff" style="color:var(--purple);"></i></div>
+        <div style="flex:1;"><div class="log-msg">Invoice generated</div><div class="log-sub">INV-20240328 · ManuTech · $5,800</div></div>
+        <span class="pill pill-purple">BILLING</span>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card card-body" style="padding:16px 18px;">
+        <div class="sec-title mb16">Event Summary (24h)</div>
+        <div style="display:flex;flex-direction:column;gap:9px;font-size:13px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:9px;border-bottom:1px solid var(--border);"><span>Auth Events</span><span class="mono" style="font-weight:600;">428</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:9px;border-bottom:1px solid var(--border);"><span>Pipeline Events</span><span class="mono" style="font-weight:600;">1,842</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:9px;border-bottom:1px solid var(--border);"><span>Admin Actions</span><span class="mono" style="font-weight:600;">37</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:9px;border-bottom:1px solid var(--border);"><span>Security Alerts</span><span class="mono" style="font-weight:600;color:var(--amber);">12</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:9px;border-bottom:1px solid var(--border);"><span>Billing Events</span><span class="mono" style="font-weight:600;">18</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--red);">Failed Logins</span><span class="mono" style="font-weight:600;color:var(--red);">7</span></div>
+        </div>
+      </div>
+      <div class="card card-body" style="padding:16px 18px;">
+        <div class="sec-title mb16">Top Actors (24h)</div>
+        <div style="display:flex;flex-direction:column;gap:11px;">
+          <div style="display:flex;align-items:center;gap:10px;"><div class="avatar" style="width:28px;height:28px;font-size:10px;border-radius:6px;">SA</div><div style="flex:1;font-size:13px;font-weight:500;">superadmin</div><span class="mono" style="font-size:11px;color:var(--tx-3);">22 actions</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><div class="avatar" style="width:28px;height:28px;font-size:10px;border-radius:6px;background:linear-gradient(135deg,var(--green),#059669);">DB</div><div style="flex:1;font-size:13px;">admin@databridge.com</div><span class="mono" style="font-size:11px;color:var(--tx-3);">14 actions</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><div class="avatar" style="width:28px;height:28px;font-size:10px;border-radius:6px;background:linear-gradient(135deg,#7c3aed,#a855f7);">SI</div><div style="flex:1;font-size:13px;">contact@sysint.io</div><span class="mono" style="font-size:11px;color:var(--tx-3);">9 actions</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><div style="width:28px;height:28px;background:var(--bg);border:1px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;"><i class="bi bi-gear-fill" style="font-size:12px;color:var(--tx-3);"></i></div><div style="flex:1;font-size:13px;">SYSTEM</div><span class="mono" style="font-size:11px;color:var(--tx-3);">188 events</span></div>
+        </div>
+      </div>
+      <div class="card card-body" style="padding:16px 18px;">
+        <div class="sec-title mb16">Retention Policy</div>
+        <div style="display:flex;flex-direction:column;gap:9px;font-size:13px;">
+          <div style="display:flex;justify-content:space-between;"><span>Standard logs</span><span class="mono" style="color:var(--tx-3);">90 days</span></div>
+          <div style="display:flex;justify-content:space-between;"><span>Security events</span><span class="mono" style="color:var(--tx-3);">1 year</span></div>
+          <div style="display:flex;justify-content:space-between;"><span>Compliance archive</span><span class="mono" style="color:var(--tx-3);">7 years</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+const pageConfig = {
+  dashboard:   { title:'Dashboard',             label:'New Partner' },
+  partners:    { title:'Partner Management',    label:'Add Partner' },
+  tenants:     { title:'Tenant Management',     label:'Add Tenant' },
+  workspace:   { title:'Default Workspace Setup', label:'Save Template' },
+  connections: { title:'Global Connections',    label:'Add Connection' },
+  monitoring:  { title:'Pipeline Monitoring',   label:'Force Run' },
+  billing:     { title:'Billing',               label:'Create Invoice' },
+  ai:          { title:'AI / MCP Config',       label:'Test Connection' },
+  audit:       { title:'Audit Logs',            label:'Export Logs' },
+};
+
+function gotoPage(id) {
+  document.querySelectorAll('.p-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  const sec = document.getElementById('pg-' + id);
+  if (sec) { sec.classList.add('active'); }
+
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if (n.getAttribute('onclick')?.includes("'" + id + "'")) n.classList.add('active');
+  });
+
+  const cfg = pageConfig[id] || { title: id, label: 'Action' };
+  document.getElementById('pgTitle').textContent = cfg.title;
+  document.getElementById('primaryLbl').textContent = cfg.label;
+}
+
+function primaryAction() { /* hook for modal */ }
+
+function refreshPage() {
+  const ico = document.getElementById('refIco');
+  ico.style.animation = 'spin .6s linear infinite';
+  setTimeout(() => { ico.style.animation = ''; }, 1200);
+}
+</script>
+<style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+</body>
+</html>
