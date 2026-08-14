@@ -3580,7 +3580,7 @@
           <div style="font-size:14px; font-weight:600; color:var(--tx-1);" id="ws-users-title">Platform User Administration</div>
           <div style="font-size:12px; color:var(--tx-3);">Invite, manage, and assign access roles to administrators and operators.</div>
         </div>
-        <button class="topbar-btn primary" onclick="alert('Inviting new user... Invitation email sent.')"><i class="bi bi-person-plus-fill"></i> Invite User</button>
+        <button class="topbar-btn primary" onclick="openDrawer('pg-users')"><i class="bi bi-person-plus-fill"></i> Invite User</button>
       </div>
 
       <div class="card card-body" style="padding:0; overflow-x:auto;">
@@ -4054,6 +4054,98 @@
       </div>
     </div>
 
+    <!-- USER INVITATION FORM -->
+    <div class="drawer-body" id="form-user" style="display:none; flex-direction:column; gap:20px;">
+      <div class="sec-sub">User Identity & Level</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="f-label">Full Name <span style="color:var(--red);">*</span></label>
+          <input class="f-input" id="usr-name" type="text" placeholder="e.g. Sarah Jenkins" />
+        </div>
+        <div class="form-group">
+          <label class="f-label">Email Address <span style="color:var(--red);">*</span></label>
+          <input class="f-input" id="usr-email" type="email" placeholder="sarah.j@anvizent.com" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="f-label">User Role / Authority Level <span style="color:var(--red);">*</span></label>
+          <select class="f-select" id="usr-role" onchange="onUserRoleChange()">
+            <!-- Options dynamically populated based on activeUserRole -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="f-label">Access Scope Details</label>
+          <input class="f-input" id="usr-scope" type="text" readonly style="background:var(--surface-2); color:var(--tx-3);" />
+        </div>
+      </div>
+
+      <div class="sec-sub" style="margin-top:10px; border-top:1px solid var(--border); padding-top:20px;">Authentication Configuration</div>
+      
+      <!-- Option Configurable: Auth Provider Type -->
+      <div class="form-group">
+        <label class="f-label">Authentication Provider <span style="color:var(--red);">*</span></label>
+        <select class="f-select" id="usr-auth-provider" onchange="onAuthProviderChange()">
+          <option value="INTERNAL">Internal Authentication (Default Platform User)</option>
+          <option value="CLERK">Clerk</option>
+          <option value="AZURE_AD">Microsoft Entra ID (Azure AD)</option>
+          <option value="OKTA">Okta</option>
+          <option value="KEYCLOAK">Keycloak</option>
+        </select>
+      </div>
+
+      <!-- Provider settings (conditional inputs to make it look super premium and realistic!) -->
+      <div id="auth-provider-settings" style="display:none; flex-direction:column; gap:16px; background:var(--surface-2); padding:16px; border-radius:var(--radius); border:1px solid var(--border);">
+        <div style="font-size:12px; font-weight:600; color:var(--tx-1); display:flex; align-items:center; gap:6px;">
+          <i class="bi bi-shield-lock text-warning"></i> External IDP Settings
+        </div>
+        
+        <!-- Clerk Fields -->
+        <div id="fields-clerk" style="display:none; flex-direction:column; gap:12px;">
+          <div class="form-group">
+            <label class="f-label">Clerk User Identifier (External User ID)</label>
+            <input class="f-input mono" id="usr-ext-id-clerk" type="text" placeholder="e.g. user_2F8bX..." />
+          </div>
+        </div>
+
+        <!-- Microsoft Entra ID Fields -->
+        <div id="fields-azure" style="display:none; flex-direction:column; gap:12px;">
+          <div class="form-group">
+            <label class="f-label">Entra ID Object ID (OID)</label>
+            <input class="f-input mono" id="usr-ext-id-azure" type="text" placeholder="e.g. aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee" />
+          </div>
+          <div class="form-group">
+            <label class="f-label">Entra Directory (Tenant) ID</label>
+            <input class="f-input mono" id="usr-ext-tenant-azure" type="text" placeholder="e.g. ffffffff-gggg-hhhh-iiii-jjjjjjjjjjjj" />
+          </div>
+        </div>
+
+        <!-- Okta Fields -->
+        <div id="fields-okta" style="display:none; flex-direction:column; gap:12px;">
+          <div class="form-group">
+            <label class="f-label">Okta Subject claim (sub/email/login)</label>
+            <input class="f-input mono" id="usr-ext-id-okta" type="text" placeholder="e.g. usr_okta_908123" />
+          </div>
+          <div class="form-group">
+            <label class="f-label">Okta Authorization Server Base URL</label>
+            <input class="f-input" id="usr-ext-url-okta" type="text" placeholder="e.g. https://dev-12345.okta.com/oauth2/default" />
+          </div>
+        </div>
+
+        <!-- Keycloak Fields -->
+        <div id="fields-keycloak" style="display:none; flex-direction:column; gap:12px;">
+          <div class="form-group">
+            <label class="f-label">Keycloak User UUID</label>
+            <input class="f-input mono" id="usr-ext-id-keycloak" type="text" placeholder="e.g. 12345678-1234-1234-1234-1234567890ab" />
+          </div>
+          <div class="form-group">
+            <label class="f-label">Keycloak Realm Name</label>
+            <input class="f-input" id="usr-ext-realm-keycloak" type="text" placeholder="e.g. anvizent-prod" />
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Generic Placeholder Form -->
     <div class="drawer-body" id="form-default" style="display:none; justify-content:center; align-items:center; text-align:center;">
       <i class="bi bi-tools" style="font-size:32px; color:var(--tx-3); margin-bottom:12px;"></i>
@@ -4062,7 +4154,7 @@
 
     <div class="drawer-footer">
       <button class="topbar-btn" onclick="closeDrawer()">Cancel</button>
-      <button class="topbar-btn primary"><i class="bi bi-check-lg"></i> <span id="drawerActionBtn">Create</span></button>
+      <button class="topbar-btn primary" onclick="submitDrawerAction()"><i class="bi bi-check-lg"></i> <span id="drawerActionBtn">Create</span></button>
     </div>
   </div>
 
@@ -4161,6 +4253,7 @@
       const pForm = document.getElementById('form-partner');
       const tForm = document.getElementById('form-tenant');
       const cForm = document.getElementById('form-connection');
+      const uForm = document.getElementById('form-user');
       const dForm = document.getElementById('form-default');
       const dTitle = document.getElementById('drawerTitle');
       const dBtn = document.getElementById('drawerActionBtn');
@@ -4168,20 +4261,33 @@
       if (pForm) pForm.style.display = 'none';
       if (tForm) tForm.style.display = 'none';
       if (cForm) cForm.style.display = 'none';
+      if (uForm) uForm.style.display = 'none';
       if (dForm) dForm.style.display = 'none';
 
-      if (contextId === 'pg-partners' || contextId === 'pg-dashboard') {
+      if (contextId === 'pg-partners' || contextId === 'partners' || contextId === 'pg-dashboard' || contextId === 'dashboard') {
         dTitle.textContent = 'Register New Partner';
         dBtn.textContent = 'Create Partner';
         if (pForm) pForm.style.display = 'flex';
-      } else if (contextId === 'pg-tenants') {
+      } else if (contextId === 'pg-tenants' || contextId === 'tenants') {
         dTitle.textContent = 'Provision New Tenant';
         dBtn.textContent = 'Provision Tenant';
         if (tForm) tForm.style.display = 'flex';
-      } else if (contextId === 'pg-connections') {
+      } else if (contextId === 'pg-connections' || contextId === 'connections') {
         dTitle.textContent = 'Add New Connection';
         dBtn.textContent = 'Test & Save Configuration';
         if (cForm) cForm.style.display = 'flex';
+      } else if (contextId === 'pg-users' || contextId === 'users') {
+        dTitle.textContent = 'Invite New User';
+        dBtn.textContent = 'Send Invitation';
+        if (uForm) uForm.style.display = 'flex';
+        
+        // Reset fields
+        document.getElementById('usr-name').value = '';
+        document.getElementById('usr-email').value = '';
+        document.getElementById('usr-auth-provider').value = 'INTERNAL';
+        onAuthProviderChange();
+        
+        populateInviteUserRoles();
       } else {
         dTitle.textContent = 'System Action Pending';
         dBtn.textContent = 'Confirm Action';
@@ -5424,6 +5530,171 @@
       }
     }
 
+    // Global simulated user administration database
+    let anvizentUsers = [
+      { name: 'System Admin', email: 'superadmin@anvizent.com', role: 'Super Admin', scope: 'Platform-wide', status: 'ACTIVE', authProvider: 'INTERNAL', avatar: 'SA', avatarBg: '' },
+      { name: 'Partner Operator (SIP)', email: 'admin@sysint.io', role: 'Partner Admin', scope: 'SysInt Partners', status: 'ACTIVE', authProvider: 'INTERNAL', avatar: 'PA', avatarBg: 'linear-gradient(135deg, var(--orange), var(--orange-dk))' },
+      { name: 'SIP Ingestion Developer', email: 'dev@sysint.io', role: 'Partner Developer', scope: 'SysInt Partners', status: 'ACTIVE', authProvider: 'OKTA', avatar: 'SD', avatarBg: 'var(--surface)' },
+      { name: 'Acme Admin', email: 'admin@acme.com', role: 'Client Admin', scope: 'Acme Corp', status: 'ACTIVE', authProvider: 'CLERK', avatar: 'AA', avatarBg: 'linear-gradient(135deg, var(--green), #059669)' },
+      { name: 'Acme Ingestion Engineer', email: 'engineer@acme.com', role: 'Client Developer', scope: 'Acme Corp', status: 'ACTIVE', authProvider: 'INTERNAL', avatar: 'AD', avatarBg: 'var(--surface)' },
+      { name: 'Acme Business Analyst', email: 'analyst@acme.com', role: 'Client Viewer', scope: 'Acme Corp', status: 'INVITED', authProvider: 'AZURE_AD', avatar: 'AV', avatarBg: 'var(--surface)' }
+    ];
+
+    function getAuthProviderLabel(providerCode) {
+      switch (providerCode) {
+        case 'INTERNAL': return 'Internal Authentication';
+        case 'CLERK': return 'Clerk';
+        case 'AZURE_AD': return 'Microsoft Entra ID';
+        case 'OKTA': return 'Okta';
+        case 'KEYCLOAK': return 'Keycloak';
+        default: return providerCode;
+      }
+    }
+
+    function populateInviteUserRoles() {
+      const roleSelect = document.getElementById('usr-role');
+      if (!roleSelect) return;
+
+      roleSelect.innerHTML = '';
+
+      if (activeUserRole === 'super') {
+        roleSelect.innerHTML = `
+          <option value="Super Admin">Super Admin</option>
+          <option value="Partner Admin" selected>Partner Admin</option>
+          <option value="Client Admin">Client Admin</option>
+        `;
+      } else if (activeUserRole === 'partner') {
+        roleSelect.innerHTML = `
+          <option value="Partner Admin" selected>Partner Admin</option>
+          <option value="Partner Developer">Partner Developer</option>
+          <option value="Client Admin">Client Admin</option>
+        `;
+      } else if (activeUserRole === 'tenant') {
+        roleSelect.innerHTML = `
+          <option value="Client Admin" selected>Client Admin</option>
+          <option value="Client Developer">Client Developer</option>
+          <option value="Client Viewer">Client Viewer</option>
+        `;
+      }
+
+      // Trigger initial logic
+      onUserRoleChange();
+    }
+
+    function onUserRoleChange() {
+      const roleSelect = document.getElementById('usr-role');
+      const providerSelect = document.getElementById('usr-auth-provider');
+      const scopeInput = document.getElementById('usr-scope');
+
+      if (!roleSelect || !providerSelect || !scopeInput) return;
+
+      const selectedRole = roleSelect.value;
+
+      // Update access scope text based on selected role
+      if (selectedRole === 'Super Admin') {
+        scopeInput.value = 'Platform-wide';
+      } else if (selectedRole === 'Partner Admin' || selectedRole === 'Partner Developer') {
+        scopeInput.value = 'SysInt Partners'; 
+      } else {
+        scopeInput.value = 'Acme Corp';
+      }
+
+      // Check if role is Super Admin
+      if (selectedRole === 'Super Admin') {
+        // For super admin, it must be the default platform user (INTERNAL)
+        providerSelect.value = 'INTERNAL';
+        providerSelect.disabled = true;
+        onAuthProviderChange();
+      } else {
+        // For partner/client users, it's configurable
+        providerSelect.disabled = false;
+      }
+    }
+
+    function onAuthProviderChange() {
+      const providerSelect = document.getElementById('usr-auth-provider');
+      const settingsDiv = document.getElementById('auth-provider-settings');
+      const fieldsClerk = document.getElementById('fields-clerk');
+      const fieldsAzure = document.getElementById('fields-azure');
+      const fieldsOkta = document.getElementById('fields-okta');
+      const fieldsKeycloak = document.getElementById('fields-keycloak');
+
+      if (!providerSelect || !settingsDiv) return;
+
+      const provider = providerSelect.value;
+
+      // Hide all subfields
+      if (fieldsClerk) fieldsClerk.style.display = 'none';
+      if (fieldsAzure) fieldsAzure.style.display = 'none';
+      if (fieldsOkta) fieldsOkta.style.display = 'none';
+      if (fieldsKeycloak) fieldsKeycloak.style.display = 'none';
+
+      if (provider === 'INTERNAL') {
+        settingsDiv.style.display = 'none';
+      } else {
+        settingsDiv.style.display = 'flex';
+        if (provider === 'CLERK' && fieldsClerk) fieldsClerk.style.display = 'flex';
+        else if (provider === 'AZURE_AD' && fieldsAzure) fieldsAzure.style.display = 'flex';
+        else if (provider === 'OKTA' && fieldsOkta) fieldsOkta.style.display = 'flex';
+        else if (provider === 'KEYCLOAK' && fieldsKeycloak) fieldsKeycloak.style.display = 'flex';
+      }
+    }
+
+    function submitDrawerAction() {
+      const activeSec = document.querySelector('.p-section.active');
+      const pageId = activeSec ? activeSec.id : '';
+
+      if (pageId === 'pg-users' || pageId === 'users') {
+        const nameVal = document.getElementById('usr-name').value.trim();
+        const emailVal = document.getElementById('usr-email').value.trim();
+        const roleVal = document.getElementById('usr-role').value;
+        const scopeVal = document.getElementById('usr-scope').value;
+        const providerVal = document.getElementById('usr-auth-provider').value;
+
+        if (!nameVal || !emailVal) {
+          alert('Please fill out all required fields (*)');
+          return;
+        }
+
+        // Get initials for avatar
+        const initials = nameVal.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+
+        // Generate custom avatar background
+        let avatarBg = '';
+        if (roleVal.includes('Partner')) avatarBg = 'linear-gradient(135deg, var(--orange), var(--orange-dk))';
+        else if (roleVal.includes('Client')) avatarBg = 'linear-gradient(135deg, var(--green), #059669)';
+        else avatarBg = '';
+
+        // Push to database
+        anvizentUsers.push({
+          name: nameVal,
+          email: emailVal,
+          role: roleVal,
+          scope: scopeVal,
+          status: 'INVITED',
+          authProvider: providerVal,
+          avatar: initials,
+          avatarBg: avatarBg
+        });
+
+        alert(`Invitation successfully dispatched to ${nameVal} using authentication provider "${getAuthProviderLabel(providerVal)}"!`);
+        closeDrawer();
+        renderUsersList();
+      } else if (pageId === 'pg-partners' || pageId === 'partners') {
+        alert('Partner successfully registered! Setup email sent.');
+        closeDrawer();
+      } else if (pageId === 'pg-tenants' || pageId === 'tenants') {
+        alert('Tenant organization successfully provisioned and delegated!');
+        closeDrawer();
+      } else if (pageId === 'pg-connections' || pageId === 'connections') {
+        alert('Connection properties tested successfully and configuration saved!');
+        closeDrawer();
+      } else {
+        alert('Action processed successfully!');
+        closeDrawer();
+      }
+    }
+
     function renderUsersList() {
       const tbody = document.getElementById('ws-users-table-body');
       if (!tbody) return;
@@ -5431,155 +5702,59 @@
 
       const titleEl = document.getElementById('ws-users-title');
       if (!titleEl) return;
-      
+
+      let filteredUsers = [];
+
       if (activeUserRole === 'super') {
         titleEl.textContent = 'Platform User Administration (Global)';
-        tbody.innerHTML = `
-          <tr style="border-bottom:1px solid var(--border);">
-            <td style="padding:12px 18px; display:flex; align-items:center; gap:10px;">
-              <div class="avatar" style="width:30px; height:30px; font-size:11px;">SA</div>
-              <div>
-                <div style="font-weight:600; color:var(--tx-1);">System Admin</div>
-                <div style="font-size:11.5px; color:var(--tx-3);">superadmin@anvizent.com</div>
-              </div>
-            </td>
-            <td style="padding:12px 18px;"><span class="pill pill-blue">Super Admin</span></td>
-            <td style="padding:12px 18px; color:var(--tx-2);">Platform-wide</td>
-            <td style="padding:12px 18px;"><span class="pill pill-green" style="font-size:9.5px;text-transform:uppercase;">ACTIVE</span></td>
-            <td style="padding:12px 18px; text-align:right;">
-              <button class="topbar-btn" onclick="alert('Editing user permissions...')"><i class="bi bi-pencil"></i> Edit</button>
-            </td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--border);">
-            <td style="padding:12px 18px; display:flex; align-items:center; gap:10px;">
-              <div class="avatar" style="width:30px; height:30px; font-size:11px; background:linear-gradient(135deg, var(--orange), var(--orange-dk));">PA</div>
-              <div>
-                <div style="font-weight:600; color:var(--tx-1);">Partner Operator (SIP)</div>
-                <div style="font-size:11.5px; color:var(--tx-3);">admin@sysint.io</div>
-              </div>
-            </td>
-            <td style="padding:12px 18px;"><span class="pill pill-orange">Partner Admin</span></td>
-            <td style="padding:12px 18px; color:var(--tx-2);">SysInt Partners</td>
-            <td style="padding:12px 18px;"><span class="pill pill-green" style="font-size:9.5px;text-transform:uppercase;">ACTIVE</span></td>
-            <td style="padding:12px 18px; text-align:right;">
-              <button class="topbar-btn" onclick="alert('Editing user permissions...')"><i class="bi bi-pencil"></i> Edit</button>
-            </td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--border);">
-            <td style="padding:12px 18px; display:flex; align-items:center; gap:10px;">
-              <div class="avatar" style="width:30px; height:30px; font-size:11px; background:linear-gradient(135deg, var(--green), #059669);">AA</div>
-              <div>
-                <div style="font-weight:600; color:var(--tx-1);">Acme Admin</div>
-                <div style="font-size:11.5px; color:var(--tx-3);">admin@acme.com</div>
-              </div>
-            </td>
-            <td style="padding:12px 18px;"><span class="pill pill-green">Client Admin</span></td>
-            <td style="padding:12px 18px; color:var(--tx-2);">Acme Corp</td>
-            <td style="padding:12px 18px;"><span class="pill pill-green" style="font-size:9.5px;text-transform:uppercase;">ACTIVE</span></td>
-            <td style="padding:12px 18px; text-align:right;">
-              <button class="topbar-btn" onclick="alert('Editing user permissions...')"><i class="bi bi-pencil"></i> Edit</button>
-            </td>
-          </tr>
-        `;
+        filteredUsers = anvizentUsers;
       } else if (activeUserRole === 'partner') {
         titleEl.textContent = 'Partner Team Members & Client Operators';
-        tbody.innerHTML = `
-          <tr style="border-bottom:1px solid var(--border);">
-            <td style="padding:12px 18px; display:flex; align-items:center; gap:10px;">
-              <div class="avatar" style="width:30px; height:30px; font-size:11px; background:linear-gradient(135deg, var(--orange), var(--orange-dk));">PA</div>
-              <div>
-                <div style="font-weight:600; color:var(--tx-1);">Partner Operator (SIP)</div>
-                <div style="font-size:11.5px; color:var(--tx-3);">admin@sysint.io</div>
-              </div>
-            </td>
-            <td style="padding:12px 18px;"><span class="pill pill-orange">Partner Admin</span></td>
-            <td style="padding:12px 18px; color:var(--tx-2);">SysInt Partners</td>
-            <td style="padding:12px 18px;"><span class="pill pill-green" style="font-size:9.5px;text-transform:uppercase;">ACTIVE</span></td>
-            <td style="padding:12px 18px; text-align:right;">
-              <button class="topbar-btn" onclick="alert('Editing user permissions...')"><i class="bi bi-pencil"></i> Edit</button>
-            </td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--border);">
-            <td style="padding:12px 18px; display:flex; align-items:center; gap:10px;">
-              <div class="avatar" style="width:30px; height:30px; font-size:11px; background:var(--surface);">SD</div>
-              <div>
-                <div style="font-weight:600; color:var(--tx-1);">SIP Ingestion Developer</div>
-                <div style="font-size:11.5px; color:var(--tx-3);">dev@sysint.io</div>
-              </div>
-            </td>
-            <td style="padding:12px 18px;"><span class="pill pill-purple">Partner Developer</span></td>
-            <td style="padding:12px 18px; color:var(--tx-2);">SysInt Partners</td>
-            <td style="padding:12px 18px;"><span class="pill pill-green" style="font-size:9.5px;text-transform:uppercase;">ACTIVE</span></td>
-            <td style="padding:12px 18px; text-align:right;">
-              <button class="topbar-btn" onclick="alert('Editing user permissions...')"><i class="bi bi-pencil"></i> Edit</button>
-            </td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--border);">
-            <td style="padding:12px 18px; display:flex; align-items:center; gap:10px;">
-              <div class="avatar" style="width:30px; height:30px; font-size:11px; background:linear-gradient(135deg, var(--green), #059669);">AA</div>
-              <div>
-                <div style="font-weight:600; color:var(--tx-1);">Acme Admin</div>
-                <div style="font-size:11.5px; color:var(--tx-3);">admin@acme.com</div>
-              </div>
-            </td>
-            <td style="padding:12px 18px;"><span class="pill pill-green">Client Admin</span></td>
-            <td style="padding:12px 18px; color:var(--tx-2);">Acme Corp</td>
-            <td style="padding:12px 18px;"><span class="pill pill-green" style="font-size:9.5px;text-transform:uppercase;">ACTIVE</span></td>
-            <td style="padding:12px 18px; text-align:right;">
-              <button class="topbar-btn" onclick="alert('Editing user permissions...')"><i class="bi bi-pencil"></i> Edit</button>
-            </td>
-          </tr>
-        `;
+        filteredUsers = anvizentUsers.filter(u => u.scope === 'SysInt Partners' || u.scope === 'Acme Corp');
       } else if (activeUserRole === 'tenant') {
         titleEl.textContent = 'Acme Corp Local Users List';
-        tbody.innerHTML = `
+        filteredUsers = anvizentUsers.filter(u => u.scope === 'Acme Corp');
+      }
+
+      filteredUsers.forEach((u, idx) => {
+        const avatarStyle = u.avatarBg ? `background:${u.avatarBg};` : '';
+        const statusPillClass = u.status === 'ACTIVE' ? 'pill-green' : 'pill-purple';
+        
+        let rolePillClass = 'pill-blue';
+        if (u.role.includes('Partner')) rolePillClass = 'pill-orange';
+        else if (u.role.includes('Client') || u.role.includes('Tenant')) rolePillClass = 'pill-green';
+        if (u.role.includes('Developer')) rolePillClass = 'pill-purple';
+        else if (u.role.includes('Viewer')) rolePillClass = 'pill-amber';
+
+        const actionBtn = u.status === 'INVITED' 
+          ? `<button class="topbar-btn" onclick="alert('Resending invitation email...')"><i class="bi bi-send"></i> Resend</button>`
+          : `<button class="topbar-btn" onclick="alert('Editing user permissions...')"><i class="bi bi-pencil"></i> Edit</button>`;
+
+        tbody.innerHTML += `
           <tr style="border-bottom:1px solid var(--border);">
             <td style="padding:12px 18px; display:flex; align-items:center; gap:10px;">
-              <div class="avatar" style="width:30px; height:30px; font-size:11px; background:linear-gradient(135deg, var(--green), #059669);">AA</div>
+              <div class="avatar" style="width:30px; height:30px; font-size:11px; ${avatarStyle}">${u.avatar}</div>
               <div>
-                <div style="font-weight:600; color:var(--tx-1);">Acme Admin</div>
-                <div style="font-size:11.5px; color:var(--tx-3);">admin@acme.com</div>
+                <div style="font-weight:600; color:var(--tx-1);">${u.name}</div>
+                <div style="font-size:11.5px; color:var(--tx-3); display:flex; flex-direction:column; gap:2px;">
+                  <span>${u.email}</span>
+                  <div>
+                    <span class="pill" style="font-size:9.5px; padding:1px 5px; background:var(--surface-2); border:1px solid var(--border); color:var(--tx-3);">
+                      Auth: ${getAuthProviderLabel(u.authProvider)}
+                    </span>
+                  </div>
+                </div>
               </div>
             </td>
-            <td style="padding:12px 18px;"><span class="pill pill-green">Client Admin</span></td>
-            <td style="padding:12px 18px; color:var(--tx-2);">Acme Corp</td>
-            <td style="padding:12px 18px;"><span class="pill pill-green" style="font-size:9.5px;text-transform:uppercase;">ACTIVE</span></td>
+            <td style="padding:12px 18px;"><span class="pill ${rolePillClass}">${u.role}</span></td>
+            <td style="padding:12px 18px; color:var(--tx-2);">${u.scope}</td>
+            <td style="padding:12px 18px;"><span class="pill ${statusPillClass}" style="font-size:9.5px;text-transform:uppercase;">${u.status}</span></td>
             <td style="padding:12px 18px; text-align:right;">
-              <button class="topbar-btn" onclick="alert('Editing user permissions...')"><i class="bi bi-pencil"></i> Edit</button>
-            </td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--border);">
-            <td style="padding:12px 18px; display:flex; align-items:center; gap:10px;">
-              <div class="avatar" style="width:30px; height:30px; font-size:11px; background:var(--surface);">AD</div>
-              <div>
-                <div style="font-weight:600; color:var(--tx-1);">Acme Ingestion Engineer</div>
-                <div style="font-size:11.5px; color:var(--tx-3);">engineer@acme.com</div>
-              </div>
-            </td>
-            <td style="padding:12px 18px;"><span class="pill pill-purple">Client Developer</span></td>
-            <td style="padding:12px 18px; color:var(--tx-2);">Acme Corp</td>
-            <td style="padding:12px 18px;"><span class="pill pill-green" style="font-size:9.5px;text-transform:uppercase;">ACTIVE</span></td>
-            <td style="padding:12px 18px; text-align:right;">
-              <button class="topbar-btn" onclick="alert('Editing user permissions...')"><i class="bi bi-pencil"></i> Edit</button>
-            </td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--border);">
-            <td style="padding:12px 18px; display:flex; align-items:center; gap:10px;">
-              <div class="avatar" style="width:30px; height:30px; font-size:11px; background:var(--surface);">AV</div>
-              <div>
-                <div style="font-weight:600; color:var(--tx-1);">Acme Business Analyst</div>
-                <div style="font-size:11.5px; color:var(--tx-3);">analyst@acme.com</div>
-              </div>
-            </td>
-            <td style="padding:12px 18px;"><span class="pill pill-blue">Client Viewer</span></td>
-            <td style="padding:12px 18px; color:var(--tx-2);">Acme Corp</td>
-            <td style="padding:12px 18px;"><span class="pill pill-purple" style="font-size:9.5px;text-transform:uppercase;">INVITED</span></td>
-            <td style="padding:12px 18px; text-align:right;">
-              <button class="topbar-btn" onclick="alert('Resending invitation email...')"><i class="bi bi-send"></i> Resend</button>
+              ${actionBtn}
             </td>
           </tr>
         `;
-      }
+      });
     }
 
     /* ════════ ANVIZENT PROPERTIES EDITOR LOGIC ════════ */
@@ -6002,6 +6177,7 @@
     // Initialize workspace on load
     document.addEventListener('DOMContentLoaded', () => {
       // Set default views
+      switchUserRole('super');
       setWorkspaceLevel('super');
       selectWorkspaceCategory(1);
     });
