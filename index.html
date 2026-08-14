@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -60,7 +59,7 @@
       --header-h: 56px;
       --font: 'Inter', sans-serif;
       --mono: 'Roboto Mono', monospace;
-      --radius: 8px;
+      --radius: 12px;
       --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.07), 0 1px 2px rgba(0, 0, 0, 0.05);
       --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
@@ -188,10 +187,10 @@
     }
 
     .nav-item.active {
-      background: var(--orange);
+      background: linear-gradient(135deg, var(--orange), #ff984d);
       color: #fff;
-      font-weight: 500;
-      box-shadow: 0 2px 8px rgba(244, 121, 32, 0.4);
+      font-weight: 600;
+      box-shadow: 0 4px 14px rgba(255, 122, 26, 0.35);
     }
 
     .nav-item i {
@@ -444,12 +443,17 @@
       min-height: calc(100vh - var(--header-h));
     }
 
-    /* ───── CARD ───── */
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       box-shadow: var(--shadow-sm);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      border-color: var(--border-md);
     }
 
     .card-head {
@@ -748,7 +752,7 @@
       width: 100%;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 8px;
       padding: 9px 12px;
       font-size: 13.5px;
       font-family: var(--font);
@@ -773,7 +777,6 @@
       color: var(--tx-3);
     }
 
-    /* ───── PROFILE MENU ───── */
     .profile-menu {
       position: absolute;
       bottom: calc(100% + 4px);
@@ -1390,6 +1393,206 @@
     .stat-card.featured {
       border-top: 3px solid var(--orange);
     }
+
+    /* ───── WORKSPACE CUSTOM RULES ───── */
+    .ws-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr 340px;
+      gap: 16px;
+    }
+    @media (max-width: 1200px) {
+      .ws-layout {
+        grid-template-columns: 200px 1fr;
+      }
+      .ws-preview-col {
+        grid-column: span 2;
+      }
+    }
+    
+    .ws-cat-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 8px;
+    }
+    
+    .ws-cat-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: transparent;
+      border: none;
+      border-radius: 6px;
+      text-align: left;
+      color: var(--tx-2);
+      transition: all 0.16s ease;
+      cursor: pointer;
+      font-size: 13px;
+      width: 100%;
+    }
+    
+    .ws-cat-btn:hover {
+      background: var(--surface-2);
+      color: var(--tx-1);
+    }
+    
+    .ws-cat-btn.active {
+      background: var(--orange-lt);
+      color: var(--orange);
+      font-weight: 500;
+    }
+    
+    .ws-cat-btn i {
+      font-size: 16px;
+      color: var(--tx-3);
+      width: 20px;
+      text-align: center;
+    }
+    
+    .ws-cat-btn.active i {
+      color: var(--orange);
+    }
+    
+    .ws-cat-badge {
+      margin-left: auto;
+      font-size: 9px;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    
+    .ws-cat-badge.inherited {
+      background: var(--purple-bg);
+      color: var(--purple);
+    }
+    
+    .ws-cat-badge.overridden {
+      background: var(--green-bg);
+      color: var(--green);
+    }
+    
+    /* Level switcher tabs styling */
+    .level-tabs {
+      background: var(--bg);
+      padding: 4px;
+      border-radius: 8px;
+      display: inline-flex;
+      gap: 4px;
+    }
+    
+    .level-tab-btn {
+      border: none;
+      background: transparent;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--tx-2);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    
+    .level-tab-btn:hover {
+      color: var(--tx-1);
+    }
+    
+    .level-tab-btn.active {
+      background: var(--surface);
+      color: var(--tx-1);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .form-group-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .ws-conn-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 10px;
+    }
+
+    .ws-conn-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px;
+      cursor: pointer;
+      text-align: center;
+      background: var(--surface);
+      transition: all 0.15s;
+    }
+
+    .ws-conn-card:hover {
+      border-color: var(--orange-mid);
+    }
+
+    .ws-conn-card.active {
+      border-color: var(--orange);
+      background: var(--orange-lt);
+      box-shadow: 0 0 0 1px var(--orange);
+    }
+
+    .ws-conn-card i {
+      font-size: 18px;
+      display: block;
+      margin-bottom: 4px;
+      color: var(--tx-3);
+    }
+
+    .ws-conn-card.active i {
+      color: var(--orange);
+    }
+
+    /* ───── Named Profiles list & Category tabs CSS overrides ───── */
+    .profile-list-item {
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--surface-2);
+      cursor: pointer;
+      transition: all 0.16s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      margin-bottom: 8px;
+    }
+    
+    .profile-list-item:hover {
+      border-color: var(--border-md);
+      background: var(--surface);
+    }
+    
+    .profile-list-item.active {
+      border-color: var(--orange);
+      background: var(--orange-lt);
+      box-shadow: 0 0 0 1px var(--orange);
+    }
+    
+    .topbar-btn .ws-cat-badge {
+      font-size: 8px;
+      font-weight: 600;
+      padding: 1px 4px;
+      border-radius: 3px;
+      margin-left: 6px;
+      text-transform: uppercase;
+    }
+    
+    .topbar-btn .ws-cat-badge.inherited {
+      background: var(--purple-bg);
+      color: var(--purple);
+    }
+    
+    .topbar-btn .ws-cat-badge.overridden {
+      background: var(--green-bg);
+      color: var(--green);
+    }
   </style>
 </head>
 
@@ -1400,56 +1603,76 @@
     <div class="brand">
       <div class="brand-logo"><i class="bi bi-layers-fill"></i></div>
       <span class="brand-text">Anvizent</span>
-      <span class="brand-sup">SUPER ADMIN</span>
+      <span class="brand-sup" id="brandSup">SUPER ADMIN</span>
     </div>
 
     <div class="nav-scroll">
-      <div class="nav-section">Main</div>
-      <a class="nav-item active" onclick="gotoPage('dashboard')">
+      <div class="nav-section" id="nav-sec-main">Main</div>
+      <a class="nav-item active" id="nav-item-dashboard" onclick="gotoPage('dashboard')">
         <i class="bi bi-grid-fill"></i> <span class="n-txt">Dashboard</span>
       </a>
 
-      <div class="nav-section">Management</div>
-      <a class="nav-item" onclick="gotoPage('partners')">
+      <div class="nav-section" id="nav-sec-mgmt">Management</div>
+      <a class="nav-item" id="nav-item-partners" onclick="gotoPage('partners')">
         <i class="bi bi-building"></i> <span class="n-txt">Partner Mgmt</span>
-        <span class="nav-badge nb-orange">12</span>
+        <span class="nav-badge nb-orange" id="nav-badge-partners">12</span>
       </a>
-      <a class="nav-item" onclick="gotoPage('tenants')">
-        <i class="bi bi-people-fill"></i> <span class="n-txt">Tenant Mgmt</span>
-        <span class="nav-badge nb-green">47</span>
+      <a class="nav-item" id="nav-item-tenants" onclick="gotoPage('tenants')">
+        <i class="bi bi-people-fill"></i> <span class="n-txt" id="nav-text-tenants">Tenant Mgmt</span>
+        <span class="nav-badge nb-green" id="nav-badge-tenants">47</span>
       </a>
-      <a class="nav-item" onclick="gotoPage('workspace')">
-        <i class="bi bi-boxes"></i> <span class="n-txt">Default Workspace</span>
-        <span class="nav-badge nb-purple">NEW</span>
+      <a class="nav-item" id="nav-item-workspace" onclick="gotoPage('workspace')">
+        <i class="bi bi-boxes"></i> <span class="n-txt" id="nav-text-workspace">Default Workspace</span>
+        <span class="nav-badge nb-purple" id="nav-badge-workspace">NEW</span>
       </a>
-
-      <div class="nav-section">Infrastructure</div>
-      <a class="nav-item" onclick="gotoPage('connections')">
-        <i class="bi bi-diagram-3-fill"></i> <span class="n-txt">Global Connections</span>
+      <a class="nav-item" id="nav-item-users" onclick="gotoPage('users')">
+        <i class="bi bi-people"></i> <span class="n-txt" id="nav-text-users">User Management</span>
       </a>
-      <a class="nav-item" onclick="gotoPage('monitoring')">
-        <i class="bi bi-activity"></i> <span class="n-txt">Pipeline Monitoring</span>
-        <span class="nav-badge nb-red">3</span>
+      <a class="nav-item" id="nav-item-access" onclick="gotoPage('access')">
+        <i class="bi bi-shield-check"></i> <span class="n-txt" id="nav-text-access">Access Control</span>
       </a>
 
-      <div class="nav-section">Finance & AI</div>
-      <a class="nav-item" onclick="gotoPage('billing')">
-        <i class="bi bi-credit-card-fill"></i> <span class="n-txt">Billing</span>
+      <div class="nav-section" id="nav-sec-infra">Infrastructure</div>
+      <a class="nav-item" id="nav-item-connections" onclick="gotoPage('connections')">
+        <i class="bi bi-diagram-3-fill"></i> <span class="n-txt" id="nav-text-connections">Global Connections</span>
       </a>
-      <a class="nav-item" onclick="gotoPage('ai')">
+      <a class="nav-item" id="nav-item-properties" onclick="gotoPage('properties')">
+        <i class="bi bi-sliders"></i> <span class="n-txt" id="nav-text-properties">Anvizent Properties</span>
+      </a>
+      <a class="nav-item" id="nav-item-monitoring" onclick="gotoPage('monitoring')">
+        <i class="bi bi-activity"></i> <span class="n-txt" id="nav-text-monitoring">Pipeline Monitoring</span>
+        <span class="nav-badge nb-red" id="nav-badge-monitoring">3</span>
+      </a>
+
+      <div class="nav-section" id="nav-sec-finance">Finance & AI</div>
+      <a class="nav-item" id="nav-item-billing" onclick="gotoPage('billing')">
+        <i class="bi bi-credit-card-fill"></i> <span class="n-txt" id="nav-text-billing">Billing</span>
+      </a>
+      <a class="nav-item" id="nav-item-ai" onclick="gotoPage('ai')">
         <i class="bi bi-cpu-fill"></i> <span class="n-txt">AI / MCP Config</span>
       </a>
 
-      <div class="nav-section">Compliance</div>
-      <a class="nav-item" onclick="gotoPage('audit')">
+      <div class="nav-section" id="nav-sec-compliance">Compliance</div>
+      <a class="nav-item" id="nav-item-audit" onclick="gotoPage('audit')">
         <i class="bi bi-shield-lock-fill"></i> <span class="n-txt">Audit Logs</span>
         <span class="nav-badge nb-orange">New</span>
       </a>
     </div>
 
     <div class="sidebar-footer">
-      <!-- Profile dropdown menu -->
-      <div class="profile-menu" id="profileMenu">
+      <!-- Profile dropdown menu with Role Switcher -->
+      <div class="profile-menu" id="profileMenu" style="width: 215px;">
+        <div style="font-size: 9px; font-family: var(--mono); color: var(--tx-3); padding: 6px 12px 4px; border-bottom: 1px solid rgba(0,0,0,0.08); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Switch User Role</div>
+        <a href="#" class="profile-item" onclick="switchUserRole('super')">
+          <i class="bi bi-shield-lock" style="color: var(--blue);"></i> Super Admin (Global)
+        </a>
+        <a href="#" class="profile-item" onclick="switchUserRole('partner')">
+          <i class="bi bi-building" style="color: var(--orange);"></i> Partner Admin (SIP)
+        </a>
+        <a href="#" class="profile-item" onclick="switchUserRole('tenant')">
+          <i class="bi bi-person-workspace" style="color: var(--green);"></i> Client Admin (Acme)
+        </a>
+        <div class="divider" style="margin: 4px 0;"></div>
         <a href="#" class="profile-item">
           <i class="bi bi-person"></i> My Profile
         </a>
@@ -1463,10 +1686,10 @@
       </div>
 
       <div class="user-card" id="userCardBtn" style="cursor:pointer;" onclick="toggleProfileMenu(event)">
-        <div class="avatar">SA</div>
+        <div class="avatar" id="userCardAvatar">SA</div>
         <div>
-          <div class="u-name">System Admin</div>
-          <div class="u-role">superadmin@anvizent.com</div>
+          <div class="u-name" id="userCardName">System Admin</div>
+          <div class="u-role" id="userCardRole">superadmin@anvizent.com</div>
         </div>
         <i class="bi bi-chevron-expand" style="color:rgba(255,255,255,0.3);font-size:12px;margin-left:auto;"></i>
       </div>
@@ -1487,6 +1710,16 @@
     <div class="search-box">
       <i class="bi bi-search"></i>
       <input placeholder="Search tenants, pipelines…" />
+    </div>
+
+    <!-- Persona Simulator widget -->
+    <div style="display:flex; align-items:center; gap:4px; background:var(--bg); border:1px solid var(--border); padding:3px 5px; border-radius:30px; margin-left:auto; margin-right:12px; box-shadow:inset 0 1px 2px rgba(0,0,0,0.15);">
+      <span style="font-size:10px; font-weight:600; color:var(--tx-3); text-transform:uppercase; letter-spacing:0.5px; padding:0 8px; display:flex; align-items:center; gap:4px;">
+        <i class="bi bi-shield-lock-fill" style="color:var(--orange); font-size:11px;"></i> SIMULATOR
+      </span>
+      <button class="level-tab-btn active" id="sim-btn-super" onclick="switchUserRole('super')" style="font-size:11px; padding:4px 10px; border-radius:20px; line-height:1; min-height:auto;">Super Admin</button>
+      <button class="level-tab-btn" id="sim-btn-partner" onclick="switchUserRole('partner')" style="font-size:11px; padding:4px 10px; border-radius:20px; line-height:1; min-height:auto;">Partner Admin</button>
+      <button class="level-tab-btn" id="sim-btn-tenant" onclick="switchUserRole('tenant')" style="font-size:11px; padding:4px 10px; border-radius:20px; line-height:1; min-height:auto;">Client Admin</button>
     </div>
 
     <button class="topbar-btn" onclick="refreshPage()"><i class="bi bi-arrow-clockwise" id="refIco"></i>
@@ -1512,37 +1745,37 @@
     <!-- ─────────── DASHBOARD ─────────── -->
     <section class="p-section active fade-in" id="pg-dashboard">
 
-      <div class="stat-grid">
-        <div class="stat-card">
-          <div class="stat-icon si-orange"><i class="bi bi-building"></i></div>
+      <div class="stat-grid" id="dashboard-stat-grid">
+        <div class="stat-card" id="stat-card-1">
+          <div class="stat-icon si-orange" id="stat-icon-1"><i class="bi bi-building"></i></div>
           <div class="stat-info">
-            <div class="stat-val">12</div>
-            <div class="stat-label">Active Partners</div>
-            <div class="stat-delta dlt-up">↑ 2 this month</div>
+            <div class="stat-val" id="stat-val-1">12</div>
+            <div class="stat-label" id="stat-label-1">Active Partners</div>
+            <div class="stat-delta dlt-up" id="stat-delta-1">↑ 2 this month</div>
           </div>
         </div>
-        <div class="stat-card">
-          <div class="stat-icon si-green"><i class="bi bi-people-fill"></i></div>
+        <div class="stat-card" id="stat-card-2">
+          <div class="stat-icon si-green" id="stat-icon-2"><i class="bi bi-people-fill"></i></div>
           <div class="stat-info">
-            <div class="stat-val">47</div>
-            <div class="stat-label">Total Tenants</div>
-            <div class="stat-delta dlt-up">↑ 5 this month</div>
+            <div class="stat-val" id="stat-val-2">47</div>
+            <div class="stat-label" id="stat-label-2">Total Tenants</div>
+            <div class="stat-delta dlt-up" id="stat-delta-2">↑ 5 this month</div>
           </div>
         </div>
-        <div class="stat-card">
-          <div class="stat-icon si-blue"><i class="bi bi-lightning-fill"></i></div>
+        <div class="stat-card" id="stat-card-3">
+          <div class="stat-icon si-blue" id="stat-icon-3"><i class="bi bi-lightning-fill"></i></div>
           <div class="stat-info">
-            <div class="stat-val">1,284</div>
-            <div class="stat-label">Pipelines Running</div>
-            <div class="stat-delta dlt-up">↑ 98 today</div>
+            <div class="stat-val" id="stat-val-3">1,284</div>
+            <div class="stat-label" id="stat-label-3">Pipelines Running</div>
+            <div class="stat-delta dlt-up" id="stat-delta-3">↑ 98 today</div>
           </div>
         </div>
-        <div class="stat-card">
-          <div class="stat-icon si-red"><i class="bi bi-exclamation-triangle-fill"></i></div>
+        <div class="stat-card" id="stat-card-4">
+          <div class="stat-icon si-red" id="stat-icon-4"><i class="bi bi-exclamation-triangle-fill"></i></div>
           <div class="stat-info">
-            <div class="stat-val">3</div>
-            <div class="stat-label">Critical Failures</div>
-            <div class="stat-delta dlt-dn">↑ 2 vs yesterday</div>
+            <div class="stat-val" id="stat-val-4">3</div>
+            <div class="stat-label" id="stat-label-4">Critical Failures</div>
+            <div class="stat-delta dlt-dn" id="stat-delta-4">↑ 2 vs yesterday</div>
           </div>
         </div>
       </div>
@@ -2006,161 +2239,369 @@
 
     <!-- ─────────── DEFAULT WORKSPACE ─────────── -->
     <section class="p-section fade-in" id="pg-workspace">
-      <!-- Orange highlight banner -->
-      <div
-        style="background:var(--orange-lt);border:1px solid var(--orange-mid);border-radius:var(--radius);padding:12px 16px;display:flex;align-items:center;gap:10px;margin-bottom:18px;">
-        <i class="bi bi-stars" style="color:var(--orange);font-size:16px;"></i>
-        <div>
-          <strong style="font-size:13px;color:var(--orange);">New Feature — Default Workspace Setup</strong>
-          <div style="font-size:12px;color:var(--tx-2);margin-top:1px;">Configure the workspace template applied
-            automatically when a new tenant is provisioned.</div>
+      <!-- INNER TABS HEADER -->
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); margin-bottom:18px; padding-bottom:10px; flex-wrap:wrap; gap:12px;">
+        <div class="level-tabs" style="margin:0;">
+          <button class="level-tab-btn active" id="ws-inner-tab-profiles" onclick="switchWorkspaceSubTab('profiles')">
+            <i class="bi bi-gear-wide-connected"></i> Workspace Profiles
+          </button>
+          <button class="level-tab-btn" id="ws-inner-tab-assignments" onclick="switchWorkspaceSubTab('assignments')">
+            <i class="bi bi-link-45deg"></i> Profile Assignments
+          </button>
         </div>
-        <span class="pill pill-orange" style="margin-left:auto;">4 / 5 Complete</span>
+        
+        <!-- Level Selector tabs (Only visible to Super Admin) -->
+        <div class="level-tabs" id="ws-level-switcher-wrapper">
+          <button class="level-tab-btn active" id="tab-lvl-super" onclick="setWorkspaceLevel('super')">Super Admin</button>
+          <button class="level-tab-btn" id="tab-lvl-partner" onclick="setWorkspaceLevel('partner')">Partners Scope</button>
+          <button class="level-tab-btn" id="tab-lvl-tenant" onclick="setWorkspaceLevel('tenant')">Clients Scope</button>
+        </div>
+      </div>
+      
+      <!-- Context Selector bar for partner/tenant scopes -->
+      <div id="ws-context-bar" style="display:none; align-items:center; gap:12px; margin-bottom:14px; background:var(--surface); border:1px solid var(--border); padding:10px 18px; border-radius:var(--radius); box-shadow:var(--shadow-sm); flex-wrap:wrap;">
+        <span style="font-weight:600; font-size:13px; color:var(--tx-1);" id="ws-context-label">Select Partner Scope:</span>
+        <select class="f-select" id="ws-partner-select" onchange="changeWorkspaceContext()" style="max-width:240px; margin:0; padding:6px 12px; height:auto;">
+          <option value="sysint">SysInt Partners (SIP)</option>
+          <option value="databridge">DataBridge LLC (DBL)</option>
+          <option value="infofusion">InfoFusion Inc (IFI)</option>
+        </select>
+        <select class="f-select" id="ws-tenant-select" onchange="changeWorkspaceContext()" style="max-width:240px; margin:0; padding:6px 12px; height:auto; display:none;">
+          <option value="acme">Acme Corp (Partner: SysInt Partners)</option>
+          <option value="techcorp">TechCorp Inc (Partner: Direct)</option>
+          <option value="retailplus">Retail Plus (Partner: DataBridge LLC)</option>
+          <option value="finbank">FinBank Ltd (Partner: Direct)</option>
+        </select>
+        <span style="font-size:12px; color:var(--tx-3); margin-left:auto; display:flex; align-items:center; gap:6px;">
+          <i class="bi bi-info-circle"></i>
+          <span id="ws-inheritance-summary">Derived from Super Admin profiles.</span>
+        </span>
       </div>
 
-      <div class="g-7-5">
-        <div style="display:flex;flex-direction:column;gap:14px;">
-          <!-- Wizard -->
-          <div class="card">
-            <div class="card-head"><span class="card-title">Setup Wizard</span></div>
-            <div class="card-body">
-              <div class="ws-step">
-                <div class="step-num done"><i class="bi bi-check" style="font-size:12px;"></i></div>
-                <div>
-                  <div class="step-title">Default Connections</div>
-                  <div class="step-desc">Pre-configured source & destination connectors</div>
-                </div>
+      <!-- VIEW 1: MANAGE REUSABLE PROFILES -->
+      <div id="ws-view-profiles" class="ws-layout">
+        
+        <!-- Left Column: Named Profiles List -->
+        <div style="display:flex; flex-direction:column; gap:10px; background:var(--surface); border:1px solid var(--border); padding:12px; border-radius:var(--radius); min-height:480px;">
+          <div style="font-size:10.5px; font-family:var(--mono); color:var(--tx-3); font-weight:600; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">Workspace Profiles</div>
+          
+          <div id="ws-profiles-list-container" style="flex:1; overflow-y:auto; max-height:420px; padding-right:2px;">
+            <!-- Profiles rendered dynamically -->
+          </div>
+
+          <button class="topbar-btn primary" onclick="createNewWorkspaceProfile()" style="justify-content:center; width:100%; font-size:12px; margin-top:8px;">
+            <i class="bi bi-plus-lg"></i> Create Profile
+          </button>
+        </div>
+
+        <!-- Center Column: Configuration Form Editor -->
+        <div>
+          <!-- Profile Header -->
+          <div class="card card-body mb-3" style="padding:14px 18px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <div style="font-size:14.5px; font-weight:600; color:var(--tx-1);" id="ws-profile-editor-title">Profile: Standard S3 Ingest</div>
+                <div style="font-size:11.5px; color:var(--tx-3);" id="ws-profile-editor-desc">Primary cloud ingestion profile template.</div>
               </div>
-              <div class="ws-step">
-                <div class="step-num done"><i class="bi bi-check" style="font-size:12px;"></i></div>
-                <div>
-                  <div class="step-title">Pipeline Templates</div>
-                  <div class="step-desc">Starter pipelines for common use cases</div>
-                </div>
-              </div>
-              <div class="ws-step">
-                <div class="step-num done"><i class="bi bi-check" style="font-size:12px;"></i></div>
-                <div>
-                  <div class="step-title">Role & Permission Matrix</div>
-                  <div class="step-desc">Default RBAC roles assigned on tenant creation</div>
-                </div>
-              </div>
-              <div class="ws-step">
-                <div class="step-num done"><i class="bi bi-check" style="font-size:12px;"></i></div>
-                <div>
-                  <div class="step-title">Notification Rules</div>
-                  <div class="step-desc">Default alert channels and thresholds</div>
-                </div>
-              </div>
-              <div class="ws-step">
-                <div class="step-num">5</div>
-                <div>
-                  <div class="step-title">AI Assist Settings</div>
-                  <div class="step-desc">Enable AI-powered pipeline suggestions for tenants</div>
-                </div>
-              </div>
+              <span class="pill pill-blue" id="ws-profile-editor-origin">Global Template</span>
+            </div>
+            
+            <!-- Derived From selector (Only visible when derived profiles are allowed) -->
+            <div id="ws-derived-row" style="margin-top:10px; padding-top:10px; border-top:1px dashed var(--border); display:flex; align-items:center; gap:10px; font-size:12px;">
+              <span style="color:var(--tx-2); font-weight:500;">Parent Derivation Profile:</span>
+              <select class="f-select" id="ws-derived-parent-select" onchange="updateProfileParentDerivation(this.value)" style="margin:0; padding:4px 8px; width:auto; font-size:12px; height:auto;">
+                <option value="none">Independent (No Parent)</option>
+                <option value="standard">Standard S3 Ingestion</option>
+                <option value="enterprise">High-Compute Enterprise</option>
+                <option value="azure">Azure Blob Sandbox</option>
+              </select>
             </div>
           </div>
 
-          <!-- Defaults form -->
+          <!-- Configuration Form Card with Horizontal Category Tabs -->
           <div class="card card-body" style="padding:18px;">
-            <div class="sec-title mb16">Template Defaults</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-              <div><label class="f-label">Pipeline Timeout (min)</label><input class="f-input" type="number"
-                  value="120" /></div>
-              <div><label class="f-label">Max Concurrent Pipelines</label><input class="f-input" type="number"
-                  value="10" /></div>
-              <div><label class="f-label">Default Storage Quota</label><select class="f-select">
-                  <option>50 GB</option>
-                  <option selected>100 GB</option>
-                  <option>500 GB</option>
-                  <option>1 TB</option>
-                </select></div>
-              <div><label class="f-label">Default Timezone</label><select class="f-select">
-                  <option>UTC</option>
-                  <option>Asia/Kolkata</option>
-                  <option>America/New_York</option>
-                  <option>Europe/London</option>
-                </select></div>
+            <!-- Category Tabs Header -->
+            <div class="mb-3" style="border-bottom:1px solid var(--border); padding-bottom:12px;">
+              <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <button class="topbar-btn active" id="ws-cat-tab-1" onclick="selectWorkspaceCategory(1)" style="font-size:12px; padding:6px 12px; margin:0;"><i class="bi bi-cloud-arrow-down"></i> Data Lake</button>
+                <button class="topbar-btn" id="ws-cat-tab-2" onclick="selectWorkspaceCategory(2)" style="font-size:12px; padding:6px 12px; margin:0;"><i class="bi bi-database"></i> Staging</button>
+                <button class="topbar-btn" id="ws-cat-tab-3" onclick="selectWorkspaceCategory(3)" style="font-size:12px; padding:6px 12px; margin:0;"><i class="bi bi-calendar3"></i> Metadata</button>
+                <button class="topbar-btn" id="ws-cat-tab-4" onclick="selectWorkspaceCategory(4)" style="font-size:12px; padding:6px 12px; margin:0;"><i class="bi bi-cpu"></i> Compute</button>
+                <button class="topbar-btn" id="ws-cat-tab-5" onclick="selectWorkspaceCategory(5)" style="font-size:12px; padding:6px 12px; margin:0;"><i class="bi bi-shield-check"></i> Security</button>
+                <button class="topbar-btn" id="ws-cat-tab-6" onclick="selectWorkspaceCategory(6)" style="font-size:12px; padding:6px 12px; margin:0;"><i class="bi bi-type"></i> Naming</button>
+              </div>
+            </div>
+
+            <!-- Inheritance Toggle (Only visible if profile derives from another profile) -->
+            <div class="card card-body mb-3" id="ws-inherit-card" style="padding:10px 14px; background:var(--surface-2); border-style:dashed; display:none;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                  <div style="font-weight:600; font-size:12.5px; color:var(--tx-1);" id="ws-inherit-title">Category Inheritance</div>
+                  <div style="font-size:11px; color:var(--tx-3);" id="ws-inherit-desc">Pulls settings automatically from parent.</div>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span class="pill pill-purple" id="ws-inherit-status-badge">Inherited</span>
+                  <label class="tog"><input type="checkbox" id="ws-inherit-checkbox" onchange="toggleCategoryInheritance(this.checked)" checked /><span class="tog-sl"></span></label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Header of active category -->
+            <div id="ws-cat-header" style="margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid var(--surface-2);">
+              <div style="font-size:13.5px; font-weight:600; color:var(--tx-1);" id="ws-cat-header-title">Data Lake Storage</div>
+              <div style="font-size:11.5px; color:var(--tx-3); margin-top:2px;" id="ws-cat-header-desc">Cloud storage credentials.</div>
+            </div>
+
+            <!-- FORM 1: DATA LAKE -->
+            <div id="ws-form-lake" class="ws-form-section">
+              <label class="f-label">Storage Provider</label>
+              <div class="ws-conn-grid mb-3" id="ws-lake-providers">
+                <div class="ws-conn-card active" onclick="setLakeProvider('AWS S3', this)">
+                  <i class="bi bi-cloud-fill"></i> AWS S3
+                </div>
+                <div class="ws-conn-card" onclick="setLakeProvider('Azure Blob', this)">
+                  <i class="bi bi-microsoft"></i> Azure Blob
+                </div>
+                <div class="ws-conn-card" onclick="setLakeProvider('Google GCS', this)">
+                  <i class="bi bi-google"></i> Google GCS
+                </div>
+                <div class="ws-conn-card" onclick="setLakeProvider('SFTP / FTP', this)">
+                  <i class="bi bi-hdd-network"></i> SFTP / FTP
+                </div>
+              </div>
+              <div class="form-group mb-3">
+                <label class="f-label">Bucket / Container URI <span style="color:var(--red);">*</span></label>
+                <input class="f-input mono" type="text" id="ws-lake-bucket" placeholder="s3://company-lake/raw" oninput="updateFormState('lake', 'bucket', this.value)" />
+              </div>
+              <div class="form-group-row">
+                <div class="form-group">
+                  <label class="f-label">Access Key / Client ID</label>
+                  <input class="f-input" type="password" id="ws-lake-access" value="••••••••••••" oninput="updateFormState('lake', 'accessKey', this.value)" />
+                </div>
+                <div class="form-group">
+                  <label class="f-label">Secret Key / Private Key</label>
+                  <input class="f-input" type="password" id="ws-lake-secret" value="••••••••••••" oninput="updateFormState('lake', 'secretKey', this.value)" />
+                </div>
+              </div>
+            </div>
+
+            <!-- FORM 2: STAGING STORAGE -->
+            <div id="ws-form-staging" class="ws-form-section" style="display:none;">
+              <div class="form-group mb-3">
+                <label class="f-label">Database Provider</label>
+                <select class="f-select" id="ws-staging-provider" onchange="updateFormState('staging', 'provider', this.value)">
+                  <option value="PostgreSQL">PostgreSQL</option>
+                  <option value="MySQL">MySQL</option>
+                  <option value="SQL Server">Microsoft SQL Server</option>
+                </select>
+              </div>
+              <div class="form-group mb-3">
+                <label class="f-label">Host / Endpoint URL</label>
+                <input class="f-input mono" type="text" id="ws-staging-host" placeholder="staging-db.corp.net" oninput="updateFormState('staging', 'host', this.value)" />
+              </div>
+              <div class="form-group-row">
+                <div class="form-group">
+                  <label class="f-label">Port</label>
+                  <input class="f-input mono" type="text" id="ws-staging-port" placeholder="5432" oninput="updateFormState('staging', 'port', this.value)" />
+                </div>
+                <div class="form-group">
+                  <label class="f-label">Authentication Method</label>
+                  <select class="f-select" id="ws-staging-auth" onchange="updateFormState('staging', 'auth', this.value)">
+                    <option>Username/Password</option>
+                    <option>IAM Role</option>
+                    <option>OAuth 2.0</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- FORM 3: METADATA DATABASE -->
+            <div id="ws-form-schedule" class="ws-form-section" style="display:none;">
+              <div class="form-group mb-3">
+                <label class="f-label">Database Provider</label>
+                <select class="f-select" id="ws-schedule-provider" onchange="updateFormState('schedule', 'provider', this.value)">
+                  <option value="PostgreSQL">PostgreSQL</option>
+                  <option value="MySQL">MySQL</option>
+                  <option value="SQL Server">Microsoft SQL Server</option>
+                </select>
+              </div>
+              <div class="form-group mb-3">
+                <label class="f-label">Database Name</label>
+                <input class="f-input mono" type="text" id="ws-schedule-db" placeholder="anvizent_metadata" oninput="updateFormState('schedule', 'db', this.value)" />
+              </div>
+              <div class="form-group-row">
+                <div class="form-group">
+                  <label class="f-label">Host / Endpoint URL</label>
+                  <input class="f-input mono" type="text" id="ws-schedule-host" placeholder="meta-db.corp.net" oninput="updateFormState('schedule', 'host', this.value)" />
+                </div>
+                <div class="form-group">
+                  <label class="f-label">Port</label>
+                  <input class="f-input mono" type="text" id="ws-schedule-port" placeholder="5432" oninput="updateFormState('schedule', 'port', this.value)" />
+                </div>
+              </div>
+            </div>
+
+            <!-- FORM 4: COMPUTE CONFIG -->
+            <div id="ws-form-compute" class="ws-form-section" style="display:none;">
+              <div class="form-group mb-3">
+                <label class="f-label">Cluster Scaling Mode</label>
+                <select class="f-select" id="ws-compute-mode" onchange="updateFormState('compute', 'mode', this.value)">
+                  <option value="Single Node">Single Node (Low Cost)</option>
+                  <option value="Standard">Standard (Autoscaling)</option>
+                  <option value="High Concurrency">High Concurrency (Large Teams)</option>
+                </select>
+              </div>
+              <div class="form-group mb-3">
+                <label class="f-label">Spark Ingestion Engine Version</label>
+                <select class="f-select" id="ws-compute-version" onchange="updateFormState('compute', 'version', this.value)">
+                  <option>13.3 LTS (Spark 3.4.1)</option>
+                  <option>14.1 (Spark 3.5.0)</option>
+                  <option>12.2 LTS (Spark 3.3.2)</option>
+                </select>
+              </div>
+              <div class="form-group mb-3">
+                <label class="f-label">Worker Node Type</label>
+                <select class="f-select" id="ws-compute-node" onchange="updateFormState('compute', 'nodeType', this.value)">
+                  <option>Standard_DS3_v2 (14GB)</option>
+                  <option>Standard_DS4_v2 (28GB)</option>
+                  <option>Standard_D2_v2 (8GB)</option>
+                </select>
+              </div>
+              <div class="form-group-row" id="ws-compute-workers-row">
+                <div class="form-group">
+                  <label class="f-label">Minimum Workers</label>
+                  <input class="f-input" type="number" id="ws-compute-min" min="1" value="2" oninput="updateFormState('compute', 'minWorkers', parseInt(this.value))" />
+                </div>
+                <div class="form-group">
+                  <label class="f-label">Maximum Workers</label>
+                  <input class="f-input" type="number" id="ws-compute-max" min="1" value="8" oninput="updateFormState('compute', 'maxWorkers', parseInt(this.value))" />
+                </div>
+              </div>
+            </div>
+
+            <!-- FORM 5: SECURITY & ACCESS -->
+            <div id="ws-form-security" class="ws-form-section" style="display:none;">
+              <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:16px;">
+                <div style="display:flex; align-items:center; justify-content:space-between;">
+                  <div>
+                    <div style="font-size:13px; font-weight:500;">Enable Unity Catalog Integration</div>
+                    <div style="font-size:11px; color:var(--tx-3);">Enforces fine-grained governance filters on all queries</div>
+                  </div>
+                  <label class="tog"><input type="checkbox" id="ws-security-unity" onchange="updateFormState('security', 'unityCatalog', this.checked)" checked /><span class="tog-sl"></span></label>
+                </div>
+                <div style="display:flex; align-items:center; justify-content:space-between;">
+                  <div>
+                    <div style="font-size:13px; font-weight:500;">Enforce Connection ACLs</div>
+                    <div style="font-size:11px; color:var(--tx-3);">Only pipeline owners and admins can configure connections</div>
+                  </div>
+                  <label class="tog"><input type="checkbox" id="ws-security-acl" onchange="updateFormState('security', 'aclEnforce', this.checked)" checked /><span class="tog-sl"></span></label>
+                </div>
+              </div>
+              <div class="form-group mb-3">
+                <label class="f-label">Default Audit Storage Path</label>
+                <input class="f-input mono" type="text" id="ws-security-path" placeholder="s3://audit-logs/path/" oninput="updateFormState('security', 'auditPath', this.value)" />
+              </div>
+              <div class="form-group">
+                <label class="f-label">Default Workspace Admin Roles</label>
+                <input class="f-input" type="text" id="ws-security-role" placeholder="Admin, Developer" oninput="updateFormState('security', 'role', this.value)" />
+              </div>
+            </div>
+
+            <!-- FORM 6: NAMING STANDARDS -->
+            <div id="ws-form-naming" class="ws-form-section" style="display:none;">
+              <div class="sec-sub" style="margin-top:0;">Environment Table Prefixes</div>
+              <div class="form-group-row">
+                <div class="form-group">
+                  <label class="f-label">Development Prefix</label>
+                  <input class="f-input mono" type="text" id="ws-naming-dev" placeholder="dev_" oninput="updateFormState('naming', 'dev', this.value)" />
+                </div>
+                <div class="form-group">
+                  <label class="f-label">QA Prefix</label>
+                  <input class="f-input mono" type="text" id="ws-naming-qa" placeholder="qa_" oninput="updateFormState('naming', 'qa', this.value)" />
+                </div>
+              </div>
+              <div class="form-group mb-3">
+                <label class="f-label">Production Prefix (Blank for None)</label>
+                <input class="f-input mono" type="text" id="ws-naming-prod" placeholder="No prefix" oninput="updateFormState('naming', 'prod', this.value)" />
+              </div>
+              
+              <div class="sec-sub" style="margin-top:14px;">Medallion Lake Layer Suffixes</div>
+              <div class="form-group-row">
+                <div class="form-group">
+                  <label class="f-label">Bronze Layer Suffix</label>
+                  <input class="f-input mono" type="text" id="ws-naming-bronze" placeholder="_bronze" oninput="updateFormState('naming', 'bronze', this.value)" />
+                </div>
+                <div class="form-group">
+                  <label class="f-label">Silver Layer Suffix</label>
+                  <input class="f-input mono" type="text" id="ws-naming-silver" placeholder="_silver" oninput="updateFormState('naming', 'silver', this.value)" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="f-label">Gold Layer Suffix</label>
+                <input class="f-input mono" type="text" id="ws-naming-gold" placeholder="_gold" oninput="updateFormState('naming', 'gold', this.value)" />
+              </div>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; margin-top:20px; padding-top:16px; border-top:1px solid var(--border);">
+              <button class="topbar-btn" onclick="testWorkspaceConfiguration()"><i class="bi bi-patch-check"></i> Test Connection</button>
+              <div>
+                <button class="topbar-btn danger" onclick="deleteWorkspaceProfile()" id="ws-profile-delete-btn" style="margin-right:6px;"><i class="bi bi-trash"></i> Delete Profile</button>
+                <button class="topbar-btn primary" onclick="saveWorkspaceConfiguration()"><i class="bi bi-sd-card"></i> Save Profile</button>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Right col -->
-        <div style="display:flex;flex-direction:column;gap:14px;">
-          <!-- Feature flags -->
-          <div class="card card-body" style="padding:18px;">
-            <div class="sec-title mb16">Feature Flags (Default)</div>
-            <div style="display:flex;flex-direction:column;gap:13px;">
-              <div style="display:flex;align-items:center;justify-content:space-between;">
-                <div>
-                  <div style="font-size:13px;font-weight:500;">AI Pipeline Suggestions</div>
-                  <div style="font-size:11.5px;color:var(--tx-3);">Auto-recommend transformations</div>
-                </div>
-                <label class="tog"><input type="checkbox" checked /><span class="tog-sl"></span></label>
-              </div>
-              <div style="display:flex;align-items:center;justify-content:space-between;">
-                <div>
-                  <div style="font-size:13px;font-weight:500;">Data Lineage Tracking</div>
-                  <div style="font-size:11.5px;color:var(--tx-3);">Column-level lineage enabled</div>
-                </div>
-                <label class="tog"><input type="checkbox" checked /><span class="tog-sl"></span></label>
-              </div>
-              <div style="display:flex;align-items:center;justify-content:space-between;">
-                <div>
-                  <div style="font-size:13px;font-weight:500;">Auto-scaling Compute</div>
-                  <div style="font-size:11.5px;color:var(--tx-3);">Dynamic resource allocation</div>
-                </div>
-                <label class="tog"><input type="checkbox" /><span class="tog-sl"></span></label>
-              </div>
-              <div style="display:flex;align-items:center;justify-content:space-between;">
-                <div>
-                  <div style="font-size:13px;font-weight:500;">PII Detection & Masking</div>
-                  <div style="font-size:11.5px;color:var(--tx-3);">Auto-detect sensitive fields</div>
-                </div>
-                <label class="tog"><input type="checkbox" checked /><span class="tog-sl"></span></label>
-              </div>
-              <div style="display:flex;align-items:center;justify-content:space-between;">
-                <div>
-                  <div style="font-size:13px;font-weight:500;">Audit Log Retention (90d)</div>
-                  <div style="font-size:11.5px;color:var(--tx-3);">Extended log history</div>
-                </div>
-                <label class="tog"><input type="checkbox" checked /><span class="tog-sl"></span></label>
-              </div>
-              <div style="display:flex;align-items:center;justify-content:space-between;">
-                <div>
-                  <div style="font-size:13px;font-weight:500;">MCP Tool Integration</div>
-                  <div style="font-size:11.5px;color:var(--tx-3);">Enable AI agent access</div>
-                </div>
-                <label class="tog"><input type="checkbox" /><span class="tog-sl"></span></label>
-              </div>
+        <!-- Right Column: Inheritance Stack Summary & Schema output -->
+        <div class="ws-preview-col" style="display:flex; flex-direction:column; gap:14px;">
+          <!-- Inheritance Stack -->
+          <div class="card card-body" style="padding:16px;">
+            <div class="sec-title mb12" style="display:flex; align-items:center; gap:6px;">
+              <i class="bi bi-diagram-3-fill" style="color:var(--purple);"></i>
+              Inheritance Stack
+            </div>
+            <div style="display:flex; flex-direction:column; gap:10px;" id="ws-inheritance-stack">
+              <!-- Rendered via JS -->
             </div>
           </div>
 
-          <!-- JSON preview -->
-          <div class="card card-body" style="padding:18px;">
-            <div class="sec-title mb16">Template Preview</div>
-            <div
-              style="background:var(--navy);border-radius:6px;padding:14px;font-family:var(--mono);font-size:11px;line-height:1.8;">
-              <span style="color:#f59e0b;">{</span><br>
-              &nbsp;&nbsp;<span style="color:#93c5fd;">"workspace"</span><span style="color:#e2e8f0;">: </span><span
-                style="color:#86efac;">"default-v2"</span>,<br>
-              &nbsp;&nbsp;<span style="color:#93c5fd;">"max_pipelines"</span><span style="color:#e2e8f0;">: </span><span
-                style="color:#fca5a5;">10</span>,<br>
-              &nbsp;&nbsp;<span style="color:#93c5fd;">"storage_gb"</span><span style="color:#e2e8f0;">: </span><span
-                style="color:#fca5a5;">100</span>,<br>
-              &nbsp;&nbsp;<span style="color:#93c5fd;">"ai_assist"</span><span style="color:#e2e8f0;">: </span><span
-                style="color:#f59e0b;">true</span>,<br>
-              &nbsp;&nbsp;<span style="color:#93c5fd;">"pii_masking"</span><span style="color:#e2e8f0;">: </span><span
-                style="color:#f59e0b;">true</span>,<br>
-              &nbsp;&nbsp;<span style="color:#93c5fd;">"timezone"</span><span style="color:#e2e8f0;">: </span><span
-                style="color:#86efac;">"UTC"</span><br>
-              <span style="color:#f59e0b;">}</span>
+          <!-- JSON Schema output -->
+          <div class="card card-body" style="padding:16px;">
+            <div class="sec-title mb12">Config Schema Output</div>
+            <div id="ws-json-preview" style="background:var(--navy); border-radius:6px; padding:12px; font-family:var(--mono); font-size:11px; line-height:1.6; color:#e2e8f0; overflow-x:auto; white-space:pre; max-height:220px; overflow-y:auto;">
+              <!-- Rendered via JS -->
             </div>
-            <button class="topbar-btn primary" style="margin-top:12px;width:100%;justify-content:center;">
-              <i class="bi bi-check-circle"></i> Save Default Workspace
-            </button>
           </div>
+        </div>
+      </div>
+
+      <!-- VIEW 2: PROFILE ASSIGNMENTS -->
+      <div id="ws-view-assignments" style="display:none;">
+        <div class="card card-body mb-3" style="padding:14px 20px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+            <div>
+              <div style="font-size:14px; font-weight:600; color:var(--tx-1);">Template Assignment Mapping</div>
+              <div style="font-size:12px; color:var(--tx-3);">Assign workspace configurations to downstream partners or tenants. Changes cascade immediately.</div>
+            </div>
+            <button class="topbar-btn primary" onclick="switchUserRole(activeUserRole)" style="font-size:12.5px;"><i class="bi bi-arrow-repeat"></i> Refresh Assignments</button>
+          </div>
+        </div>
+
+        <div class="card card-body" style="padding:0; overflow-x:auto;">
+          <table class="table text-nowrap" style="margin:0; font-size:13px; width:100%; border-collapse:collapse;">
+            <thead>
+              <tr style="background:var(--surface-2); border-bottom:2px solid var(--border); text-align:left;">
+                <th style="padding:12px 18px; font-weight:600; color:var(--tx-2);">Target Scope</th>
+                <th style="padding:12px 18px; font-weight:600; color:var(--tx-2); width:180px;">Type</th>
+                <th style="padding:12px 18px; font-weight:600; color:var(--tx-2); width:280px;">Assigned Workspace Profile</th>
+                <th style="padding:12px 18px; font-weight:600; color:var(--tx-2); width:240px;">Inheritance Origin</th>
+                <th style="padding:12px 18px; font-weight:600; color:var(--tx-2); width:150px; text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="ws-assignments-table-body">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
@@ -2415,6 +2856,95 @@
           </div>
         </div>
 
+      </div>
+    </section>
+
+    <!-- ─────────── ANVIZENT PROPERTIES ─────────── -->
+    <section class="p-section fade-in" id="pg-properties">
+      <!-- Header scope selection & Config name -->
+      <div class="card card-body mb-3" style="padding:18px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <div>
+            <div style="font-size:16px; font-weight:600; color:var(--tx-1);" id="prop-page-title">Anvizent Properties</div>
+            <div style="font-size:12.5px; color:var(--tx-3);">Manage global system variables, SMTP credentials, and directory parameters.</div>
+          </div>
+          <div id="prop-role-badge">
+            <span class="pill pill-orange" style="font-size:10px; text-transform:uppercase;">Super Admin</span>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:16px; align-items:flex-end; flex-wrap:wrap;">
+          <!-- Target Level (only visible to Super/Partner) -->
+          <div class="form-group" id="prop-level-group" style="flex: 1; min-width: 180px; margin-bottom: 0;">
+            <label class="f-label">Select Target Level:</label>
+            <select class="f-select" id="prop-level-select" onchange="onPropLevelChange()" style="margin-bottom:0; background-color: var(--surface);">
+              <!-- Dynamic options -->
+            </select>
+          </div>
+
+          <!-- Target Name Select (only visible if Level is Partner or Client) -->
+          <div class="form-group" id="prop-target-group" style="flex: 1; min-width: 220px; display: none; margin-bottom: 0;">
+            <label class="f-label" id="prop-target-label">Target Name:</label>
+            <select class="f-select" id="prop-target-select" onchange="onPropTargetChange()" style="margin-bottom:0; background-color: var(--surface);">
+              <!-- Dynamic options -->
+            </select>
+          </div>
+
+          <!-- Configuration Name Dropdown -->
+          <div class="form-group" style="flex: 1.5; min-width: 240px; margin-bottom: 0;">
+            <label class="f-label">Configuration Name:</label>
+            <select class="f-select" id="prop-config-select" onchange="onPropConfigChange()" style="margin-bottom:0; background-color: var(--surface);">
+              <!-- Options populated dynamically -->
+            </select>
+          </div>
+        </div>
+
+        <!-- Inline New Config Name Creator Input -->
+        <div id="prop-new-config-wrapper" style="display:none; align-items:center; gap:12px; margin-top:14px; background:var(--surface-2); border:1px dashed var(--border); padding:10px 14px; border-radius:var(--radius);">
+          <div style="flex:1;">
+            <label class="f-label" style="font-size:11.5px;">Enter New Configuration Name:</label>
+            <input class="f-input" id="prop-new-config-name" placeholder="e.g. MY_NEW_CONFIG" style="margin-bottom:0;" />
+          </div>
+          <button class="topbar-btn primary" onclick="createPropConfiguration()" style="align-self:flex-end; padding:7px 14px;">Create</button>
+          <button class="topbar-btn" onclick="cancelNewPropConfiguration()" style="align-self:flex-end; padding:7px 14px;">Cancel</button>
+        </div>
+      </div>
+
+      <!-- Properties Table Card -->
+      <div class="card card-body" style="padding:18px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+          <div>
+            <div style="font-size:14px; font-weight:600; color:var(--tx-1);" id="prop-table-title">RELOAD_NEWLY_CREATEDDB Properties</div>
+            <div style="font-size:11.5px; color:var(--tx-3);">Define key-value pairs below. Changes take effect on save.</div>
+          </div>
+          <div>
+            <!-- Green Plus Icon Button -->
+            <button class="topbar-btn" onclick="addPropRow()" style="border-color:var(--green); color:var(--green); background:var(--green-bg); font-weight:600;">
+              <i class="bi bi-plus-lg"></i> Add Row
+            </button>
+          </div>
+        </div>
+
+        <div style="overflow-x:auto; margin-bottom:16px; border:1px solid var(--border); border-radius:var(--radius);">
+          <table class="table text-nowrap" style="margin-bottom:0; width:100%; border-collapse:collapse;">
+            <thead>
+              <tr style="background:var(--navy); color:#fff; font-size:12px; border-bottom:2px solid var(--border);">
+                <th style="padding:10px 12px; width:60px; text-align:center;">S No</th>
+                <th style="padding:10px 12px; width:30%;">Key</th>
+                <th style="padding:10px 12px;">Value</th>
+                <th style="padding:10px 12px; width:80px; text-align:center;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="prop-table-body">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+          <button class="topbar-btn" onclick="resetPropConfig()"><i class="bi bi-x-circle"></i> Reset</button>
+          <button class="topbar-btn primary" onclick="savePropConfig()"><i class="bi bi-check-lg"></i> Save Configuration</button>
+        </div>
       </div>
     </section>
 
@@ -3043,6 +3573,192 @@
       </div>
     </section>
 
+    <!-- ─────────── USER MANAGEMENT ─────────── -->
+    <section class="p-section fade-in" id="pg-users">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
+        <div>
+          <div style="font-size:14px; font-weight:600; color:var(--tx-1);" id="ws-users-title">Platform User Administration</div>
+          <div style="font-size:12px; color:var(--tx-3);">Invite, manage, and assign access roles to administrators and operators.</div>
+        </div>
+        <button class="topbar-btn primary" onclick="alert('Inviting new user... Invitation email sent.')"><i class="bi bi-person-plus-fill"></i> Invite User</button>
+      </div>
+
+      <div class="card card-body" style="padding:0; overflow-x:auto;">
+        <table class="table text-nowrap" style="margin:0; font-size:13px; width:100%; border-collapse:collapse; text-align:left;">
+          <thead>
+            <tr style="background:var(--surface-2); border-bottom:2px solid var(--border);">
+              <th style="padding:12px 18px; font-weight:600; color:var(--tx-2);">User Details</th>
+              <th style="padding:12px 18px; font-weight:600; color:var(--tx-2); width:180px;">Assigned Role</th>
+              <th style="padding:12px 18px; font-weight:600; color:var(--tx-2); width:200px;">Access Scope</th>
+              <th style="padding:12px 18px; font-weight:600; color:var(--tx-2); width:120px;">Status</th>
+              <th style="padding:12px 18px; font-weight:600; color:var(--tx-2); width:150px; text-align:right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="ws-users-table-body">
+            <!-- Simulated list based on active role -->
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:12px 18px; display:flex; align-items:center; gap:10px;">
+                <div class="avatar" style="width:30px; height:30px; font-size:11px;">SA</div>
+                <div>
+                  <div style="font-weight:600; color:var(--tx-1);">System Admin</div>
+                  <div style="font-size:11.5px; color:var(--tx-3);">superadmin@anvizent.com</div>
+                </div>
+              </td>
+              <td style="padding:12px 18px;"><span class="pill pill-blue">Super Admin</span></td>
+              <td style="padding:12px 18px; color:var(--tx-2);">Platform-wide</td>
+              <td style="padding:12px 18px;"><span class="pill pill-green" style="font-size:9.5px;text-transform:uppercase;">ACTIVE</span></td>
+              <td style="padding:12px 18px; text-align:right;">
+                <button class="topbar-btn" onclick="alert('Editing user permissions...')"><i class="bi bi-pencil"></i> Edit</button>
+              </td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:12px 18px; display:flex; align-items:center; gap:10px;">
+                <div class="avatar" style="width:30px; height:30px; font-size:11px; background:linear-gradient(135deg, var(--orange), var(--orange-dk));">PA</div>
+                <div>
+                  <div style="font-weight:600; color:var(--tx-1);">Partner Operator (SIP)</div>
+                  <div style="font-size:11.5px; color:var(--tx-3);">admin@sysint.io</div>
+                </div>
+              </td>
+              <td style="padding:12px 18px;"><span class="pill pill-orange">Partner Admin</span></td>
+              <td style="padding:12px 18px; color:var(--tx-2);">SysInt Partners</td>
+              <td style="padding:12px 18px;"><span class="pill pill-green" style="font-size:9.5px;text-transform:uppercase;">ACTIVE</span></td>
+              <td style="padding:12px 18px; text-align:right;">
+                <button class="topbar-btn" onclick="alert('Editing user permissions...')"><i class="bi bi-pencil"></i> Edit</button>
+              </td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:12px 18px; display:flex; align-items:center; gap:10px;">
+                <div class="avatar" style="width:30px; height:30px; font-size:11px; background:linear-gradient(135deg, var(--green), #059669);">AA</div>
+                <div>
+                  <div style="font-weight:600; color:var(--tx-1);">Acme Admin</div>
+                  <div style="font-size:11.5px; color:var(--tx-3);">admin@acme.com</div>
+                </div>
+              </td>
+              <td style="padding:12px 18px;"><span class="pill pill-green">Client Admin</span></td>
+              <td style="padding:12px 18px; color:var(--tx-2);">Acme Corp</td>
+              <td style="padding:12px 18px;"><span class="pill pill-green" style="font-size:9.5px;text-transform:uppercase;">ACTIVE</span></td>
+              <td style="padding:12px 18px; text-align:right;">
+                <button class="topbar-btn" onclick="alert('Editing user permissions...')"><i class="bi bi-pencil"></i> Edit</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ─────────── ACCESS CONTROL ─────────── -->
+    <section class="p-section fade-in" id="pg-access">
+      <div class="ws-layout" style="grid-template-columns: 1fr 340px;">
+        <!-- Left: Roles Matrix and Rules -->
+        <div>
+          <!-- SSO Card -->
+          <div class="card card-body mb-3" style="padding:18px;">
+            <div class="sec-title mb12">Enterprise Single Sign-On (IdP) Identity Federation</div>
+            <div style="font-size:12px; color:var(--tx-3); margin-bottom:14px;">Federate identity configurations to enable automatic corporate AD mapping rules.</div>
+            
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:14px;">
+              <div style="border: 1px solid var(--border); border-radius: 6px; padding: 12px; display: flex; align-items: center; justify-content: space-between; background: var(--surface-2);">
+                <div>
+                  <div style="font-size:12.5px; font-weight:600; color:var(--tx-1);">Azure Active Directory</div>
+                  <div style="font-size:11px; color:var(--tx-3);">Status: Fully Active</div>
+                </div>
+                <label class="tog"><input type="checkbox" checked disabled /><span class="tog-sl"></span></label>
+              </div>
+              <div style="border: 1px solid var(--border); border-radius: 6px; padding: 12px; display: flex; align-items: center; justify-content: space-between; background: var(--surface-2);">
+                <div>
+                  <div style="font-size:12.5px; font-weight:600; color:var(--tx-1);">Okta IdP Integration</div>
+                  <div style="font-size:11px; color:var(--tx-3);">Status: Connected</div>
+                </div>
+                <label class="tog"><input type="checkbox" checked disabled /><span class="tog-sl"></span></label>
+              </div>
+            </div>
+            <button class="topbar-btn" onclick="alert('Opening Identity Provider SSO wizards...')"><i class="bi bi-gear"></i> Configure Federated IdP</button>
+          </div>
+
+          <!-- Permissions Matrix -->
+          <div class="card card-body" style="padding:18px;">
+            <div class="sec-title mb12">Roles Permissions Matrix</div>
+            <table class="table text-nowrap" style="margin:0; font-size:12px; width:100%; border-collapse:collapse; text-align:left;">
+              <thead>
+                <tr style="border-bottom:2px solid var(--border);">
+                  <th style="padding:10px 14px; font-weight:600;">Access Privileges</th>
+                  <th class="col-super" style="padding:10px 14px; font-weight:600; text-align:center; width:80px;">Super</th>
+                  <th class="col-partner" style="padding:10px 14px; font-weight:600; text-align:center; width:80px;">Partner</th>
+                  <th class="col-client" style="padding:10px 14px; font-weight:600; text-align:center; width:80px;">Client</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom:1px solid var(--border);">
+                  <td style="padding:10px 14px; color:var(--tx-1); font-weight:500;">Register & Edit Partners</td>
+                  <td class="col-super" style="padding:10px 14px; text-align:center; color:var(--green);"><i class="bi bi-check-circle-fill"></i></td>
+                  <td class="col-partner" style="padding:10px 14px; text-align:center; color:var(--tx-3);"><i class="bi bi-dash"></i></td>
+                  <td class="col-client" style="padding:10px 14px; text-align:center; color:var(--tx-3);"><i class="bi bi-dash"></i></td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--border);">
+                  <td style="padding:10px 14px; color:var(--tx-1); font-weight:500;">Provision Downstream Tenants</td>
+                  <td class="col-super" style="padding:10px 14px; text-align:center; color:var(--green);"><i class="bi bi-check-circle-fill"></i></td>
+                  <td class="col-partner" style="padding:10px 14px; text-align:center; color:var(--green);"><i class="bi bi-check-circle-fill"></i></td>
+                  <td class="col-client" style="padding:10px 14px; text-align:center; color:var(--tx-3);"><i class="bi bi-dash"></i></td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--border);">
+                  <td style="padding:10px 14px; color:var(--tx-1); font-weight:500;">Define Global Workspace Profiles</td>
+                  <td class="col-super" style="padding:10px 14px; text-align:center; color:var(--green);"><i class="bi bi-check-circle-fill"></i></td>
+                  <td class="col-partner" style="padding:10px 14px; text-align:center; color:var(--tx-3);"><i class="bi bi-dash"></i></td>
+                  <td class="col-client" style="padding:10px 14px; text-align:center; color:var(--tx-3);"><i class="bi bi-dash"></i></td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--border);">
+                  <td style="padding:10px 14px; color:var(--tx-1); font-weight:500;">Configure Local Workspace Overrides</td>
+                  <td class="col-super" style="padding:10px 14px; text-align:center; color:var(--green);"><i class="bi bi-check-circle-fill"></i></td>
+                  <td class="col-partner" style="padding:10px 14px; text-align:center; color:var(--green);"><i class="bi bi-check-circle-fill"></i></td>
+                  <td class="col-client" style="padding:10px 14px; text-align:center; color:var(--green);"><i class="bi bi-check-circle-fill"></i></td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--border);">
+                  <td style="padding:10px 14px; color:var(--tx-1); font-weight:500;">Configure Ingestion DB Connections</td>
+                  <td class="col-super" style="padding:10px 14px; text-align:center; color:var(--green);"><i class="bi bi-check-circle-fill"></i></td>
+                  <td class="col-partner" style="padding:10px 14px; text-align:center; color:var(--green);"><i class="bi bi-check-circle-fill"></i></td>
+                  <td class="col-client" style="padding:10px 14px; text-align:center; color:var(--green);"><i class="bi bi-check-circle-fill"></i></td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--border);">
+                  <td style="padding:10px 14px; color:var(--tx-1); font-weight:500;">Audit Logs & System Reports</td>
+                  <td class="col-super" style="padding:10px 14px; text-align:center; color:var(--green);"><i class="bi bi-check-circle-fill"></i></td>
+                  <td class="col-partner" style="padding:10px 14px; text-align:center; color:var(--tx-3);"><i class="bi bi-dash"></i></td>
+                  <td class="col-client" style="padding:10px 14px; text-align:center; color:var(--tx-3);"><i class="bi bi-dash"></i></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Right: Security Policies -->
+        <div style="display:flex; flex-direction:column; gap:14px;">
+          <div class="card card-body" style="padding:16px;">
+            <div class="sec-title mb12">Global Access Lockdowns</div>
+            <div style="display:flex; flex-direction:column; gap:10px; font-size:12.5px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span>Enforce MFA for all logins</span>
+                <label class="tog"><input type="checkbox" checked disabled /><span class="tog-sl"></span></label>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span>IP Access Restriction Whitelisting</span>
+                <label class="tog"><input type="checkbox" disabled /><span class="tog-sl"></span></label>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span>Audit trail data export encryption</span>
+                <label class="tog"><input type="checkbox" checked disabled /><span class="tog-sl"></span></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="card card-body" style="padding:16px;">
+            <div class="sec-title mb12">Security Summary</div>
+            <div style="font-size:12.5px; line-height:1.6; color:var(--tx-2);">
+              All platform credentials, staging logins, and bucket private keys are stored securely using **AES-256 GCM** encryption backed by cloud key vaults (AWS KMS / Azure Key Vault). Inherited credentials resolve at pipeline runtime only and are never exposed to tenant users.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <!-- ════════ DRAWER (SLIDE-OVER) ════════ -->
@@ -3169,20 +3885,20 @@
 
       <div class="sec-sub" style="margin-top:0;">Access & Delegation</div>
       <div class="form-row" style="margin-bottom:8px;">
-        <div class="form-group" style="background:#f8fafc;padding:12px;border-radius:6px;border:1px solid var(--border);">
+        <div class="form-group" style="background:var(--surface-2);padding:12px;border-radius:var(--radius);border:1px solid var(--border);">
           <div style="display:flex;align-items:flex-start;justify-content:space-between;">
              <div style="padding-right:12px;">
-               <div style="font-size:12px;font-weight:600;color:var(--tx-1);">Setup Credentials</div>
-               <div style="font-size:10.5px;color:var(--tx-3);line-height:1.3;margin-top:4px;">Auto-generate tenant credentials.</div>
+                <div style="font-size:12px;font-weight:600;color:var(--tx-1);">Setup Credentials</div>
+                <div style="font-size:10.5px;color:var(--tx-3);line-height:1.3;margin-top:4px;">Auto-generate tenant credentials.</div>
              </div>
              <label class="tog" style="flex-shrink:0;"><input type="checkbox" checked /><span class="tog-sl"></span></label>
           </div>
         </div>
-        <div class="form-group" style="background:#f8fafc;padding:12px;border-radius:6px;border:1px solid var(--border);">
+        <div class="form-group" style="background:var(--surface-2);padding:12px;border-radius:var(--radius);border:1px solid var(--border);">
           <div style="display:flex;align-items:flex-start;justify-content:space-between;">
              <div style="padding-right:12px;">
-               <div style="font-size:12px;font-weight:600;color:var(--tx-1);">Partner Delegation</div>
-               <div style="font-size:10.5px;color:var(--tx-3);line-height:1.3;margin-top:4px;">Allow partner pipeline access.</div>
+                <div style="font-size:12px;font-weight:600;color:var(--tx-1);">Partner Delegation</div>
+                <div style="font-size:10.5px;color:var(--tx-3);line-height:1.3;margin-top:4px;">Allow partner pipeline access.</div>
              </div>
              <label class="tog" style="flex-shrink:0;"><input type="checkbox" checked /><span class="tog-sl"></span></label>
           </div>
@@ -3379,7 +4095,10 @@
       partners: { title: 'Partner Management', label: 'Add Partner' },
       tenants: { title: 'Tenant Management', label: 'Add Tenant' },
       workspace: { title: 'Default Workspace Setup', label: 'Save Template' },
+      users: { title: 'User Management', label: 'Invite User' },
+      access: { title: 'Access Control', label: 'Save Policies' },
       connections: { title: 'Global Connections', label: 'Add Connection' },
+      properties: { title: 'Anvizent Properties', label: 'Save Properties' },
       monitoring: { title: 'Pipeline Monitoring', label: 'Force Run' },
       billing: { title: 'Billing', label: 'Create Invoice' },
       ai: { title: 'AI / MCP Config', label: 'Test Connection' },
@@ -3399,7 +4118,20 @@
 
       const cfg = pageConfig[id] || { title: id, label: 'Action' };
       document.getElementById('pgTitle').textContent = cfg.title;
-      document.getElementById('primaryLbl').textContent = cfg.label;
+
+      const mainActions = document.getElementById('main-actions');
+      if (id === 'properties' || id === 'workspace' || id === 'access') {
+        if (mainActions) mainActions.style.display = 'none';
+      } else {
+        if (mainActions) {
+          mainActions.style.display = 'flex';
+          document.getElementById('primaryLbl').textContent = cfg.label;
+        }
+      }
+
+      if (id === 'properties') {
+        initPropView();
+      }
     }
 
     function toggleProfileMenu(e) {
@@ -3433,27 +4165,27 @@
       const dTitle = document.getElementById('drawerTitle');
       const dBtn = document.getElementById('drawerActionBtn');
 
-      pForm.style.display = 'none';
-      tForm.style.display = 'none';
-      if(cForm) cForm.style.display = 'none';
-      dForm.style.display = 'none';
+      if (pForm) pForm.style.display = 'none';
+      if (tForm) tForm.style.display = 'none';
+      if (cForm) cForm.style.display = 'none';
+      if (dForm) dForm.style.display = 'none';
 
-      if(contextId === 'pg-partners' || contextId === 'pg-dashboard') {
+      if (contextId === 'pg-partners' || contextId === 'pg-dashboard') {
         dTitle.textContent = 'Register New Partner';
         dBtn.textContent = 'Create Partner';
-        pForm.style.display = 'flex';
+        if (pForm) pForm.style.display = 'flex';
       } else if (contextId === 'pg-tenants') {
         dTitle.textContent = 'Provision New Tenant';
         dBtn.textContent = 'Provision Tenant';
-        tForm.style.display = 'flex';
+        if (tForm) tForm.style.display = 'flex';
       } else if (contextId === 'pg-connections') {
         dTitle.textContent = 'Add New Connection';
         dBtn.textContent = 'Test & Save Configuration';
-        if(cForm) cForm.style.display = 'flex';
+        if (cForm) cForm.style.display = 'flex';
       } else {
         dTitle.textContent = 'System Action Pending';
         dBtn.textContent = 'Confirm Action';
-        dForm.style.display = 'flex';
+        if (dForm) dForm.style.display = 'flex';
       }
     }
 
@@ -3464,9 +4196,1821 @@
 
     function refreshPage() {
       const ico = document.getElementById('refIco');
-      ico.style.animation = 'spin .6s linear infinite';
-      setTimeout(() => { ico.style.animation = ''; }, 1200);
+      if (ico) ico.style.animation = 'spin .6s linear infinite';
+      setTimeout(() => { if (ico) ico.style.animation = ''; }, 1200);
     }
+
+    /* ════════ WORKSPACE CONFIGURATION INTERACTION LOGIC ════════ */
+    
+    // Named Reusable Profiles Database
+    const workspaceProfiles = {
+      // Super Admin defined templates (Global Templates)
+      super: {
+        'standard-s3': {
+          id: 'standard-s3',
+          name: 'Standard S3 Ingestion',
+          desc: 'Primary template using AWS S3 raw lake storage and Postgres database metadata.',
+          origin: 'Global Template',
+          derivedFrom: 'none',
+          inherited: { lake: false, staging: false, schedule: false, compute: false, security: false, naming: false },
+          config: {
+            lake: { provider: 'AWS S3', bucket: 's3://global-anvizent-lake/raw', accessKey: '••••••••••••', secretKey: '••••••••••••' },
+            staging: { provider: 'PostgreSQL', host: 'staging-pg.anvizent.net', port: '5432', auth: 'IAM Role' },
+            schedule: { provider: 'PostgreSQL', db: 'metadata_db', host: 'meta-pg.anvizent.net', port: '5432' },
+            compute: { mode: 'Standard', version: '13.3 LTS (Spark 3.4.1)', nodeType: 'Standard_DS3_v2 (14GB)', minWorkers: 2, maxWorkers: 8 },
+            security: { unityCatalog: true, aclEnforce: true, auditPath: 's3://audit-logs/global/', role: 'Admin, Developer' },
+            naming: { dev: 'dev_', qa: 'qa_', prod: '', bronze: '_bronze', silver: '_silver', gold: '_gold' }
+          }
+        },
+        'compute-heavy': {
+          id: 'compute-heavy',
+          name: 'High-Compute Enterprise',
+          desc: 'Maximized autoscaling compute resources with strict Unity Catalog security mappings.',
+          origin: 'Global Template',
+          derivedFrom: 'none',
+          inherited: { lake: false, staging: false, schedule: false, compute: false, security: false, naming: false },
+          config: {
+            lake: { provider: 'AWS S3', bucket: 's3://global-anvizent-enterprise/lake', accessKey: '••••••••••••', secretKey: '••••••••••••' },
+            staging: { provider: 'PostgreSQL', host: 'staging-enterprise.anvizent.net', port: '5432', auth: 'Username/Password' },
+            schedule: { provider: 'PostgreSQL', db: 'enterprise_meta', host: 'meta-enterprise.anvizent.net', port: '5432' },
+            compute: { mode: 'High Concurrency', version: '14.1 (Spark 3.5.0)', nodeType: 'Standard_DS4_v2 (28GB)', minWorkers: 4, maxWorkers: 16 },
+            security: { unityCatalog: true, aclEnforce: true, auditPath: 's3://audit-logs/enterprise-audit/', role: 'Enterprise Admin, Auditor' },
+            naming: { dev: 'dev_ent_', qa: 'qa_ent_', prod: '', bronze: '_bronze', silver: '_silver', gold: '_gold' }
+          }
+        },
+        'azure-blob': {
+          id: 'azure-blob',
+          name: 'Azure Blob Sandbox',
+          desc: 'Low-cost developer sandbox setup utilizing Azure Blob staging nodes.',
+          origin: 'Global Template',
+          derivedFrom: 'none',
+          inherited: { lake: false, staging: false, schedule: false, compute: false, security: false, naming: false },
+          config: {
+            lake: { provider: 'Azure Blob', bucket: 'wasbs://sandbox-blob@corp.blob.core.windows.net', accessKey: '••••••••••••', secretKey: '••••••••••••' },
+            staging: { provider: 'MySQL', host: 'sandbox-mysql.anvizent.net', port: '3306', auth: 'Username/Password' },
+            schedule: { provider: 'MySQL', db: 'sandbox_meta', host: 'sandbox-mysql.anvizent.net', port: '3306' },
+            compute: { mode: 'Single Node', version: '12.2 LTS (Spark 3.3.2)', nodeType: 'Standard_D2_v2 (8GB)', minWorkers: 1, maxWorkers: 1 },
+            security: { unityCatalog: false, aclEnforce: true, auditPath: 'wasbs://audit@corp.blob.core.windows.net/logs', role: 'Developer' },
+            naming: { dev: 'sb_dev_', qa: 'sb_qa_', prod: 'sb_prod_', bronze: '_b', silver: '_s', gold: '_g' }
+          }
+        }
+      },
+
+      // Partner templates derived from Super Admin templates
+      partner: {
+        sysint: {
+          'sip-aws-default': {
+            id: 'sip-aws-default',
+            name: 'SIP AWS Ingest Default',
+            desc: 'SysInt standard AWS template config.',
+            origin: 'Partner Template',
+            derivedFrom: 'standard-s3',
+            inherited: { lake: true, staging: true, schedule: true, compute: true, security: true, naming: true },
+            config: { lake: {}, staging: {}, schedule: {}, compute: {}, security: {}, naming: {} }
+          },
+          'sip-enterprise-db': {
+            id: 'sip-enterprise-db',
+            name: 'SIP Enterprise High-Compute',
+            desc: 'SysInt compute heavy template with custom staging parameters.',
+            origin: 'Partner Template',
+            derivedFrom: 'compute-heavy',
+            inherited: { lake: true, staging: false, schedule: true, compute: true, security: true, naming: true },
+            config: {
+              staging: { provider: 'SQL Server', host: 'mssql-sysint.company.com', port: '1433', auth: 'Username/Password' },
+              lake: {}, schedule: {}, compute: {}, security: {}, naming: {}
+            }
+          }
+        },
+        databridge: {
+          'dbl-azure-blob': {
+            id: 'dbl-azure-blob',
+            name: 'DBL Azure Blob Standard',
+            desc: 'DataBridge standard sandbox layout template.',
+            origin: 'Partner Template',
+            derivedFrom: 'azure-blob',
+            inherited: { lake: true, staging: true, schedule: true, compute: true, security: true, naming: true },
+            config: { lake: {}, staging: {}, schedule: {}, compute: {}, security: {}, naming: {} }
+          }
+        },
+        infofusion: {
+          'ifi-s3-default': {
+            id: 'ifi-s3-default',
+            name: 'IFI Standard S3 Default',
+            origin: 'Partner Template',
+            desc: 'InfoFusion standard cloud templates.',
+            derivedFrom: 'standard-s3',
+            inherited: { lake: true, staging: true, schedule: true, compute: true, security: true, naming: true },
+            config: { lake: {}, staging: {}, schedule: {}, compute: {}, security: {}, naming: {} }
+          }
+        }
+      },
+
+      // Tenant profiles derived from Partner or Super Admin templates
+      tenant: {
+        acme: {
+          'acme-std-workspace': {
+            id: 'acme-std-workspace',
+            name: 'Acme Workspace Default',
+            desc: 'Acme default profile. Inherits from SIP AWS template.',
+            origin: 'Client Profile',
+            derivedFrom: 'sip-aws-default',
+            inherited: { lake: true, staging: true, schedule: true, compute: true, security: true, naming: true },
+            config: { lake: {}, staging: {}, schedule: {}, compute: {}, security: {}, naming: {} }
+          }
+        },
+        techcorp: {
+          'techcorp-gcs-workspace': {
+            id: 'techcorp-gcs-workspace',
+            name: 'TechCorp Google Ingest',
+            desc: 'TechCorp custom configuration. Overrides AWS default to use Google GCS lake.',
+            origin: 'Client Profile',
+            derivedFrom: 'compute-heavy',
+            inherited: { lake: false, staging: true, schedule: true, compute: false, security: true, naming: true },
+            config: {
+              lake: { provider: 'Google GCS', bucket: 'gs://techcorp-data-lake-raw/', accessKey: '••••••••••••', secretKey: '••••••••••••' },
+              compute: { mode: 'High Concurrency', version: '14.1 (Spark 3.5.0)', nodeType: 'Standard_DS4_v2 (28GB)', minWorkers: 6, maxWorkers: 24 },
+              staging: {}, schedule: {}, security: {}, naming: {}
+            }
+          }
+        },
+        retailplus: {
+          'retailplus-azure-workspace': {
+            id: 'retailplus-azure-workspace',
+            name: 'RetailPlus Blob Workspace',
+            desc: 'Retail Plus default profile template.',
+            origin: 'Client Profile',
+            derivedFrom: 'dbl-azure-blob',
+            inherited: { lake: true, staging: true, schedule: true, compute: true, security: true, naming: true },
+            config: { lake: {}, staging: {}, schedule: {}, compute: {}, security: {}, naming: {} }
+          }
+        },
+        finbank: {
+          'finbank-secured-workspace': {
+            id: 'finbank-secured-workspace',
+            name: 'FinBank Compliance Workspace',
+            desc: 'Compliance-approved cluster configuration with locked security auditing settings.',
+            origin: 'Client Profile',
+            derivedFrom: 'compute-heavy',
+            inherited: { lake: true, staging: true, schedule: true, compute: true, security: false, naming: true },
+            config: {
+              security: { unityCatalog: true, aclEnforce: true, auditPath: 's3://audit-logs/finbank-private/', role: 'Compliance Officer, Auditor' },
+              lake: {}, staging: {}, schedule: {}, compute: {}, naming: {}
+            }
+          }
+        }
+      }
+    };
+
+    // Assignments Mapping database
+    const profileAssignments = {
+      partner: {
+        'sysint': 'sip-aws-default',
+        'databridge': 'dbl-azure-blob',
+        'infofusion': 'ifi-s3-default'
+      },
+      tenant: {
+        'acme': 'acme-std-workspace',
+        'techcorp': 'techcorp-gcs-workspace',
+        'retailplus': 'retailplus-azure-workspace',
+        'finbank': 'finbank-secured-workspace'
+      }
+    };
+
+    const workspaceState = {
+      subTab: 'profiles', // 'profiles', 'assignments'
+      activeLevel: 'super', // 'super', 'partner', 'tenant'
+      activeCategory: 1, // 1 to 6
+      partnerContext: 'sysint',
+      tenantContext: 'acme',
+      activeProfileId: 'standard-s3'
+    };
+
+    const categoryMeta = {
+      1: { key: 'lake', name: 'Data Lake Storage', desc: 'Configure cloud storage target provider credentials for data staging.', icon: 'bi-cloud-arrow-down' },
+      2: { key: 'staging', name: 'Staging Storage', desc: 'Configure relational database credentials for staging ingestion records.', icon: 'bi-database' },
+      3: { key: 'schedule', name: 'Metadata Database', desc: 'Configure relational database parameters for scheduling catalog metadata.', icon: 'bi-calendar3' },
+      4: { key: 'compute', name: 'Compute Config', desc: 'Configure cluster autoscaling worker size parameters.', icon: 'bi-cpu' },
+      5: { key: 'security', name: 'Security & Access', desc: 'Configure fine-grained security locks, SSO catalog options, and logs.', icon: 'bi-shield-check' },
+      6: { key: 'naming', name: 'Naming Standards', desc: 'Define naming structure prefix rules for medallion ingestion assets.', icon: 'bi-type' }
+    };
+
+    function switchWorkspaceSubTab(tab) {
+      workspaceState.subTab = tab;
+      
+      document.getElementById('ws-inner-tab-profiles').classList.remove('active');
+      document.getElementById('ws-inner-tab-assignments').classList.remove('active');
+      document.getElementById('ws-inner-tab-' + tab).classList.add('active');
+
+      const viewProfiles = document.getElementById('ws-view-profiles');
+      const viewAssignments = document.getElementById('ws-view-assignments');
+
+      if (tab === 'profiles') {
+        viewProfiles.style.display = 'grid';
+        viewAssignments.style.display = 'none';
+        renderWorkspace();
+      } else {
+        viewProfiles.style.display = 'none';
+        viewAssignments.style.display = 'block';
+        renderAssignments();
+      }
+    }
+
+    function setWorkspaceLevel(level) {
+      workspaceState.activeLevel = level;
+      
+      document.querySelectorAll('#ws-level-switcher-wrapper .level-tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('tab-lvl-' + level).classList.add('active');
+
+      const contextBar = document.getElementById('ws-context-bar');
+      const partnerSelect = document.getElementById('ws-partner-select');
+      const tenantSelect = document.getElementById('ws-tenant-select');
+      const contextLabel = document.getElementById('ws-context-label');
+
+      if (level === 'super') {
+        contextBar.style.display = 'none';
+        workspaceState.activeProfileId = Object.keys(workspaceProfiles.super)[0];
+      } else if (level === 'partner') {
+        contextBar.style.display = 'flex';
+        partnerSelect.style.display = 'block';
+        tenantSelect.style.display = 'none';
+        contextLabel.textContent = 'Select Partner Scope:';
+        workspaceState.partnerContext = partnerSelect.value;
+        
+        const list = workspaceProfiles.partner[workspaceState.partnerContext];
+        workspaceState.activeProfileId = Object.keys(list)[0] || '';
+      } else if (level === 'tenant') {
+        contextBar.style.display = 'flex';
+        partnerSelect.style.display = 'none';
+        tenantSelect.style.display = 'block';
+        contextLabel.textContent = 'Select Client Scope:';
+        workspaceState.tenantContext = tenantSelect.value;
+        
+        const list = workspaceProfiles.tenant[workspaceState.tenantContext];
+        workspaceState.activeProfileId = Object.keys(list)[0] || '';
+      }
+
+      // Rehydrate derived select values
+      rehydrateDerivedDropdown();
+      renderWorkspace();
+    }
+
+    function changeWorkspaceContext() {
+      workspaceState.partnerContext = document.getElementById('ws-partner-select').value;
+      workspaceState.tenantContext = document.getElementById('ws-tenant-select').value;
+      
+      if (workspaceState.activeLevel === 'partner') {
+        const list = workspaceProfiles.partner[workspaceState.partnerContext];
+        workspaceState.activeProfileId = Object.keys(list)[0] || '';
+      } else if (workspaceState.activeLevel === 'tenant') {
+        const list = workspaceProfiles.tenant[workspaceState.tenantContext];
+        workspaceState.activeProfileId = Object.keys(list)[0] || '';
+      }
+
+      renderWorkspace();
+    }
+
+    function rehydrateDerivedDropdown() {
+      const select = document.getElementById('ws-derived-parent-select');
+      select.innerHTML = '<option value="none">Independent (No Parent)</option>';
+      
+      const level = workspaceState.activeLevel;
+      if (level === 'partner') {
+        // Partners can derive from Super Admin templates
+        Object.keys(workspaceProfiles.super).forEach(id => {
+          const prof = workspaceProfiles.super[id];
+          select.innerHTML += `<option value="${id}">${prof.name} (Global)</option>`;
+        });
+      } else if (level === 'tenant') {
+        const tenant = workspaceState.tenantContext;
+        const partner = workspaceState.tenant[tenant].parentPartner;
+        
+        // Tenants can derive from their parent partner templates OR super admin templates
+        if (partner !== 'direct' && workspaceProfiles.partner[partner]) {
+          Object.keys(workspaceProfiles.partner[partner]).forEach(id => {
+            const prof = workspaceProfiles.partner[partner][id];
+            select.innerHTML += `<option value="${id}">${prof.name} (Partner)</option>`;
+          });
+        }
+        Object.keys(workspaceProfiles.super).forEach(id => {
+          const prof = workspaceProfiles.super[id];
+          select.innerHTML += `<option value="${id}">${prof.name} (Global)</option>`;
+        });
+      }
+    }
+
+    function selectWorkspaceCategory(catIndex) {
+      workspaceState.activeCategory = catIndex;
+
+      // Update horizontal tabs active classes
+      for(let i=1; i<=6; i++) {
+        const btn = document.getElementById('ws-cat-tab-' + i);
+        if(btn) btn.classList.remove('active');
+      }
+      document.getElementById('ws-cat-tab-' + catIndex).classList.add('active');
+
+      // Update forms visibility
+      document.querySelectorAll('.ws-form-section').forEach(form => form.style.display = 'none');
+      const catKey = categoryMeta[catIndex].key;
+      const formEl = document.getElementById('ws-form-' + catKey);
+      if(formEl) formEl.style.display = 'block';
+
+      // Update category header info
+      document.getElementById('ws-cat-header-title').textContent = categoryMeta[catIndex].name;
+      document.getElementById('ws-cat-header-desc').textContent = categoryMeta[catIndex].desc;
+
+      renderWorkspace();
+    }
+
+    function getActiveProfile() {
+      const level = workspaceState.activeLevel;
+      const profId = workspaceState.activeProfileId;
+      if (!profId) return null;
+
+      if (level === 'super') {
+        return workspaceProfiles.super[profId];
+      } else if (level === 'partner') {
+        return workspaceProfiles.partner[workspaceState.partnerContext][profId];
+      } else if (level === 'tenant') {
+        return workspaceProfiles.tenant[workspaceState.tenantContext][profId];
+      }
+      return null;
+    }
+
+    function findParentProfile(parentId) {
+      if (!parentId || parentId === 'none') return null;
+      if (workspaceProfiles.super[parentId]) return workspaceProfiles.super[parentId];
+      
+      // Look in partner templates
+      for (const part in workspaceProfiles.partner) {
+        if (workspaceProfiles.partner[part][parentId]) {
+          return workspaceProfiles.partner[part][parentId];
+        }
+      }
+      return null;
+    }
+
+    function getResolvedConfig(profile, categoryKey) {
+      if (!profile) return null;
+
+      if (profile.derivedFrom === 'none') {
+        return {
+          status: 'defined',
+          source: 'This Profile',
+          values: profile.config[categoryKey]
+        };
+      }
+
+      const isInherited = profile.inherited[categoryKey];
+      if (!isInherited) {
+        return {
+          status: 'overridden',
+          source: 'This Profile Override',
+          values: profile.config[categoryKey]
+        };
+      }
+
+      // Inherit from parent
+      const parent = findParentProfile(profile.derivedFrom);
+      if (!parent) {
+        return { status: 'defined', source: 'Broken Derivation link', values: profile.config[categoryKey] };
+      }
+
+      const parentResolved = getResolvedConfig(parent, categoryKey);
+      return {
+        status: 'inherited',
+        source: `${parent.name} (Parent)`,
+        values: parentResolved.values
+      };
+    }
+
+    function setFieldsDisabled(containerId, disabled) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      const inputs = container.querySelectorAll('input, select, textarea, button, .ws-conn-card');
+      inputs.forEach(el => {
+        if (el.classList.contains('ws-conn-card')) {
+          if (disabled) {
+            el.style.pointerEvents = 'none';
+            el.style.opacity = '0.55';
+          } else {
+            el.style.pointerEvents = 'auto';
+            el.style.opacity = '1';
+          }
+        } else {
+          el.disabled = disabled;
+          if (disabled) {
+            el.style.opacity = '0.7';
+            el.style.background = 'var(--surface-2)';
+            el.style.cursor = 'not-allowed';
+          } else {
+            el.style.opacity = '1';
+            el.style.background = '';
+            el.style.cursor = '';
+          }
+        }
+      });
+    }
+
+    function setLakeProvider(provider, el) {
+      document.querySelectorAll('#ws-lake-providers .ws-conn-card').forEach(c => c.classList.remove('active'));
+      if (el) el.classList.add('active');
+
+      updateFormState('lake', 'provider', provider);
+    }
+
+    function toggleCategoryInheritance(isInherited) {
+      const profile = getActiveProfile();
+      if (!profile || profile.derivedFrom === 'none') return;
+
+      const catKey = categoryMeta[workspaceState.activeCategory].key;
+      profile.inherited[catKey] = isInherited;
+      
+      if (!isInherited && Object.keys(profile.config[catKey]).length === 0) {
+        // Clone parent config resolved outputs on override switch
+        const resolved = getResolvedConfig(findParentProfile(profile.derivedFrom), catKey);
+        profile.config[catKey] = JSON.parse(JSON.stringify(resolved.values));
+      }
+
+      renderWorkspace();
+    }
+
+    function updateFormState(categoryKey, field, value) {
+      const profile = getActiveProfile();
+      if (!profile) return;
+
+      profile.config[categoryKey][field] = value;
+      renderWorkspaceJSON();
+    }
+
+    function updateProfileParentDerivation(parentId) {
+      const profile = getActiveProfile();
+      if (!profile) return;
+
+      profile.derivedFrom = parentId;
+      if (parentId === 'none') {
+        // Copy resolved values over to make them custom if detached
+        Object.keys(categoryMeta).forEach(idx => {
+          const key = categoryMeta[idx].key;
+          const resolved = getResolvedConfig(profile, key);
+          profile.config[key] = JSON.parse(JSON.stringify(resolved.values));
+          profile.inherited[key] = false;
+        });
+      } else {
+        // Derive categories
+        Object.keys(categoryMeta).forEach(idx => {
+          const key = categoryMeta[idx].key;
+          profile.inherited[key] = true;
+          profile.config[key] = {};
+        });
+      }
+
+      renderWorkspace();
+    }
+
+    function selectWorkspaceProfile(profileId) {
+      workspaceState.activeProfileId = profileId;
+      renderWorkspace();
+    }
+
+    function createNewWorkspaceProfile() {
+      const name = prompt("Enter a name for the new Workspace Profile:");
+      if (!name) return;
+
+      const id = name.toLowerCase().replace(/[^a-z0-9]/g, '-');
+      const level = workspaceState.activeLevel;
+
+      const newProf = {
+        id: id,
+        name: name,
+        desc: `Custom user-defined profile template.`,
+        origin: level === 'super' ? 'Global Template' : level === 'partner' ? 'Partner Template' : 'Client Profile',
+        derivedFrom: 'none',
+        inherited: { lake: false, staging: false, schedule: false, compute: false, security: false, naming: false },
+        config: {
+          lake: { provider: 'AWS S3', bucket: 's3://company-custom-lake/raw', accessKey: '••••', secretKey: '••••' },
+          staging: { provider: 'PostgreSQL', host: 'staging.db.net', port: '5432', auth: 'Username/Password' },
+          schedule: { provider: 'PostgreSQL', db: 'meta_db', host: 'meta.db.net', port: '5432' },
+          compute: { mode: 'Standard', version: '13.3 LTS (Spark 3.4.1)', nodeType: 'Standard_DS3_v2 (14GB)', minWorkers: 2, maxWorkers: 8 },
+          security: { unityCatalog: true, aclEnforce: true, auditPath: 's3://audit-logs/custom/', role: 'Admin' },
+          naming: { dev: 'dev_', qa: 'qa_', prod: '', bronze: '_bronze', silver: '_silver', gold: '_gold' }
+        }
+      };
+
+      if (level === 'super') {
+        workspaceProfiles.super[id] = newProf;
+      } else if (level === 'partner') {
+        workspaceProfiles.partner[workspaceState.partnerContext][id] = newProf;
+      } else if (level === 'tenant') {
+        workspaceProfiles.tenant[workspaceState.tenantContext][id] = newProf;
+      }
+
+      workspaceState.activeProfileId = id;
+      renderWorkspace();
+    }
+
+    function deleteWorkspaceProfile() {
+      const profile = getActiveProfile();
+      if (!profile) return;
+
+      const level = workspaceState.activeLevel;
+      if (level === 'super' && (profile.id === 'standard-s3' || profile.id === 'compute-heavy')) {
+        alert("Cannot delete standard core system profiles.");
+        return;
+      }
+
+      if (!confirm(`Are you sure you want to delete profile: ${profile.name}?`)) return;
+
+      if (level === 'super') {
+        delete workspaceProfiles.super[profile.id];
+        workspaceState.activeProfileId = Object.keys(workspaceProfiles.super)[0];
+      } else if (level === 'partner') {
+        delete workspaceProfiles.partner[workspaceState.partnerContext][profile.id];
+        const list = workspaceProfiles.partner[workspaceState.partnerContext];
+        workspaceState.activeProfileId = Object.keys(list)[0] || '';
+      } else if (level === 'tenant') {
+        delete workspaceProfiles.tenant[workspaceState.tenantContext][profile.id];
+        const list = workspaceProfiles.tenant[workspaceState.tenantContext];
+        workspaceState.activeProfileId = Object.keys(list)[0] || '';
+      }
+
+      renderWorkspace();
+    }
+
+    function renderWorkspaceJSON() {
+      const profile = getActiveProfile();
+      if (!profile) {
+        document.getElementById('ws-json-preview').textContent = '{}';
+        return;
+      }
+
+      let output = {
+        profile_id: profile.id,
+        name: profile.name,
+        derivation: profile.derivedFrom,
+        schema: {}
+      };
+
+      Object.keys(categoryMeta).forEach(idx => {
+        const catKey = categoryMeta[idx].key;
+        const resolved = getResolvedConfig(profile, catKey);
+        if (resolved) {
+          output.schema[catKey] = {
+            _status: resolved.status,
+            _source: resolved.source,
+            ...resolved.values
+          };
+        }
+      });
+
+      document.getElementById('ws-json-preview').textContent = JSON.stringify(output, null, 2);
+    }
+
+    function renderWorkspace() {
+      const level = workspaceState.activeLevel;
+      const profId = workspaceState.activeProfileId;
+      
+      // 1. Draw Left Named Profiles List
+      const profilesContainer = document.getElementById('ws-profiles-list-container');
+      profilesContainer.innerHTML = '';
+
+      let list = {};
+      if (level === 'super') list = workspaceProfiles.super;
+      else if (level === 'partner') list = workspaceProfiles.partner[workspaceState.partnerContext] || {};
+      else if (level === 'tenant') list = workspaceProfiles.tenant[workspaceState.tenantContext] || {};
+
+      Object.keys(list).forEach(id => {
+        const p = list[id];
+        const item = document.createElement('div');
+        item.className = 'profile-list-item' + (profId === id ? ' active' : '');
+        item.onclick = () => selectWorkspaceProfile(id);
+        
+        let assignments = 0;
+        if (level === 'super') {
+          // Count partners mapped directly
+          Object.values(profileAssignments.partner).forEach(val => { if (val === id) assignments++; });
+        } else if (level === 'partner') {
+          // Count tenants mapped directly
+          Object.values(profileAssignments.tenant).forEach(val => { if (val === id) assignments++; });
+        }
+
+        item.innerHTML = `
+          <div style="font-size:12.5px; font-weight:600; color:var(--tx-1);">${p.name}</div>
+          <div style="font-size:10.5px; color:var(--tx-3); display:flex; justify-content:space-between;">
+            <span>Derivation: ${p.derivedFrom === 'none' ? 'Independent' : 'Derived'}</span>
+            <span>Assigns: ${assignments}</span>
+          </div>
+        `;
+        profilesContainer.appendChild(item);
+      });
+
+      // 2. Load Editor details
+      const profile = getActiveProfile();
+      const deleteBtn = document.getElementById('ws-profile-delete-btn');
+      
+      if (!profile) {
+        document.getElementById('ws-profile-editor-title').textContent = 'No Profile Selected';
+        document.getElementById('ws-profile-editor-desc').textContent = 'Please select or create a profile.';
+        document.getElementById('ws-profile-editor-origin').textContent = 'N/A';
+        document.getElementById('ws-derived-row').style.display = 'none';
+        deleteBtn.style.display = 'none';
+        // Disable forms
+        setFieldsDisabled('ws-form-lake', true);
+        return;
+      }
+
+      deleteBtn.style.display = 'inline-block';
+      document.getElementById('ws-profile-editor-title').textContent = `Profile: ${profile.name}`;
+      document.getElementById('ws-profile-editor-desc').textContent = profile.desc;
+      document.getElementById('ws-profile-editor-origin').textContent = profile.origin;
+
+      // Update derived selector parent choice
+      const derivedRow = document.getElementById('ws-derived-row');
+      if (level === 'super') {
+        derivedRow.style.display = 'none';
+      } else {
+        derivedRow.style.display = 'flex';
+        document.getElementById('ws-derived-parent-select').value = profile.derivedFrom;
+      }
+
+      // 3. Load active category fields
+      const catIndex = workspaceState.activeCategory;
+      const catMeta = categoryMeta[catIndex];
+      const catKey = catMeta.key;
+      const resolved = getResolvedConfig(profile, catKey);
+
+      // Render category horizontal tabs status pills (little badges)
+      for(let i=1; i<=6; i++) {
+        const key = categoryMeta[i].key;
+        const res = getResolvedConfig(profile, key);
+        const tabBtn = document.getElementById('ws-cat-tab-' + i);
+        // Clean old indicators if any
+        const oldBadge = tabBtn.querySelector('.ws-cat-badge');
+        if (oldBadge) oldBadge.remove();
+
+        const badge = document.createElement('span');
+        badge.className = 'ws-cat-badge ' + (res.status === 'inherited' ? 'inherited' : 'overridden');
+        badge.textContent = res.status === 'inherited' ? 'Inh' : 'Def';
+        tabBtn.appendChild(badge);
+      }
+
+      // Render Category Inheritance Policy Switch card
+      const inheritCard = document.getElementById('ws-inherit-card');
+      if (profile.derivedFrom === 'none') {
+        inheritCard.style.display = 'none';
+      } else {
+        inheritCard.style.display = 'block';
+        const checkbox = document.getElementById('ws-inherit-checkbox');
+        const badge = document.getElementById('ws-inherit-status-badge');
+        const title = document.getElementById('ws-inherit-title');
+        const desc = document.getElementById('ws-inherit-desc');
+
+        if (profile.inherited[catKey]) {
+          checkbox.checked = true;
+          badge.className = 'pill pill-purple';
+          badge.textContent = 'Inherited';
+          title.textContent = `Inheriting ${catMeta.name}`;
+          desc.textContent = `Pulls values automatically from parent template: ${resolved.source}.`;
+        } else {
+          checkbox.checked = false;
+          badge.className = 'pill pill-green';
+          badge.textContent = 'Custom Override';
+          title.textContent = `${catMeta.name} Overridden`;
+          desc.textContent = `Using local template overrides defined inside this profile.`;
+        }
+      }
+
+      // Fields edit lock
+      const isInherited = (profile.derivedFrom !== 'none' && profile.inherited[catKey]);
+      setFieldsDisabled('ws-form-' + catKey, isInherited);
+
+      // Load form field values
+      const data = resolved.values;
+      if (catKey === 'lake') {
+        document.querySelectorAll('#ws-lake-providers .ws-conn-card').forEach(card => {
+          card.classList.remove('active');
+          if (card.textContent.includes(data.provider)) {
+            card.classList.add('active');
+          }
+        });
+        document.getElementById('ws-lake-bucket').value = data.bucket || '';
+        document.getElementById('ws-lake-access').value = data.accessKey || '';
+        document.getElementById('ws-lake-secret').value = data.secretKey || '';
+      } else if (catKey === 'staging') {
+        document.getElementById('ws-staging-provider').value = data.provider || 'PostgreSQL';
+        document.getElementById('ws-staging-host').value = data.host || '';
+        document.getElementById('ws-staging-port').value = data.port || '';
+        document.getElementById('ws-staging-auth').value = data.auth || 'Username/Password';
+      } else if (catKey === 'schedule') {
+        document.getElementById('ws-schedule-provider').value = data.provider || 'PostgreSQL';
+        document.getElementById('ws-schedule-db').value = data.db || '';
+        document.getElementById('ws-schedule-host').value = data.host || '';
+        document.getElementById('ws-schedule-port').value = data.port || '';
+      } else if (catKey === 'compute') {
+        document.getElementById('ws-compute-mode').value = data.mode || 'Standard';
+        document.getElementById('ws-compute-version').value = data.version || '13.3 LTS (Spark 3.4.1)';
+        document.getElementById('ws-compute-node').value = data.nodeType || 'Standard_DS3_v2 (14GB)';
+        document.getElementById('ws-compute-min').value = data.minWorkers || 2;
+        document.getElementById('ws-compute-max').value = data.maxWorkers || 8;
+      } else if (catKey === 'security') {
+        document.getElementById('ws-security-unity').checked = !!data.unityCatalog;
+        document.getElementById('ws-security-acl').checked = !!data.aclEnforce;
+        document.getElementById('ws-security-path').value = data.auditPath || '';
+        document.getElementById('ws-security-role').value = data.role || '';
+      } else if (catKey === 'naming') {
+        document.getElementById('ws-naming-dev').value = data.dev || '';
+        document.getElementById('ws-naming-qa').value = data.qa || '';
+        document.getElementById('ws-naming-prod').value = data.prod || '';
+        document.getElementById('ws-naming-bronze').value = data.bronze || '';
+        document.getElementById('ws-naming-silver').value = data.silver || '';
+        document.getElementById('ws-naming-gold').value = data.gold || '';
+      }
+
+      // 4. Render Inheritance Stack
+      const stackContainer = document.getElementById('ws-inheritance-stack');
+      stackContainer.innerHTML = '';
+      
+      Object.keys(categoryMeta).forEach(idx => {
+        const cMeta = categoryMeta[idx];
+        const res = getResolvedConfig(profile, cMeta.key);
+        
+        let pillClass = 'pill-purple';
+        if (res.status === 'overridden') pillClass = 'pill-green';
+        if (res.status === 'defined') pillClass = 'pill-blue';
+
+        const row = document.createElement('div');
+        row.style = 'display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); padding-bottom:8px;';
+        row.innerHTML = `
+          <div>
+            <div style="font-size:12.5px; font-weight:600; color:var(--tx-1);">${cMeta.name}</div>
+            <div style="font-size:10px; color:var(--tx-3);">${res.source}</div>
+          </div>
+          <span class="pill ${pillClass}" style="font-size:9px; text-transform:uppercase;">${res.status}</span>
+        `;
+        stackContainer.appendChild(row);
+      });
+
+      // 5. Render Header Summary Text
+      let totalInherited = 0;
+      Object.keys(categoryMeta).forEach(idx => {
+        const res = getResolvedConfig(profile, categoryMeta[idx].key);
+        if (res.status === 'inherited') totalInherited++;
+      });
+      const summaryText = document.getElementById('ws-inheritance-summary');
+      if (level === 'super') {
+        summaryText.textContent = `Super Admin templates list.`;
+      } else {
+        summaryText.textContent = `Inheriting ${totalInherited} / 6 parameters from parent template.`;
+      }
+
+      // 6. Draw Preview
+      renderWorkspaceJSON();
+    }
+
+    function renderAssignments() {
+      const level = workspaceState.activeLevel;
+      const tbody = document.getElementById('ws-assignments-table-body');
+      tbody.innerHTML = '';
+
+      if (level === 'super') {
+        // Super Admin maps Partners to Super templates
+        // We will render Partners list
+        const partnersMock = [
+          { key: 'sysint', name: 'SysInt Partners (SIP)', code: 'SIP' },
+          { key: 'databridge', name: 'DataBridge LLC (DBL)', code: 'DBL' },
+          { key: 'infofusion', name: 'InfoFusion Inc (IFI)', code: 'IFI' }
+        ];
+
+        partnersMock.forEach(p => {
+          const assignedId = profileAssignments.partner[p.key] || 'standard-s3';
+          
+          // Generate select dropdown options of super profiles
+          let optionsHtml = '';
+          Object.keys(workspaceProfiles.super).forEach(id => {
+            const prof = workspaceProfiles.super[id];
+            optionsHtml += `<option value="${id}" ${assignedId === id ? 'selected' : ''}>${prof.name}</option>`;
+          });
+
+          const tr = document.createElement('tr');
+          tr.style = 'border-bottom:1px solid var(--border);';
+          tr.innerHTML = `
+            <td style="padding:12px 18px; font-weight:600; color:var(--tx-1);">${p.name}</td>
+            <td style="padding:12px 18px;"><span class="pill pill-orange" style="font-size:10px;">PARTNER</span></td>
+            <td style="padding:12px 18px;">
+              <select class="f-select" style="margin:0; padding:6px 12px; font-size:12.5px;" onchange="assignProfileToTarget('partner', '${p.key}', this.value)">
+                ${optionsHtml}
+              </select>
+            </td>
+            <td style="padding:12px 18px; color:var(--tx-3); font-size:12px;">Global Platform template</td>
+            <td style="padding:12px 18px; text-align:right;">
+              <button class="topbar-btn" onclick="switchUserRole('partner'); document.getElementById('ws-partner-select').value='${p.key}'; changeWorkspaceContext();"><i class="bi bi-eye"></i> View Scope</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+      } else if (level === 'partner') {
+        // Partner maps their tenants to partner templates
+        const partner = workspaceState.partnerContext;
+        const tenantsMock = {
+          sysint: [{ key: 'acme', name: 'Acme Corp' }],
+          databridge: [{ key: 'retailplus', name: 'Retail Plus' }],
+          infofusion: []
+        };
+        
+        const listTenants = tenantsMock[partner] || [];
+        if (listTenants.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" style="padding:24px; text-align:center; color:var(--tx-3);">No active clients assigned under this partner scope.</td></tr>`;
+          return;
+        }
+
+        listTenants.forEach(t => {
+          const assignedId = profileAssignments.tenant[t.key] || '';
+          
+          let optionsHtml = '';
+          const partnerProfs = workspaceProfiles.partner[partner] || {};
+          Object.keys(partnerProfs).forEach(id => {
+            const prof = partnerProfs[id];
+            optionsHtml += `<option value="${id}" ${assignedId === id ? 'selected' : ''}>${prof.name}</option>`;
+          });
+
+          // Check if there are overrides inside the tenant profile
+          let statusHtml = '<span class="pill pill-purple" style="font-size:10px;">INHERITED</span>';
+          const tenantList = workspaceProfiles.tenant[t.key] || {};
+          const tenantProf = tenantList[assignedId];
+          if (tenantProf && Object.values(tenantProf.inherited).includes(false)) {
+            statusHtml = '<span class="pill pill-green" style="font-size:10px;">WITH OVERRIDES</span>';
+          }
+
+          const tr = document.createElement('tr');
+          tr.style = 'border-bottom:1px solid var(--border);';
+          tr.innerHTML = `
+            <td style="padding:12px 18px; font-weight:600; color:var(--tx-1);">${t.name}</td>
+            <td style="padding:12px 18px;"><span class="pill pill-green" style="font-size:10px;">CLIENT TENANT</span></td>
+            <td style="padding:12px 18px;">
+              <select class="f-select" style="margin:0; padding:6px 12px; font-size:12.5px;" onchange="assignProfileToTarget('tenant', '${t.key}', this.value)">
+                ${optionsHtml}
+              </select>
+            </td>
+            <td style="padding:12px 18px; font-size:12px;">${statusHtml}</td>
+            <td style="padding:12px 18px; text-align:right;">
+              <button class="topbar-btn" onclick="switchUserRole('tenant'); document.getElementById('ws-tenant-select').value='${t.key}'; changeWorkspaceContext();"><i class="bi bi-eye"></i> View Scope</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+      } else if (level === 'tenant') {
+        // Tenants view their assigned profile details
+        const tenant = workspaceState.tenantContext;
+        const assignedId = profileAssignments.tenant[tenant];
+        
+        let optionsHtml = '';
+        const tenantProfs = workspaceProfiles.tenant[tenant] || {};
+        Object.keys(tenantProfs).forEach(id => {
+          const prof = tenantProfs[id];
+          optionsHtml += `<option value="${id}" selected>${prof.name}</option>`;
+        });
+
+        const tr = document.createElement('tr');
+        tr.style = 'border-bottom:1px solid var(--border);';
+        tr.innerHTML = `
+          <td style="padding:12px 18px; font-weight:600; color:var(--tx-1);">${tenant.toUpperCase()} Ingestion Workspace</td>
+          <td style="padding:12px 18px;"><span class="pill pill-green" style="font-size:10px;">CLIENT TENANT</span></td>
+          <td style="padding:12px 18px;">
+            <select class="f-select" style="margin:0; padding:6px 12px; font-size:12.5px;" disabled>
+              ${optionsHtml}
+            </select>
+          </td>
+          <td style="padding:12px 18px; color:var(--tx-3); font-size:12px;">Active Client execution profiles</td>
+          <td style="padding:12px 18px; text-align:right;">
+            <button class="topbar-btn" onclick="switchWorkspaceSubTab('profiles')"><i class="bi bi-pencil"></i> Configure Overrides</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      }
+    }
+
+    function assignProfileToTarget(scope, targetKey, profileId) {
+      profileAssignments[scope][targetKey] = profileId;
+      
+      // Update tenant derivation target if we reassigned a tenant
+      if (scope === 'tenant') {
+        const tenantProfs = workspaceProfiles.tenant[targetKey] || {};
+        Object.keys(tenantProfs).forEach(id => {
+          tenantProfs[id].derivedFrom = profileId;
+        });
+      }
+
+      alert("Workspace Profile assignment updated! Ingestion workloads will dynamically re-route.");
+      renderAssignments();
+    }
+
+    function testWorkspaceConfiguration() {
+      const activeProf = getActiveProfile();
+      alert(`Testing connection configurations inside profile: ${activeProf ? activeProf.name : 'Unknown'}\nStatus: Connection successful!`);
+    }
+
+    function saveWorkspaceConfiguration() {
+      const activeProf = getActiveProfile();
+      alert(`Workspace Profile: [${activeProf ? activeProf.name : 'Unknown'}] saved successfully!`);
+    }
+
+    /* ════════ ROLE SWITCHING LOGIC (SUPER ADMIN vs PARTNER vs CLIENT) ════════ */
+    let activeUserRole = 'super'; // 'super', 'partner', 'tenant'
+
+    function switchUserRole(role) {
+      activeUserRole = role;
+
+      // Update Persona Simulator active classes
+      document.getElementById('sim-btn-super').classList.remove('active');
+      document.getElementById('sim-btn-partner').classList.remove('active');
+      document.getElementById('sim-btn-tenant').classList.remove('active');
+      const activeSimBtn = document.getElementById('sim-btn-' + role);
+      if (activeSimBtn) activeSimBtn.classList.add('active');
+
+      // Update Access Control table columns visibility
+      document.querySelectorAll('.col-super').forEach(el => el.style.display = (role === 'super') ? '' : 'none');
+      document.querySelectorAll('.col-partner').forEach(el => el.style.display = (role === 'super' || role === 'partner') ? '' : 'none');
+
+      // Close profile menu dropdown
+      document.getElementById('profileMenu').classList.remove('show');
+
+      // Update brand text tag
+      const brandSup = document.getElementById('brandSup');
+      const userCardAvatar = document.getElementById('userCardAvatar');
+      const userCardName = document.getElementById('userCardName');
+      const userCardRole = document.getElementById('userCardRole');
+
+      // Show/Hide sidebar navigation segments and links
+      const navPartners = document.getElementById('nav-item-partners');
+      const navTenants = document.getElementById('nav-item-tenants');
+      const navWorkspace = document.getElementById('nav-item-workspace');
+      const navUsers = document.getElementById('nav-item-users');
+      const navAccess = document.getElementById('nav-item-access');
+      const navConnections = document.getElementById('nav-item-connections');
+      const navProperties = document.getElementById('nav-item-properties');
+      const navAi = document.getElementById('nav-item-ai');
+      const navAudit = document.getElementById('nav-item-audit');
+      const navSecMgmt = document.getElementById('nav-sec-mgmt');
+      const navSecCompliance = document.getElementById('nav-sec-compliance');
+      const navSecFinance = document.getElementById('nav-sec-finance');
+      const navSecInfra = document.getElementById('nav-sec-infra');
+      const navMonitoring = document.getElementById('nav-item-monitoring');
+      const navBilling = document.getElementById('nav-item-billing');
+
+      // Text updates inside sidebar
+      const navTextTenants = document.getElementById('nav-text-tenants');
+      const navTextWorkspace = document.getElementById('nav-text-workspace');
+      const navTextUsers = document.getElementById('nav-text-users');
+      const navTextAccess = document.getElementById('nav-text-access');
+      const navTextConnections = document.getElementById('nav-text-connections');
+      const navTextProperties = document.getElementById('nav-text-properties');
+      const navTextMonitoring = document.getElementById('nav-text-monitoring');
+      const navTextBilling = document.getElementById('nav-text-billing');
+      const badgeTenants = document.getElementById('nav-badge-tenants');
+
+      // Main action buttons text updates
+      const primaryLbl = document.getElementById('primaryLbl');
+
+      // Workspace config level lock
+      const levelSelectorTabs = document.getElementById('ws-level-switcher-wrapper');
+
+      // Dashboard stat items
+      const statIcon1 = document.getElementById('stat-icon-1');
+      const statIcon2 = document.getElementById('stat-icon-2');
+      const statIcon3 = document.getElementById('stat-icon-3');
+      const statIcon4 = document.getElementById('stat-icon-4');
+
+      const statVal1 = document.getElementById('stat-val-1');
+      const statLabel1 = document.getElementById('stat-label-1');
+      const statDelta1 = document.getElementById('stat-delta-1');
+
+      const statVal2 = document.getElementById('stat-val-2');
+      const statLabel2 = document.getElementById('stat-label-2');
+      const statDelta2 = document.getElementById('stat-delta-2');
+
+      const statVal3 = document.getElementById('stat-val-3');
+      const statLabel3 = document.getElementById('stat-label-3');
+      const statDelta3 = document.getElementById('stat-delta-3');
+
+      const statVal4 = document.getElementById('stat-val-4');
+      const statLabel4 = document.getElementById('stat-label-4');
+      const statDelta4 = document.getElementById('stat-delta-4');
+
+      if (role === 'super') {
+        brandSup.textContent = 'SUPER ADMIN';
+        brandSup.style.background = 'rgba(244, 121, 32, 0.2)';
+        brandSup.style.color = 'var(--orange)';
+        brandSup.style.borderColor = 'rgba(244, 121, 32, 0.35)';
+
+        userCardAvatar.textContent = 'SA';
+        userCardAvatar.style.background = '';
+        userCardName.textContent = 'System Admin';
+        userCardRole.textContent = 'superadmin@anvizent.com';
+
+        // Navigation visibility
+        navSecMgmt.style.display = 'block';
+        navSecCompliance.style.display = 'block';
+        navSecFinance.style.display = 'block';
+        navSecInfra.style.display = 'block';
+        navPartners.style.display = 'flex';
+        navTenants.style.display = 'flex';
+        navWorkspace.style.display = 'flex';
+        navUsers.style.display = 'flex';
+        navAccess.style.display = 'flex';
+        navConnections.style.display = 'flex';
+        navProperties.style.display = 'flex';
+        navMonitoring.style.display = 'flex';
+        navBilling.style.display = 'flex';
+        navAi.style.display = 'flex';
+        navAudit.style.display = 'flex';
+
+        // Navigation texts
+        navTextTenants.textContent = 'Tenant Mgmt';
+        navTextWorkspace.textContent = 'Workspace Setup';
+        navTextUsers.textContent = 'User Management';
+        navTextAccess.textContent = 'Access Control';
+        navTextConnections.textContent = 'Global Connections';
+        navTextProperties.textContent = 'Anvizent Properties';
+        navTextMonitoring.textContent = 'Pipeline Monitoring';
+        navTextBilling.textContent = 'Billing';
+        badgeTenants.textContent = '47';
+        badgeTenants.className = 'nav-badge nb-green';
+
+        if (primaryLbl) primaryLbl.textContent = 'New Partner';
+
+        // Dashboard stats update
+        if (statIcon1) { statIcon1.className = 'stat-icon si-orange'; statIcon1.innerHTML = '<i class="bi bi-building"></i>'; }
+        if (statVal1) statVal1.textContent = '12';
+        if (statLabel1) statLabel1.textContent = 'Active Partners';
+        if (statDelta1) statDelta1.textContent = '↑ 2 this month';
+
+        if (statIcon2) { statIcon2.className = 'stat-icon si-green'; statIcon2.innerHTML = '<i class="bi bi-people-fill"></i>'; }
+        if (statVal2) statVal2.textContent = '47';
+        if (statLabel2) statLabel2.textContent = 'Total Tenants';
+        if (statDelta2) statDelta2.textContent = '↑ 5 this month';
+
+        if (statIcon3) { statIcon3.className = 'stat-icon si-blue'; statIcon3.innerHTML = '<i class="bi bi-lightning-fill"></i>'; }
+        if (statVal3) statVal3.textContent = '1,284';
+        if (statLabel3) statLabel3.textContent = 'Pipelines Running';
+        if (statDelta3) statDelta3.textContent = '↑ 98 today';
+
+        if (statIcon4) { statIcon4.className = 'stat-icon si-red'; statIcon4.innerHTML = '<i class="bi bi-exclamation-triangle-fill"></i>'; }
+        if (statVal4) statVal4.textContent = '3';
+        if (statLabel4) statLabel4.textContent = 'Critical Failures';
+        if (statDelta4) statDelta4.textContent = '↑ 2 vs yesterday';
+
+        // Workspace setup lock
+        if (levelSelectorTabs) levelSelectorTabs.style.display = 'flex';
+
+        // Redirect workspace panel level context
+        setWorkspaceLevel('super');
+
+      } else if (role === 'partner') {
+        brandSup.textContent = 'PARTNER PORTAL';
+        brandSup.style.background = 'rgba(244, 121, 32, 0.1)';
+        brandSup.style.color = '#ffb07c';
+        brandSup.style.borderColor = 'rgba(244, 121, 32, 0.2)';
+
+        userCardAvatar.textContent = 'PA';
+        userCardAvatar.style.background = 'linear-gradient(135deg, var(--orange), var(--orange-dk))';
+        userCardName.textContent = 'Partner Admin (SIP)';
+        userCardRole.textContent = 'admin@sysint.io';
+
+        // Navigation visibility
+        navSecMgmt.style.display = 'block';
+        navSecCompliance.style.display = 'none';
+        navSecFinance.style.display = 'block';
+        navSecInfra.style.display = 'block';
+        navPartners.style.display = 'none';
+        navTenants.style.display = 'flex';
+        navWorkspace.style.display = 'flex';
+        navUsers.style.display = 'flex';
+        navAccess.style.display = 'flex';
+        navConnections.style.display = 'flex';
+        navProperties.style.display = 'flex';
+        navMonitoring.style.display = 'flex';
+        navBilling.style.display = 'flex';
+        navAi.style.display = 'none';
+
+        // Navigation texts
+        navTextTenants.textContent = 'My Tenants';
+        navTextWorkspace.textContent = 'Tenant Template';
+        navTextUsers.textContent = 'Partner Users';
+        navTextAccess.textContent = 'Client Permissions';
+        navTextConnections.textContent = 'My Connections';
+        navTextProperties.textContent = 'Partner Properties';
+        navTextMonitoring.textContent = 'Pipeline Status';
+        navTextBilling.textContent = 'Billing';
+        badgeTenants.textContent = '8';
+        badgeTenants.className = 'nav-badge nb-orange';
+
+        if (primaryLbl) primaryLbl.textContent = 'New Tenant';
+
+        // Dashboard stats update
+        if (statIcon1) { statIcon1.className = 'stat-icon si-orange'; statIcon1.innerHTML = '<i class="bi bi-building"></i>'; }
+        if (statVal1) statVal1.textContent = '1';
+        if (statLabel1) statLabel1.textContent = 'Partner Scope';
+        if (statDelta1) statDelta1.textContent = 'SysInt Partners';
+
+        if (statIcon2) { statIcon2.className = 'stat-icon si-green'; statIcon2.innerHTML = '<i class="bi bi-people-fill"></i>'; }
+        if (statVal2) statVal2.textContent = '8';
+        if (statLabel2) statLabel2.textContent = 'My Tenants';
+        if (statDelta2) statDelta2.textContent = 'All active';
+
+        if (statIcon3) { statIcon3.className = 'stat-icon si-blue'; statIcon3.innerHTML = '<i class="bi bi-lightning-fill"></i>'; }
+        if (statVal3) statVal3.textContent = '36';
+        if (statLabel3) statLabel3.textContent = 'Tenant Pipelines';
+        if (statDelta3) statDelta3.textContent = 'All healthy';
+
+        if (statIcon4) { statIcon4.className = 'stat-icon si-red'; statIcon4.innerHTML = '<i class="bi bi-exclamation-triangle-fill"></i>'; }
+        if (statVal4) statVal4.textContent = '0';
+        if (statLabel4) statLabel4.textContent = 'Active Failures';
+        if (statDelta4) statDelta4.textContent = 'All systems active';
+
+        // Workspace setup lock
+        if (levelSelectorTabs) levelSelectorTabs.style.display = 'flex';
+
+        // Redirect workspace panel level context
+        setWorkspaceLevel('partner');
+        document.getElementById('ws-partner-select').value = 'sysint';
+        changeWorkspaceContext();
+
+      } else if (role === 'tenant') {
+        brandSup.textContent = 'CLIENT CONSOLE';
+        brandSup.style.background = 'rgba(22, 163, 74, 0.2)';
+        brandSup.style.color = '#86efac';
+        brandSup.style.borderColor = 'rgba(22, 163, 74, 0.35)';
+
+        userCardAvatar.textContent = 'AA';
+        userCardAvatar.style.background = 'linear-gradient(135deg, var(--green), #059669)';
+        userCardName.textContent = 'Acme Admin';
+        userCardRole.textContent = 'admin@acme.com';
+
+        // Navigation visibility
+        navSecMgmt.style.display = 'block';
+        navSecCompliance.style.display = 'none';
+        navSecFinance.style.display = 'block';
+        navSecInfra.style.display = 'block';
+        navPartners.style.display = 'none';
+        navTenants.style.display = 'none';
+        navWorkspace.style.display = 'flex';
+        navUsers.style.display = 'flex';
+        navAccess.style.display = 'flex';
+        navConnections.style.display = 'flex';
+        navProperties.style.display = 'flex';
+        navMonitoring.style.display = 'flex';
+        navBilling.style.display = 'flex';
+        navAi.style.display = 'none';
+
+        // Navigation texts
+        navTextWorkspace.textContent = 'Workspace Setup';
+        navTextUsers.textContent = 'My Users';
+        navTextAccess.textContent = 'Permissions';
+        navTextConnections.textContent = 'Database Sources';
+        navTextProperties.textContent = 'Client Properties';
+        navTextMonitoring.textContent = 'Pipeline Ingestions';
+        navTextBilling.textContent = 'Subscriptions';
+        
+        if (primaryLbl) primaryLbl.textContent = 'New Pipeline';
+
+        // Workspace setup lock
+        if (levelSelectorTabs) levelSelectorTabs.style.display = 'none';
+
+        // Dashboard statistics values
+        if (statIcon1) { statIcon1.className = 'stat-icon si-orange'; statIcon1.innerHTML = '<i class="bi bi-hdd-network-fill"></i>'; }
+        if (statVal1) statVal1.textContent = '4';
+        if (statLabel1) statLabel1.textContent = 'Database Sources';
+        if (statDelta1) statDelta1.textContent = 'AWS, Azure, GCS';
+
+        if (statIcon2) { statIcon2.className = 'stat-icon si-green'; statIcon2.innerHTML = '<i class="bi bi-activity"></i>'; }
+        if (statVal2) statVal2.textContent = '12';
+        if (statLabel2) statLabel2.textContent = 'Active Pipelines';
+        if (statDelta2) statDelta2.textContent = 'All healthy';
+
+        if (statIcon3) { statIcon3.className = 'stat-icon si-blue'; statIcon3.innerHTML = '<i class="bi bi-database-fill-check"></i>'; }
+        if (statVal3) statVal3.textContent = '1.4 TB';
+        if (statLabel3) statLabel3.textContent = 'Ingested Storage';
+        if (statDelta3) statDelta3.textContent = 'Quota limit: 5 TB';
+
+        if (statIcon4) { statIcon4.className = 'stat-icon si-red'; statIcon4.innerHTML = '<i class="bi bi-exclamation-triangle-fill"></i>'; }
+        if (statVal4) statVal4.textContent = '0';
+        if (statLabel4) statLabel4.textContent = 'Critical Failures';
+        if (statDelta4) statDelta4.textContent = 'All systems active';
+
+        // Redirect workspace panel level context
+        setWorkspaceLevel('tenant');
+        // Force dropdown value
+        document.getElementById('ws-tenant-select').value = 'acme';
+        changeWorkspaceContext();
+      }
+
+      // Update users table
+      renderUsersList();
+
+      // Refresh active page to render current state under new role context
+      const activeSection = document.querySelector('.p-section.active');
+      const currentPageId = activeSection ? activeSection.id.replace('pg-', '') : 'dashboard';
+
+      // Verify page is still accessible (its nav-item is not hidden)
+      let targetPage = currentPageId;
+      const navItem = document.getElementById('nav-item-' + currentPageId);
+      if (navItem && navItem.style.display === 'none') {
+        targetPage = 'dashboard';
+      }
+      gotoPage(targetPage);
+      if (targetPage === 'properties') {
+        initPropView();
+      }
+    }
+
+    function renderUsersList() {
+      const tbody = document.getElementById('ws-users-table-body');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      const titleEl = document.getElementById('ws-users-title');
+      if (!titleEl) return;
+      
+      if (activeUserRole === 'super') {
+        titleEl.textContent = 'Platform User Administration (Global)';
+        tbody.innerHTML = `
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:12px 18px; display:flex; align-items:center; gap:10px;">
+              <div class="avatar" style="width:30px; height:30px; font-size:11px;">SA</div>
+              <div>
+                <div style="font-weight:600; color:var(--tx-1);">System Admin</div>
+                <div style="font-size:11.5px; color:var(--tx-3);">superadmin@anvizent.com</div>
+              </div>
+            </td>
+            <td style="padding:12px 18px;"><span class="pill pill-blue">Super Admin</span></td>
+            <td style="padding:12px 18px; color:var(--tx-2);">Platform-wide</td>
+            <td style="padding:12px 18px;"><span class="pill pill-green" style="font-size:9.5px;text-transform:uppercase;">ACTIVE</span></td>
+            <td style="padding:12px 18px; text-align:right;">
+              <button class="topbar-btn" onclick="alert('Editing user permissions...')"><i class="bi bi-pencil"></i> Edit</button>
+            </td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:12px 18px; display:flex; align-items:center; gap:10px;">
+              <div class="avatar" style="width:30px; height:30px; font-size:11px; background:linear-gradient(135deg, var(--orange), var(--orange-dk));">PA</div>
+              <div>
+                <div style="font-weight:600; color:var(--tx-1);">Partner Operator (SIP)</div>
+                <div style="font-size:11.5px; color:var(--tx-3);">admin@sysint.io</div>
+              </div>
+            </td>
+            <td style="padding:12px 18px;"><span class="pill pill-orange">Partner Admin</span></td>
+            <td style="padding:12px 18px; color:var(--tx-2);">SysInt Partners</td>
+            <td style="padding:12px 18px;"><span class="pill pill-green" style="font-size:9.5px;text-transform:uppercase;">ACTIVE</span></td>
+            <td style="padding:12px 18px; text-align:right;">
+              <button class="topbar-btn" onclick="alert('Editing user permissions...')"><i class="bi bi-pencil"></i> Edit</button>
+            </td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:12px 18px; display:flex; align-items:center; gap:10px;">
+              <div class="avatar" style="width:30px; height:30px; font-size:11px; background:linear-gradient(135deg, var(--green), #059669);">AA</div>
+              <div>
+                <div style="font-weight:600; color:var(--tx-1);">Acme Admin</div>
+                <div style="font-size:11.5px; color:var(--tx-3);">admin@acme.com</div>
+              </div>
+            </td>
+            <td style="padding:12px 18px;"><span class="pill pill-green">Client Admin</span></td>
+            <td style="padding:12px 18px; color:var(--tx-2);">Acme Corp</td>
+            <td style="padding:12px 18px;"><span class="pill pill-green" style="font-size:9.5px;text-transform:uppercase;">ACTIVE</span></td>
+            <td style="padding:12px 18px; text-align:right;">
+              <button class="topbar-btn" onclick="alert('Editing user permissions...')"><i class="bi bi-pencil"></i> Edit</button>
+            </td>
+          </tr>
+        `;
+      } else if (activeUserRole === 'partner') {
+        titleEl.textContent = 'Partner Team Members & Client Operators';
+        tbody.innerHTML = `
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:12px 18px; display:flex; align-items:center; gap:10px;">
+              <div class="avatar" style="width:30px; height:30px; font-size:11px; background:linear-gradient(135deg, var(--orange), var(--orange-dk));">PA</div>
+              <div>
+                <div style="font-weight:600; color:var(--tx-1);">Partner Operator (SIP)</div>
+                <div style="font-size:11.5px; color:var(--tx-3);">admin@sysint.io</div>
+              </div>
+            </td>
+            <td style="padding:12px 18px;"><span class="pill pill-orange">Partner Admin</span></td>
+            <td style="padding:12px 18px; color:var(--tx-2);">SysInt Partners</td>
+            <td style="padding:12px 18px;"><span class="pill pill-green" style="font-size:9.5px;text-transform:uppercase;">ACTIVE</span></td>
+            <td style="padding:12px 18px; text-align:right;">
+              <button class="topbar-btn" onclick="alert('Editing user permissions...')"><i class="bi bi-pencil"></i> Edit</button>
+            </td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:12px 18px; display:flex; align-items:center; gap:10px;">
+              <div class="avatar" style="width:30px; height:30px; font-size:11px; background:var(--surface);">SD</div>
+              <div>
+                <div style="font-weight:600; color:var(--tx-1);">SIP Ingestion Developer</div>
+                <div style="font-size:11.5px; color:var(--tx-3);">dev@sysint.io</div>
+              </div>
+            </td>
+            <td style="padding:12px 18px;"><span class="pill pill-purple">Partner Developer</span></td>
+            <td style="padding:12px 18px; color:var(--tx-2);">SysInt Partners</td>
+            <td style="padding:12px 18px;"><span class="pill pill-green" style="font-size:9.5px;text-transform:uppercase;">ACTIVE</span></td>
+            <td style="padding:12px 18px; text-align:right;">
+              <button class="topbar-btn" onclick="alert('Editing user permissions...')"><i class="bi bi-pencil"></i> Edit</button>
+            </td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:12px 18px; display:flex; align-items:center; gap:10px;">
+              <div class="avatar" style="width:30px; height:30px; font-size:11px; background:linear-gradient(135deg, var(--green), #059669);">AA</div>
+              <div>
+                <div style="font-weight:600; color:var(--tx-1);">Acme Admin</div>
+                <div style="font-size:11.5px; color:var(--tx-3);">admin@acme.com</div>
+              </div>
+            </td>
+            <td style="padding:12px 18px;"><span class="pill pill-green">Client Admin</span></td>
+            <td style="padding:12px 18px; color:var(--tx-2);">Acme Corp</td>
+            <td style="padding:12px 18px;"><span class="pill pill-green" style="font-size:9.5px;text-transform:uppercase;">ACTIVE</span></td>
+            <td style="padding:12px 18px; text-align:right;">
+              <button class="topbar-btn" onclick="alert('Editing user permissions...')"><i class="bi bi-pencil"></i> Edit</button>
+            </td>
+          </tr>
+        `;
+      } else if (activeUserRole === 'tenant') {
+        titleEl.textContent = 'Acme Corp Local Users List';
+        tbody.innerHTML = `
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:12px 18px; display:flex; align-items:center; gap:10px;">
+              <div class="avatar" style="width:30px; height:30px; font-size:11px; background:linear-gradient(135deg, var(--green), #059669);">AA</div>
+              <div>
+                <div style="font-weight:600; color:var(--tx-1);">Acme Admin</div>
+                <div style="font-size:11.5px; color:var(--tx-3);">admin@acme.com</div>
+              </div>
+            </td>
+            <td style="padding:12px 18px;"><span class="pill pill-green">Client Admin</span></td>
+            <td style="padding:12px 18px; color:var(--tx-2);">Acme Corp</td>
+            <td style="padding:12px 18px;"><span class="pill pill-green" style="font-size:9.5px;text-transform:uppercase;">ACTIVE</span></td>
+            <td style="padding:12px 18px; text-align:right;">
+              <button class="topbar-btn" onclick="alert('Editing user permissions...')"><i class="bi bi-pencil"></i> Edit</button>
+            </td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:12px 18px; display:flex; align-items:center; gap:10px;">
+              <div class="avatar" style="width:30px; height:30px; font-size:11px; background:var(--surface);">AD</div>
+              <div>
+                <div style="font-weight:600; color:var(--tx-1);">Acme Ingestion Engineer</div>
+                <div style="font-size:11.5px; color:var(--tx-3);">engineer@acme.com</div>
+              </div>
+            </td>
+            <td style="padding:12px 18px;"><span class="pill pill-purple">Client Developer</span></td>
+            <td style="padding:12px 18px; color:var(--tx-2);">Acme Corp</td>
+            <td style="padding:12px 18px;"><span class="pill pill-green" style="font-size:9.5px;text-transform:uppercase;">ACTIVE</span></td>
+            <td style="padding:12px 18px; text-align:right;">
+              <button class="topbar-btn" onclick="alert('Editing user permissions...')"><i class="bi bi-pencil"></i> Edit</button>
+            </td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:12px 18px; display:flex; align-items:center; gap:10px;">
+              <div class="avatar" style="width:30px; height:30px; font-size:11px; background:var(--surface);">AV</div>
+              <div>
+                <div style="font-weight:600; color:var(--tx-1);">Acme Business Analyst</div>
+                <div style="font-size:11.5px; color:var(--tx-3);">analyst@acme.com</div>
+              </div>
+            </td>
+            <td style="padding:12px 18px;"><span class="pill pill-blue">Client Viewer</span></td>
+            <td style="padding:12px 18px; color:var(--tx-2);">Acme Corp</td>
+            <td style="padding:12px 18px;"><span class="pill pill-purple" style="font-size:9.5px;text-transform:uppercase;">INVITED</span></td>
+            <td style="padding:12px 18px; text-align:right;">
+              <button class="topbar-btn" onclick="alert('Resending invitation email...')"><i class="bi bi-send"></i> Resend</button>
+            </td>
+          </tr>
+        `;
+      }
+    }
+
+    /* ════════ ANVIZENT PROPERTIES EDITOR LOGIC ════════ */
+    let anvizentProperties = {
+      // Super Admin (Global / System Level) properties
+      super: {
+        'email': [
+          { key: 'SMTP_SERVER_ADDRESS', value: 'smtp.anvizent.com' },
+          { key: 'SMTP_GATEWAY_PORT', value: '587' },
+          { key: 'SMTP_AUTHENTICATION_USER', value: 'alerts@anvizent.com' },
+          { key: 'SMTP_SECRET_ACCESS_KEY', value: '••••••••••••' },
+          { key: 'SMTP_SECURITY_SSL_ENABLED', value: 'true' }
+        ],
+        'RELOAD_NEWLY_CREATEDDB': [
+          { key: 'DB_RELOAD_ENDPOINT_HOST', value: 'https://devctl8.anvizent.com' },
+          { key: 'DB_RELOAD_LISTENER_PORT', value: '3' },
+          { key: 'DB_RELOAD_ENVIRONMENT_CONTEXT', value: 'vizent' }
+        ],
+        'LOCALHOST_DB_URL_BUILD': [
+          { key: 'METADATA_DATABASE_HOST', value: 'localhost' },
+          { key: 'METADATA_DATABASE_PORT', value: '3306' },
+          { key: 'METADATA_ADMINISTRATOR_USER', value: 'root' }
+        ],
+        'ldap_config': [
+          { key: 'IDENTITY_DIRECTORY_LDAP_URL', value: 'ldap://auth.anvizent.com:389' },
+          { key: 'DIRECTORY_DISTINGUISHED_NAME_PATTERN', value: 'uid={0},ou=users,dc=anvizent,dc=com' }
+        ],
+        'LOGIN_URL': [
+          { key: 'OAUTH2_AUTHORIZATION_CALLBACK_URI', value: 'https://login.anvizent.com/oauth2/callback' }
+        ],
+        'data_properties': [
+          { key: 'MAXIMUM_TRANSMISSION_FILE_SIZE', value: '100MB' },
+          { key: 'LAKE_ARCHIVE_COMPRESSION_PROTOCOL', value: 'GZIP' }
+        ]
+      },
+      
+      // Partner level properties
+      partner: {
+        'sysint': {
+          'email': [
+            { key: 'SMTP_SERVER_ADDRESS', value: 'smtp.sysint.io' },
+            { key: 'SMTP_GATEWAY_PORT', value: '25' },
+            { key: 'SMTP_AUTHENTICATION_USER', value: 'system@sysint.io' }
+          ],
+          'LOGIN_URL': [
+            { key: 'OAUTH2_AUTHORIZATION_CALLBACK_URI', value: 'https://partner.sysint.io/auth/login' }
+          ]
+        },
+        'databridge': {
+          'email': [
+            { key: 'SMTP_SERVER_ADDRESS', value: 'mail.databridge.net' },
+            { key: 'SMTP_GATEWAY_PORT', value: '587' }
+          ],
+          'data_properties': [
+            { key: 'PARTNER_MAX_TEMP_SIZE_GB', value: '200' }
+          ]
+        },
+        'infofusion': {
+          'email': [
+            { key: 'SMTP_SERVER_ADDRESS', value: 'smtp.infofusion.com' }
+          ]
+        }
+      },
+
+      // Client / Tenant level properties
+      tenant: {
+        'acme': {
+          'email': [
+            { key: 'SMTP_SERVER_ADDRESS', value: 'smtp.acme.com' },
+            { key: 'SMTP_GATEWAY_PORT', value: '587' },
+            { key: 'SMTP_AUTHENTICATION_USER', value: 'notifier@acme.com' }
+          ],
+          'RELOAD_NEWLY_CREATEDDB': [
+            { key: 'DB_RELOAD_ENDPOINT_HOST', value: 'https://acme-db.anvizent.com' },
+            { key: 'DB_RELOAD_LISTENER_PORT', value: '5432' },
+            { key: 'DB_RELOAD_ENVIRONMENT_CONTEXT', value: 'acme_vizent' }
+          ],
+          'data_properties': [
+            { key: 'MAXIMUM_TRANSMISSION_FILE_SIZE', value: '250MB' }
+          ]
+        },
+        'techcorp': {
+          'email': [
+            { key: 'SMTP_SERVER_ADDRESS', value: 'smtp.techcorp.com' }
+          ],
+          'RELOAD_NEWLY_CREATEDDB': [
+            { key: 'DB_RELOAD_ENDPOINT_HOST', value: 'https://techcorp-db.anvizent.com' },
+            { key: 'DB_RELOAD_LISTENER_PORT', value: '1433' }
+          ]
+        },
+        'retailplus': {
+          'email': [
+            { key: 'SMTP_SERVER_ADDRESS', value: 'smtp.retailplus.com' }
+          ]
+        },
+        'finbank': {
+          'email': [
+            { key: 'SMTP_SERVER_ADDRESS', value: 'smtp.finbank.com' }
+          ]
+        }
+      }
+    };
+
+    let currentEditingProps = []; // Temp local copy for active edits
+
+    function initPropView() {
+      // 1. Update Title and Badge
+      const pageTitle = document.getElementById('prop-page-title');
+      const roleBadge = document.querySelector('#prop-role-badge span');
+
+      if (activeUserRole === 'super') {
+        pageTitle.textContent = 'Anvizent Properties';
+        roleBadge.textContent = 'Super Admin';
+        roleBadge.className = 'pill pill-orange';
+      } else if (activeUserRole === 'partner') {
+        pageTitle.textContent = 'Partner Properties';
+        roleBadge.textContent = 'Partner Admin';
+        roleBadge.className = 'pill pill-orange';
+      } else if (activeUserRole === 'tenant') {
+        pageTitle.textContent = 'Client Properties';
+        roleBadge.textContent = 'Client Admin';
+        roleBadge.className = 'pill pill-green';
+      }
+
+      // 2. Hydrate Level Dropdown
+      const levelSelect = document.getElementById('prop-level-select');
+      levelSelect.innerHTML = '';
+
+      if (activeUserRole === 'super') {
+        levelSelect.innerHTML = `
+          <option value="super">System Level (Self)</option>
+          <option value="partner">Partner Scope</option>
+          <option value="tenant">Client Scope</option>
+        `;
+      } else if (activeUserRole === 'partner') {
+        levelSelect.innerHTML = `
+          <option value="partner">Partner Level (Self)</option>
+          <option value="tenant">Client Scope</option>
+        `;
+      } else if (activeUserRole === 'tenant') {
+        levelSelect.innerHTML = `
+          <option value="tenant">Client Level (Self)</option>
+        `;
+      }
+
+      // Trigger change event to populate target list
+      onPropLevelChange();
+    }
+
+    function onPropLevelChange() {
+      const level = document.getElementById('prop-level-select').value;
+      const targetGroup = document.getElementById('prop-target-group');
+      const targetLabel = document.getElementById('prop-target-label');
+      const targetSelect = document.getElementById('prop-target-select');
+
+      // Determine visibility of Target Name selector
+      let showTarget = false;
+
+      if (level === 'partner' && activeUserRole === 'super') {
+        showTarget = true;
+        targetLabel.textContent = 'Select Partner Entity:';
+        targetSelect.innerHTML = `
+          <option value="sysint">SysInt Partners (SIP)</option>
+          <option value="databridge">DataBridge LLC (DBL)</option>
+          <option value="infofusion">InfoFusion Inc (IFI)</option>
+        `;
+      } else if (level === 'tenant') {
+        if (activeUserRole === 'super') {
+          showTarget = true;
+          targetLabel.textContent = 'Select Client Entity:';
+          targetSelect.innerHTML = `
+            <option value="acme">Acme Corp (Partner: SysInt Partners)</option>
+            <option value="techcorp">TechCorp Inc (Partner: Direct)</option>
+            <option value="retailplus">Retail Plus (Partner: DataBridge LLC)</option>
+            <option value="finbank">FinBank Ltd (Partner: Direct)</option>
+          `;
+        } else if (activeUserRole === 'partner') {
+          showTarget = true;
+          targetLabel.textContent = 'Select Client Entity:';
+          
+          // Show only clients of the logged-in partner
+          const partner = workspaceState.partnerContext; // 'sysint', 'databridge', 'infofusion'
+          if (partner === 'sysint') {
+            targetSelect.innerHTML = `<option value="acme">Acme Corp</option>`;
+          } else if (partner === 'databridge') {
+            targetSelect.innerHTML = `<option value="retailplus">Retail Plus</option>`;
+          } else if (partner === 'infofusion') {
+            targetSelect.innerHTML = `<option value="finbank">FinBank Ltd</option>`;
+          } else {
+            targetSelect.innerHTML = `
+              <option value="acme">Acme Corp</option>
+              <option value="retailplus">Retail Plus</option>
+              <option value="finbank">FinBank Ltd</option>
+            `;
+          }
+        }
+      }
+
+      if (showTarget) {
+        targetGroup.style.display = 'block';
+      } else {
+        targetGroup.style.display = 'none';
+      }
+
+      onPropTargetChange();
+    }
+
+    function onPropTargetChange() {
+      loadPropConfigs();
+    }
+
+    function getCurrentPropDb() {
+      const level = document.getElementById('prop-level-select').value;
+      
+      if (level === 'super') {
+        return anvizentProperties.super;
+      } else if (level === 'partner') {
+        let pId;
+        if (activeUserRole === 'partner') {
+          pId = workspaceState.partnerContext || 'sysint';
+        } else {
+          pId = document.getElementById('prop-target-select').value;
+        }
+        if (!anvizentProperties.partner[pId]) {
+          anvizentProperties.partner[pId] = {};
+        }
+        return anvizentProperties.partner[pId];
+      } else if (level === 'tenant') {
+        let tId;
+        if (activeUserRole === 'tenant') {
+          tId = workspaceState.tenantContext || 'acme';
+        } else {
+          tId = document.getElementById('prop-target-select').value;
+        }
+        if (!anvizentProperties.tenant[tId]) {
+          anvizentProperties.tenant[tId] = {};
+        }
+        return anvizentProperties.tenant[tId];
+      }
+      return {};
+    }
+
+    function loadPropConfigs(selectConfigName) {
+      const db = getCurrentPropDb();
+      const configSelect = document.getElementById('prop-config-select');
+      configSelect.innerHTML = '';
+
+      const configs = Object.keys(db);
+      configs.forEach(cfg => {
+        configSelect.innerHTML += `<option value="${cfg}">${cfg}</option>`;
+      });
+
+      configSelect.innerHTML += `<option value="new" style="font-weight:600; color:var(--orange);">+ New Configuration</option>`;
+
+      if (selectConfigName) {
+        configSelect.value = selectConfigName;
+      } else if (configs.length > 0) {
+        configSelect.value = configs[0];
+      } else {
+        configSelect.value = 'new';
+      }
+
+      onPropConfigChange();
+    }
+
+    function onPropConfigChange() {
+      const configSelect = document.getElementById('prop-config-select');
+      const configKey = configSelect.value;
+      const newConfigWrapper = document.getElementById('prop-new-config-wrapper');
+
+      if (configKey === 'new') {
+        newConfigWrapper.style.display = 'flex';
+        document.getElementById('prop-new-config-name').value = '';
+        currentEditingProps = [];
+        renderPropTable();
+      } else {
+        newConfigWrapper.style.display = 'none';
+        const db = getCurrentPropDb();
+        if (db[configKey]) {
+          currentEditingProps = JSON.parse(JSON.stringify(db[configKey]));
+        } else {
+          currentEditingProps = [];
+        }
+        renderPropTable();
+      }
+    }
+
+    function renderPropTable() {
+      const select = document.getElementById('prop-config-select');
+      const configKey = select.value;
+
+      document.getElementById('prop-table-title').textContent = `${configKey === 'new' ? 'New' : configKey} Configuration Properties`;
+
+      const tbody = document.getElementById('prop-table-body');
+      tbody.innerHTML = '';
+
+      if (configKey === 'new') {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:20px; color:var(--tx-3);">Use the "+ New Configuration" form above to create a configuration, or select an existing one.</td></tr>';
+        return;
+      }
+
+      if (currentEditingProps.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:24px; color:var(--tx-3);">No properties configured. Click "Add Row" to define keys and values.</td></tr>`;
+        return;
+      }
+
+      currentEditingProps.forEach((prop, idx) => {
+        const tr = document.createElement('tr');
+        tr.style = 'border-bottom: 1px solid var(--border);';
+        tr.innerHTML = `
+          <td style="padding:10px 12px; text-align:center; vertical-align:middle; font-weight:600; color:var(--tx-2);">${idx + 1}</td>
+          <td style="padding:8px 12px; vertical-align:middle;">
+            <input type="text" class="f-input" value="${prop.key}" onchange="updatePropKey(${idx}, this.value)" placeholder="e.g. SMTP_HOST" style="margin-bottom:0; font-family:var(--mono); font-size:12.5px; padding:6px 10px; background-color: var(--surface);" />
+          </td>
+          <td style="padding:8px 12px; vertical-align:middle;">
+            <input type="text" class="f-input" value="${prop.value}" onchange="updatePropValue(${idx}, this.value)" placeholder="Enter value" style="margin-bottom:0; font-size:12.5px; padding:6px 10px; background-color: var(--surface);" />
+          </td>
+          <td style="padding:8px 12px; text-align:center; vertical-align:middle;">
+            <button class="topbar-btn" onclick="deletePropRow(${idx})" style="padding:5px 9px; margin:0; border-color:var(--red); color:var(--red); background:var(--red-bg); display:inline-flex; align-items:center; justify-content:center;">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function updatePropKey(idx, val) {
+      currentEditingProps[idx].key = val.trim();
+    }
+
+    function updatePropValue(idx, val) {
+      currentEditingProps[idx].value = val;
+    }
+
+    function addPropRow() {
+      const select = document.getElementById('prop-config-select');
+      if (select.value === 'new') {
+        alert("Please select or create a configuration first.");
+        return;
+      }
+      currentEditingProps.push({ key: '', value: '' });
+      renderPropTable();
+    }
+
+    function deletePropRow(idx) {
+      currentEditingProps.splice(idx, 1);
+      renderPropTable();
+    }
+
+    function savePropConfig() {
+      const select = document.getElementById('prop-config-select');
+      const configKey = select.value;
+
+      if (configKey === 'new' || !configKey) {
+        alert("Please select a valid configuration to save.");
+        return;
+      }
+
+      // Validate keys
+      for (let i = 0; i < currentEditingProps.length; i++) {
+        if (!currentEditingProps[i].key) {
+          alert(`Error: Property at row ${i+1} has an empty Key. Please specify a key name.`);
+          return;
+        }
+      }
+
+      // Write back to db
+      const db = getCurrentPropDb();
+      db[configKey] = JSON.parse(JSON.stringify(currentEditingProps));
+
+      alert(`Configuration "${configKey}" saved successfully!`);
+      loadPropConfigs(configKey); // Reload view
+    }
+
+    function resetPropConfig() {
+      if (!confirm("Are you sure you want to discard unsaved changes?")) return;
+      const select = document.getElementById('prop-config-select');
+      const configKey = select.value;
+      const db = getCurrentPropDb();
+      if (db[configKey]) {
+        currentEditingProps = JSON.parse(JSON.stringify(db[configKey]));
+      } else {
+        currentEditingProps = [];
+      }
+      renderPropTable();
+    }
+
+    function createPropConfiguration() {
+      const inputEl = document.getElementById('prop-new-config-name');
+      const rawName = inputEl.value;
+      const name = rawName.trim().toUpperCase().replace(/[^A-Z0-9_]/g, '_');
+
+      if (!name) {
+        alert("Please enter a valid configuration name.");
+        return;
+      }
+
+      const db = getCurrentPropDb();
+      if (db[name]) {
+        alert("Configuration already exists. Please choose a different name.");
+        return;
+      }
+
+      db[name] = []; // Initialize empty
+      alert(`Configuration "${name}" created successfully!`);
+      loadPropConfigs(name);
+    }
+
+    function cancelNewPropConfiguration() {
+      const configSelect = document.getElementById('prop-config-select');
+      const db = getCurrentPropDb();
+      const configs = Object.keys(db);
+      if (configs.length > 0) {
+        configSelect.value = configs[0];
+      }
+      onPropConfigChange();
+    }
+
+    // Initialize workspace on load
+    document.addEventListener('DOMContentLoaded', () => {
+      // Set default views
+      setWorkspaceLevel('super');
+      selectWorkspaceCategory(1);
+    });
+    
+    // In case dom loaded was fired
+    setTimeout(() => {
+      renderWorkspace();
+    }, 100);
+
   </script>
   <style>
     @keyframes spin {
