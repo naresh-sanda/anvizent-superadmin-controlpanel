@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -2018,23 +2019,27 @@
     <!-- ─────────── PARTNER MGMT ─────────── -->
     <section class="p-section fade-in" id="pg-partners">
       <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;">
-        <input class="f-input" placeholder="Search partners…" style="max-width:260px;" />
-        <select class="f-select" style="max-width:140px;">
-          <option>All Status</option>
-          <option>Active</option>
-          <option>Inactive</option>
+        <input class="f-input" id="filter-partner-search" onkeyup="renderPartnersList()" placeholder="Search partners…" style="max-width:260px;" />
+        <select class="f-select" id="filter-partner-status" onchange="renderPartnersList()" style="max-width:140px;">
+          <option value="ALL">All Status</option>
+          <option value="ACTIVE">Active</option>
+          <option value="TRIAL">Trial/Onboarding</option>
+          <option value="INACTIVE">Inactive</option>
         </select>
-        <select class="f-select" style="max-width:140px;">
-          <option>All Types</option>
-          <option>Reseller</option>
-          <option>OEM</option>
+        <select class="f-select" id="filter-partner-type" onchange="renderPartnersList()" style="max-width:140px;">
+          <option value="ALL">All Types</option>
+          <option value="Reseller">Reseller</option>
+          <option value="Value-Added Reseller (VAR)">VAR</option>
+          <option value="OEM Partner">OEM</option>
+          <option value="System Integrator (SI)">SI</option>
+          <option value="Consulting Partner">Consulting</option>
+          <option value="Managed Service Provider (MSP)">MSP</option>
         </select>
-        <span style="margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--tx-3);">12 partners
-          total</span>
+        <span style="margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--tx-3);" id="ws-partners-count">0 partners total</span>
       </div>
       <div class="card">
         <div class="tbl-wrap">
-          <table class="atbl">
+          <table class="atbl text-nowrap">
             <thead>
               <tr>
                 <th>Partner</th>
@@ -2046,67 +2051,8 @@
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <div style="font-weight:600;">SysInt Partners</div>
-                  <div style="font-family:var(--mono);font-size:10.5px;color:var(--tx-3);">contact@sysint.io</div>
-                </td>
-                <td class="mono" style="color:var(--tx-3);font-size:12px;">SIP</td>
-                <td><span class="pill pill-purple">Reseller</span></td>
-                <td style="font-weight:500;">18</td>
-                <td style="font-family:var(--mono);color:var(--green);font-weight:600;">$24,800</td>
-                <td><span class="pill pill-green">Active</span></td>
-                <td><button class="btn-tbl">Edit</button> <button class="btn-tbl">Tenants</button></td>
-              </tr>
-              <tr>
-                <td>
-                  <div style="font-weight:600;">DataBridge LLC</div>
-                  <div style="font-family:var(--mono);font-size:10.5px;color:var(--tx-3);">ops@databridge.com</div>
-                </td>
-                <td class="mono" style="color:var(--tx-3);font-size:12px;">DBR</td>
-                <td><span class="pill pill-blue">OEM</span></td>
-                <td style="font-weight:500;">14</td>
-                <td style="font-family:var(--mono);color:var(--green);font-weight:600;">$19,200</td>
-                <td><span class="pill pill-green">Active</span></td>
-                <td><button class="btn-tbl">Edit</button> <button class="btn-tbl">Tenants</button></td>
-              </tr>
-              <tr>
-                <td>
-                  <div style="font-weight:600;">InfoFusion Inc</div>
-                  <div style="font-family:var(--mono);font-size:10.5px;color:var(--tx-3);">admin@infofusion.co</div>
-                </td>
-                <td class="mono" style="color:var(--tx-3);font-size:12px;">IFI</td>
-                <td><span class="pill pill-purple">Reseller</span></td>
-                <td style="font-weight:500;">9</td>
-                <td style="font-family:var(--mono);color:var(--green);font-weight:600;">$11,400</td>
-                <td><span class="pill pill-green">Active</span></td>
-                <td><button class="btn-tbl">Edit</button> <button class="btn-tbl">Tenants</button></td>
-              </tr>
-              <tr>
-                <td>
-                  <div style="font-weight:600;">CloudAxis Co</div>
-                  <div style="font-family:var(--mono);font-size:10.5px;color:var(--tx-3);">support@cloudaxis.net</div>
-                </td>
-                <td class="mono" style="color:var(--tx-3);font-size:12px;">CAX</td>
-                <td><span class="pill pill-orange">Trial</span></td>
-                <td style="font-weight:500;">4</td>
-                <td style="font-family:var(--mono);color:var(--tx-3);">—</td>
-                <td><span class="pill pill-amber">Trial</span></td>
-                <td><button class="btn-tbl">Edit</button> <button class="btn-tbl danger">Suspend</button></td>
-              </tr>
-              <tr>
-                <td>
-                  <div style="font-weight:600;">NexaFlow</div>
-                  <div style="font-family:var(--mono);font-size:10.5px;color:var(--tx-3);">hello@nexaflow.ai</div>
-                </td>
-                <td class="mono" style="color:var(--tx-3);font-size:12px;">NFW</td>
-                <td><span class="pill pill-blue">OEM</span></td>
-                <td style="font-weight:500;">2</td>
-                <td style="font-family:var(--mono);color:var(--tx-3);">$3,200</td>
-                <td><span class="pill pill-red">Suspended</span></td>
-                <td><button class="btn-tbl">Edit</button> <button class="btn-tbl">Activate</button></td>
-              </tr>
+            <tbody id="ws-partners-table-body">
+              <!-- Dynamically rendered -->
             </tbody>
           </table>
         </div>
@@ -2116,34 +2062,36 @@
     <!-- ─────────── TENANT MGMT ─────────── -->
     <section class="p-section fade-in" id="pg-tenants">
       <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;">
-        <input class="f-input" placeholder="Search tenants…" style="max-width:260px;" />
-        <select class="f-select" style="max-width:140px;">
-          <option>All Partners</option>
-          <option>SysInt</option>
-          <option>DataBridge</option>
+        <input class="f-input" id="filter-tenant-search" onkeyup="renderTenantsList()" placeholder="Search tenants…" style="max-width:260px;" />
+        <select class="f-select" id="filter-tenant-partner" onchange="renderTenantsList()" style="max-width:140px;">
+          <option value="ALL">All Partners</option>
+          <option value="SysInt Partners">SysInt Partners</option>
+          <option value="DataBridge LLC">DataBridge LLC</option>
+          <option value="InfoFusion Inc">InfoFusion Inc</option>
+          <option value="Anvizent Direct">Anvizent Direct</option>
         </select>
-        <select class="f-select" style="max-width:140px;">
-          <option>All Plans</option>
-          <option>Enterprise</option>
-          <option>Pro</option>
-          <option>Starter</option>
+        <select class="f-select" id="filter-tenant-plan" onchange="renderTenantsList()" style="max-width:140px;">
+          <option value="ALL">All Plans</option>
+          <option value="Enterprise">Enterprise</option>
+          <option value="Pro">Pro</option>
+          <option value="Starter">Starter</option>
         </select>
-        <select class="f-select" style="max-width:130px;">
-          <option>All Status</option>
-          <option>Active</option>
-          <option>Trial</option>
-          <option>Suspended</option>
+        <select class="f-select" id="filter-tenant-status" onchange="renderTenantsList()" style="max-width:130px;">
+          <option value="ALL">All Status</option>
+          <option value="ACTIVE">Active</option>
+          <option value="TRIAL">Trial</option>
+          <option value="INACTIVE">Suspended</option>
         </select>
-        <span style="margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--tx-3);">47 tenants
-          total</span>
+        <span style="margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--tx-3);" id="ws-tenants-count">0 tenants total</span>
       </div>
       <div class="card">
         <div class="tbl-wrap">
-          <table class="atbl">
+          <table class="atbl text-nowrap">
             <thead>
               <tr>
                 <th>Tenant</th>
                 <th>Partner</th>
+                <th>Deployment</th>
                 <th>Plan</th>
                 <th>Pipelines</th>
                 <th>Storage</th>
@@ -2152,85 +2100,8 @@
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <div style="font-weight:600;">TechCorp Inc</div>
-                  <div style="font-family:var(--mono);font-size:10px;color:var(--tx-3);">admin@techcorp.com</div>
-                </td>
-                <td style="color:var(--tx-2);">SysInt Partners</td>
-                <td><span class="pill pill-purple">Enterprise</span></td>
-                <td style="font-family:var(--mono);font-weight:600;">284</td>
-                <td style="font-family:var(--mono);">1.2 TB</td>
-                <td style="font-family:var(--mono);font-size:11.5px;color:var(--tx-3);">Jan 12, 2024</td>
-                <td><span class="pill pill-green">Active</span></td>
-                <td><button class="btn-tbl">Manage</button> <a href="https://naresh-sanda.github.io/data-pipeline-controlpanel/" target="_blank" class="btn-tbl" style="text-decoration:none; display:inline-flex; align-items:center; gap:4px; margin-left:4px; border-color:var(--blue); color:var(--blue); background:#f0f8ff;" title="Launch Pipeline Builder"><i class="bi bi-box-arrow-up-right" style="font-size:10px;"></i> Builder</a></td>
-              </tr>
-              <tr>
-                <td>
-                  <div style="font-weight:600;">FinBank Ltd</div>
-                  <div style="font-family:var(--mono);font-size:10px;color:var(--tx-3);">ops@finbank.com</div>
-                </td>
-                <td style="color:var(--tx-2);">DataBridge LLC</td>
-                <td><span class="pill pill-blue">Pro</span></td>
-                <td style="font-family:var(--mono);font-weight:600;">142</td>
-                <td style="font-family:var(--mono);">780 GB</td>
-                <td style="font-family:var(--mono);font-size:11.5px;color:var(--tx-3);">Mar 3, 2024</td>
-                <td><span class="pill pill-green">Active</span></td>
-                <td><button class="btn-tbl">Manage</button> <a href="https://naresh-sanda.github.io/data-pipeline-controlpanel/" target="_blank" class="btn-tbl" style="text-decoration:none; display:inline-flex; align-items:center; gap:4px; margin-left:4px; border-color:var(--blue); color:var(--blue); background:#f0f8ff;" title="Launch Pipeline Builder"><i class="bi bi-box-arrow-up-right" style="font-size:10px;"></i> Builder</a></td>
-              </tr>
-              <tr>
-                <td>
-                  <div style="font-weight:600;">GrowthCo</div>
-                  <div style="font-family:var(--mono);font-size:10px;color:var(--tx-3);">it@growthco.io</div>
-                </td>
-                <td style="color:var(--tx-2);">SysInt Partners</td>
-                <td><span class="pill pill-orange">Starter</span></td>
-                <td style="font-family:var(--mono);font-weight:600;">28</td>
-                <td style="font-family:var(--mono);">42 GB</td>
-                <td style="font-family:var(--mono);font-size:11.5px;color:var(--tx-3);">Jun 20, 2024</td>
-                <td><span class="pill pill-amber">Trial</span></td>
-                <td><button class="btn-tbl">Manage</button> <a href="https://naresh-sanda.github.io/data-pipeline-controlpanel/" target="_blank" class="btn-tbl" style="text-decoration:none; display:inline-flex; align-items:center; gap:4px; margin-left:4px; border-color:var(--blue); color:var(--blue); background:#f0f8ff;" title="Launch Pipeline Builder"><i class="bi bi-box-arrow-up-right" style="font-size:10px;"></i> Builder</a></td>
-              </tr>
-              <tr>
-                <td>
-                  <div style="font-weight:600;">LogiCore</div>
-                  <div style="font-family:var(--mono);font-size:10px;color:var(--tx-3);">admin@logicore.net</div>
-                </td>
-                <td style="color:var(--tx-2);">InfoFusion Inc</td>
-                <td><span class="pill pill-blue">Pro</span></td>
-                <td style="font-family:var(--mono);font-weight:600;">0</td>
-                <td style="font-family:var(--mono);">220 GB</td>
-                <td style="font-family:var(--mono);font-size:11.5px;color:var(--tx-3);">Nov 5, 2023</td>
-                <td><span class="pill pill-red">Suspended</span></td>
-                <td><button class="btn-tbl">Manage</button> <a href="https://naresh-sanda.github.io/data-pipeline-controlpanel/" target="_blank" class="btn-tbl" style="text-decoration:none; display:inline-flex; align-items:center; gap:4px; margin-left:4px; border-color:var(--blue); color:var(--blue); background:#f0f8ff;" title="Launch Pipeline Builder"><i class="bi bi-box-arrow-up-right" style="font-size:10px;"></i> Builder</a></td>
-              </tr>
-              <tr>
-                <td>
-                  <div style="font-weight:600;">ManuTech</div>
-                  <div style="font-family:var(--mono);font-size:10px;color:var(--tx-3);">data@manutech.de</div>
-                </td>
-                <td style="color:var(--tx-2);">DataBridge LLC</td>
-                <td><span class="pill pill-purple">Enterprise</span></td>
-                <td style="font-family:var(--mono);font-weight:600;">398</td>
-                <td style="font-family:var(--mono);">3.1 TB</td>
-                <td style="font-family:var(--mono);font-size:11.5px;color:var(--tx-3);">Feb 28, 2024</td>
-                <td><span class="pill pill-green">Active</span></td>
-                <td><button class="btn-tbl">Manage</button> <a href="https://naresh-sanda.github.io/data-pipeline-controlpanel/" target="_blank" class="btn-tbl" style="text-decoration:none; display:inline-flex; align-items:center; gap:4px; margin-left:4px; border-color:var(--blue); color:var(--blue); background:#f0f8ff;" title="Launch Pipeline Builder"><i class="bi bi-box-arrow-up-right" style="font-size:10px;"></i> Builder</a></td>
-              </tr>
-              <tr>
-                <td>
-                  <div style="font-weight:600;">Retail Plus</div>
-                  <div style="font-family:var(--mono);font-size:10px;color:var(--tx-3);">etl@retailplus.com</div>
-                </td>
-                <td style="color:var(--tx-2);">SysInt Partners</td>
-                <td><span class="pill pill-blue">Pro</span></td>
-                <td style="font-family:var(--mono);font-weight:600;">96</td>
-                <td style="font-family:var(--mono);">530 GB</td>
-                <td style="font-family:var(--mono);font-size:11.5px;color:var(--tx-3);">Apr 17, 2024</td>
-                <td><span class="pill pill-green">Active</span></td>
-                <td><button class="btn-tbl">Manage</button> <a href="https://naresh-sanda.github.io/data-pipeline-controlpanel/" target="_blank" class="btn-tbl" style="text-decoration:none; display:inline-flex; align-items:center; gap:4px; margin-left:4px; border-color:var(--blue); color:var(--blue); background:#f0f8ff;" title="Launch Pipeline Builder"><i class="bi bi-box-arrow-up-right" style="font-size:10px;"></i> Builder</a></td>
-              </tr>
+            <tbody id="ws-tenants-table-body">
+              <!-- Dynamically rendered -->
             </tbody>
           </table>
         </div>
@@ -3775,21 +3646,42 @@
       <div class="form-row">
         <div class="form-group">
           <label class="f-label">Partner Name <span style="color:var(--red);">*</span></label>
-          <input class="f-input" type="text" placeholder="e.g. SysInt Partners" />
+          <input class="f-input" id="part-name" type="text" placeholder="e.g. SysInt Partners" />
         </div>
         <div class="form-group">
           <label class="f-label">Partner Code</label>
-          <input class="f-input mono" type="text" placeholder="SIP" style="text-transform:uppercase;" />
+          <input class="f-input mono" id="part-code" type="text" placeholder="SIP" style="text-transform:uppercase;" />
         </div>
       </div>
       <div class="form-row" style="margin-top:-8px;">
         <div class="form-group">
-          <label class="f-label">Partner Type</label>
-          <select class="f-select">
-            <option>Reseller</option>
-            <option>OEM</option>
-            <option>Referral</option>
-            <option>Technology Integrator</option>
+          <label class="f-label">Partner Type <span style="color:var(--red);">*</span></label>
+          <select class="f-select" id="part-type">
+            <optgroup label="Platform Scope">
+              <option value="Direct / Platform Partner">Direct / Platform Partner</option>
+            </optgroup>
+            <optgroup label="Go-to-Market & Commercial (GTM)">
+              <option value="Reseller">Reseller</option>
+              <option value="Value-Added Reseller (VAR)">Value-Added Reseller (VAR)</option>
+              <option value="Distributor">Distributor</option>
+              <option value="OEM Partner">OEM Partner</option>
+              <option value="White-Label Partner">White-Label Partner</option>
+              <option value="Referral Partner">Referral Partner</option>
+            </optgroup>
+            <optgroup label="Delivery & Services">
+              <option value="System Integrator (SI)" selected>System Integrator (SI)</option>
+              <option value="Consulting Partner">Consulting Partner</option>
+              <option value="Managed Service Provider (MSP)">Managed Service Provider (MSP)</option>
+              <option value="Support Partner">Support Partner</option>
+            </optgroup>
+            <optgroup label="Technology & Ecosystem">
+              <option value="Technology Partner">Technology Partner</option>
+              <option value="ISV Partner">ISV Partner</option>
+            </optgroup>
+            <optgroup label="Strategic & Institutional">
+              <option value="Alliance / Strategic Partner">Alliance / Strategic Partner</option>
+              <option value="Regional / Country Partner">Regional / Country Partner</option>
+            </optgroup>
           </select>
         </div>
         <div class="form-group">
@@ -3801,17 +3693,17 @@
       <div class="form-row">
         <div class="form-group">
           <label class="f-label">Primary Contact Name</label>
-          <input class="f-input" type="text" placeholder="John Doe" />
+          <input class="f-input" id="part-contact" type="text" placeholder="John Doe" />
         </div>
         <div class="form-group">
           <label class="f-label">Email Address <span style="color:var(--red);">*</span></label>
-          <input class="f-input" type="email" placeholder="contact@partner.com" />
+          <input class="f-input" id="part-email" type="email" placeholder="contact@partner.com" />
         </div>
       </div>
       <div class="form-row" style="margin-top:-8px;">
         <div class="form-group">
           <label class="f-label">Phone Number</label>
-          <input class="f-input" type="tel" placeholder="+1 (555) 000-0000" />
+          <input class="f-input" id="part-phone" type="tel" placeholder="+1 (555) 000-0000" />
         </div>
         <div class="form-group">
            <!-- empty -->
@@ -3822,18 +3714,18 @@
       <div class="form-row">
         <div class="form-group">
           <label class="f-label">Discount Tier</label>
-          <select class="f-select">
+          <select class="f-select" id="part-tier">
             <option>Standard (15%)</option>
             <option>Silver (20%)</option>
-            <option>Gold (30%)</option>
+            <option selected>Gold (30%)</option>
           </select>
         </div>
         <div class="form-group">
           <label class="f-label">Initial Status</label>
-          <select class="f-select">
-            <option>Active</option>
-            <option>Trial/Onboarding</option>
-            <option>Inactive</option>
+          <select class="f-select" id="part-status">
+            <option value="ACTIVE">Active</option>
+            <option value="TRIAL">Trial/Onboarding</option>
+            <option value="INACTIVE">Inactive</option>
           </select>
         </div>
       </div>
@@ -3845,7 +3737,7 @@
              <div style="font-size:13px;font-weight:500;">Provision Partner Account</div>
              <div style="font-size:11.5px;color:var(--tx-3);">Generate separate credentials for the partner to manage tenants.</div>
            </div>
-           <label class="tog"><input type="checkbox" checked /><span class="tog-sl"></span></label>
+           <label class="tog"><input type="checkbox" id="part-provision" checked /><span class="tog-sl"></span></label>
         </div>
       </div>
     </div>
@@ -3856,12 +3748,12 @@
       <div class="form-row">
         <div class="form-group">
           <label class="f-label">Tenant Organization <span style="color:var(--red);">*</span></label>
-          <input class="f-input" type="text" placeholder="e.g. Acme Corp" />
+          <input class="f-input" id="ten-name" type="text" placeholder="e.g. Acme Corp" />
         </div>
         <div class="form-group">
           <label class="f-label">Tenant Subdomain / URL</label>
           <div class="input-grp">
-            <input class="f-input" type="text" placeholder="acme" style="text-align:right; font-family:var(--mono);" />
+            <input class="f-input" id="ten-subdomain" type="text" placeholder="acme" style="text-align:right; font-family:var(--mono);" />
             <div class="grp-addon" style="font-size:12px;">.anvizent.com</div>
           </div>
         </div>
@@ -3869,17 +3761,17 @@
       <div class="form-row" style="margin-bottom:8px;">
         <div class="form-group">
           <label class="f-label">Associated Partner</label>
-          <select class="f-select">
-            <option>Direct (Anvizent Internal)</option>
-            <option>SysInt Partners</option>
-            <option>DataBridge LLC</option>
-            <option>InfoFusion Inc</option>
-            <option>NextFlow</option>
+          <select class="f-select" id="ten-partner">
+            <option value="direct">Anvizent Direct (Platform Direct)</option>
+            <option value="sysint">SysInt Partners</option>
+            <option value="databridge">DataBridge LLC</option>
+            <option value="infofusion">InfoFusion Inc</option>
+            <option value="nextflow">NextFlow</option>
           </select>
         </div>
         <div class="form-group">
           <label class="f-label">Admin Email <span style="color:var(--red);">*</span></label>
-          <input class="f-input" type="email" placeholder="admin@acme.com" />
+          <input class="f-input" id="ten-email" type="email" placeholder="admin@acme.com" />
         </div>
       </div>
 
@@ -3891,7 +3783,7 @@
                 <div style="font-size:12px;font-weight:600;color:var(--tx-1);">Setup Credentials</div>
                 <div style="font-size:10.5px;color:var(--tx-3);line-height:1.3;margin-top:4px;">Auto-generate tenant credentials.</div>
              </div>
-             <label class="tog" style="flex-shrink:0;"><input type="checkbox" checked /><span class="tog-sl"></span></label>
+             <label class="tog" style="flex-shrink:0;"><input type="checkbox" id="ten-credentials" checked /><span class="tog-sl"></span></label>
           </div>
         </div>
         <div class="form-group" style="background:var(--surface-2);padding:12px;border-radius:var(--radius);border:1px solid var(--border);">
@@ -3900,7 +3792,7 @@
                 <div style="font-size:12px;font-weight:600;color:var(--tx-1);">Partner Delegation</div>
                 <div style="font-size:10.5px;color:var(--tx-3);line-height:1.3;margin-top:4px;">Allow partner pipeline access.</div>
              </div>
-             <label class="tog" style="flex-shrink:0;"><input type="checkbox" checked /><span class="tog-sl"></span></label>
+             <label class="tog" style="flex-shrink:0;"><input type="checkbox" id="ten-delegation" checked /><span class="tog-sl"></span></label>
           </div>
         </div>
       </div>
@@ -3909,27 +3801,35 @@
       <div class="form-row">
         <div class="form-group">
           <label class="f-label">Subscription Plan</label>
-          <select class="f-select">
+          <select class="f-select" id="ten-plan">
             <option>Enterprise</option>
-            <option>Pro</option>
+            <option selected>Pro</option>
             <option>Starter</option>
             <option>Trial (14 Days)</option>
           </select>
         </div>
         <div class="form-group">
+          <label class="f-label">Deployment Type <span style="color:var(--red);">*</span></label>
+          <select class="f-select" id="ten-deploy-type">
+            <option value="CLOUD">Cloud (SaaS hosted)</option>
+            <option value="HYBRID">Hybrid (Agent-based)</option>
+            <option value="ONPREM">On-Premises (Self-hosted)</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
           <label class="f-label">Deployment Region</label>
-          <select class="f-select">
+          <select class="f-select" id="ten-region">
             <option>US East (N. Virginia)</option>
             <option>US West (Oregon)</option>
             <option>EU (Frankfurt)</option>
             <option>Asia Pacific (Mumbai)</option>
           </select>
         </div>
-      </div>
-      <div class="form-row">
         <div class="form-group">
           <label class="f-label">Dedicated Storage Limit</label>
-          <select class="f-select">
+          <select class="f-select" id="ten-storage">
             <option>50 GB</option>
             <option selected>100 GB</option>
             <option>500 GB</option>
@@ -3937,9 +3837,14 @@
             <option>5 TB</option>
           </select>
         </div>
+      </div>
+      <div class="form-row">
         <div class="form-group">
           <label class="f-label">Max Concurrent Pipelines</label>
-          <input class="f-input" type="number" value="10" />
+          <input class="f-input" id="ten-pipelines" type="number" value="10" />
+        </div>
+        <div class="form-group">
+          <!-- empty -->
         </div>
       </div>
     </div>
@@ -5513,6 +5418,8 @@
 
       // Update users table
       renderUsersList();
+      renderPartnersList();
+      renderTenantsList();
 
       // Refresh active page to render current state under new role context
       const activeSection = document.querySelector('.p-section.active');
@@ -5528,6 +5435,176 @@
       if (targetPage === 'properties') {
         initPropView();
       }
+    }
+
+    // Global simulated partner administration database
+    let anvizentPartners = [
+      { id: 1, name: 'Anvizent Direct', code: 'ANVIZENT_DIRECT', type: 'Direct / Platform Partner', tenantsCount: 1, mrr: 15000, status: 'ACTIVE', contact: 'direct@anvizent.com', phone: '+1 (555) 900-1000', tier: 'Gold (30%)' },
+      { id: 2, name: 'SysInt Partners', code: 'SIP', type: 'System Integrator (SI)', tenantsCount: 3, mrr: 24800, status: 'ACTIVE', contact: 'contact@sysint.io', phone: '+1 (555) 019-2831', tier: 'Gold (30%)' },
+      { id: 3, name: 'DataBridge LLC', code: 'DBR', type: 'Value-Added Reseller (VAR)', tenantsCount: 2, mrr: 19200, status: 'ACTIVE', contact: 'ops@databridge.com', phone: '+1 (555) 048-1294', tier: 'Silver (20%)' },
+      { id: 4, name: 'InfoFusion Inc', code: 'IFI', type: 'Consulting Partner', tenantsCount: 1, mrr: 11400, status: 'ACTIVE', contact: 'admin@infofusion.co', phone: '+1 (555) 073-9081', tier: 'Standard (15%)' },
+      { id: 5, name: 'CloudAxis Co', code: 'CAX', type: 'Reseller', tenantsCount: 0, mrr: 0, status: 'TRIAL', contact: 'support@cloudaxis.net', phone: '+1 (555) 111-2222', tier: 'Standard (15%)' },
+      { id: 6, name: 'NexaFlow', code: 'NFW', type: 'OEM Partner', tenantsCount: 0, mrr: 3200, status: 'INACTIVE', contact: 'hello@nexaflow.ai', phone: '+1 (555) 333-4444', tier: 'Silver (20%)' }
+    ];
+
+    // Global simulated tenant administration database
+    let anvizentTenants = [
+      { id: 1, name: 'TechCorp Inc', partner: 'SysInt Partners', plan: 'Enterprise', pipelines: 284, storage: '1.2 TB', created: 'Jan 12, 2024', status: 'ACTIVE', deployType: 'CLOUD', email: 'admin@techcorp.com', subdomain: 'techcorp' },
+      { id: 2, name: 'FinBank Ltd', partner: 'DataBridge LLC', plan: 'Pro', pipelines: 142, storage: '780 GB', created: 'Mar 3, 2024', status: 'ACTIVE', deployType: 'HYBRID', email: 'ops@finbank.com', subdomain: 'finbank' },
+      { id: 3, name: 'GrowthCo', partner: 'SysInt Partners', plan: 'Starter', pipelines: 28, storage: '42 GB', created: 'Jun 20, 2024', status: 'TRIAL', deployType: 'CLOUD', email: 'it@growthco.io', subdomain: 'growthco' },
+      { id: 4, name: 'LogiCore', partner: 'InfoFusion Inc', plan: 'Pro', pipelines: 0, storage: '220 GB', created: 'Nov 5, 2023', status: 'INACTIVE', deployType: 'ONPREM', email: 'admin@logicore.net', subdomain: 'logicore' },
+      { id: 5, name: 'ManuTech', partner: 'DataBridge LLC', plan: 'Enterprise', pipelines: 398, storage: '3.1 TB', created: 'Feb 28, 2024', status: 'ACTIVE', deployType: 'HYBRID', email: 'data@manutech.de', subdomain: 'manutech' },
+      { id: 6, name: 'Retail Plus', partner: 'SysInt Partners', plan: 'Pro', pipelines: 96, storage: '530 GB', created: 'Apr 17, 2024', status: 'ACTIVE', deployType: 'ONPREM', email: 'etl@retailplus.com', subdomain: 'retail' },
+      { id: 7, name: 'Direct Client Inc', partner: 'Anvizent Direct', plan: 'Enterprise', pipelines: 412, storage: '2.4 TB', created: 'Aug 14, 2026', status: 'ACTIVE', deployType: 'CLOUD', email: 'info@directclient.com', subdomain: 'directclient' }
+    ];
+
+    function renderPartnersList() {
+      const tbody = document.getElementById('ws-partners-table-body');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      const countEl = document.getElementById('ws-partners-count');
+      const searchInput = document.getElementById('filter-partner-search');
+      const statusSelect = document.getElementById('filter-partner-status');
+      const typeSelect = document.getElementById('filter-partner-type');
+
+      const searchVal = searchInput ? searchInput.value.toLowerCase() : '';
+      const statusVal = statusSelect ? statusSelect.value : 'ALL';
+      const typeVal = typeSelect ? typeSelect.value : 'ALL';
+
+      let filtered = anvizentPartners.filter(p => {
+        const matchSearch = p.name.toLowerCase().includes(searchVal) || p.code.toLowerCase().includes(searchVal) || p.contact.toLowerCase().includes(searchVal);
+        const matchStatus = statusVal === 'ALL' || p.status === statusVal;
+        
+        let matchType = true;
+        if (typeVal !== 'ALL') {
+          if (typeVal === 'VAR') matchType = p.type.includes('Value-Added Reseller') || p.type.includes('VAR');
+          else if (typeVal === 'OEM') matchType = p.type.includes('OEM');
+          else if (typeVal === 'SI') matchType = p.type.includes('System Integrator') || p.type.includes('SI');
+          else if (typeVal === 'MSP') matchType = p.type.includes('Managed Service Provider') || p.type.includes('MSP');
+          else if (typeVal === 'Consulting') matchType = p.type.includes('Consulting');
+          else matchType = p.type.includes(typeVal);
+        }
+        
+        return matchSearch && matchStatus && matchType;
+      });
+
+      if (countEl) {
+        countEl.textContent = `${filtered.length} partner${filtered.length === 1 ? '' : 's'} total`;
+      }
+
+      filtered.forEach(p => {
+        const statusClass = p.status === 'ACTIVE' ? 'pill-green' : (p.status === 'TRIAL' ? 'pill-amber' : 'pill-red');
+        const mrrText = p.mrr > 0 ? `$${p.mrr.toLocaleString()}` : '—';
+        const typeClass = p.type.includes('Reseller') || p.type.includes('VAR') ? 'pill-purple' : (p.type.includes('OEM') ? 'pill-blue' : (p.type.includes('Integrator') || p.type.includes('SI') || p.type.includes('Consulting') ? 'pill-green' : 'pill-orange'));
+
+        const actionBtn = p.status === 'INACTIVE'
+          ? `<button class="btn-tbl" onclick="updatePartnerStatus(${p.id}, 'ACTIVE')">Activate</button>`
+          : `<button class="btn-tbl danger" onclick="updatePartnerStatus(${p.id}, 'INACTIVE')">Suspend</button>`;
+
+        tbody.innerHTML += `
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:12px 18px;">
+              <div style="font-weight:600; color:var(--tx-1);">${p.name}</div>
+              <div style="font-family:var(--mono);font-size:10.5px;color:var(--tx-3);">${p.contact}</div>
+            </td>
+            <td class="mono" style="padding:12px 18px; color:var(--tx-3); font-size:12px;">${p.code}</td>
+            <td style="padding:12px 18px;"><span class="pill ${typeClass}">${p.type}</span></td>
+            <td style="padding:12px 18px; font-weight:500;">${p.tenantsCount}</td>
+            <td style="padding:12px 18px; font-family:var(--mono); color:var(--green); font-weight:600;">${mrrText}</td>
+            <td style="padding:12px 18px;"><span class="pill ${statusClass}" style="text-transform:uppercase; font-size:9.5px;">${p.status === 'ACTIVE' ? 'Active' : (p.status === 'TRIAL' ? 'Trial' : 'Suspended')}</span></td>
+            <td style="padding:12px 18px;">
+              <button class="btn-tbl" onclick="alert('Editing partner details...')">Edit</button>
+              ${actionBtn}
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function updatePartnerStatus(id, newStatus) {
+      const p = anvizentPartners.find(x => x.id === id);
+      if (p) {
+        p.status = newStatus;
+        renderPartnersList();
+      }
+    }
+
+    function renderTenantsList() {
+      const tbody = document.getElementById('ws-tenants-table-body');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      const countEl = document.getElementById('ws-tenants-count');
+      const searchInput = document.getElementById('filter-tenant-search');
+      const partnerSelect = document.getElementById('filter-tenant-partner');
+      const planSelect = document.getElementById('filter-tenant-plan');
+      const statusSelect = document.getElementById('filter-tenant-status');
+
+      const searchVal = searchInput ? searchInput.value.toLowerCase() : '';
+      const partnerVal = partnerSelect ? partnerSelect.value : 'ALL';
+      const planVal = planSelect ? planSelect.value : 'ALL';
+      const statusVal = statusSelect ? statusSelect.value : 'ALL';
+
+      let filtered = anvizentTenants.filter(t => {
+        const matchSearch = t.name.toLowerCase().includes(searchVal) || t.email.toLowerCase().includes(searchVal) || t.subdomain.toLowerCase().includes(searchVal);
+        
+        let matchPartner = true;
+        if (partnerVal !== 'ALL') {
+          matchPartner = t.partner === partnerVal;
+        }
+
+        const matchPlan = planVal === 'ALL' || t.plan === planVal;
+        const matchStatus = statusVal === 'ALL' || t.status === statusVal;
+
+        return matchSearch && matchPartner && matchPlan && matchStatus;
+      });
+
+      if (activeUserRole === 'partner') {
+        filtered = filtered.filter(t => t.partner === 'SysInt Partners');
+      }
+
+      if (countEl) {
+        countEl.textContent = `${filtered.length} tenant${filtered.length === 1 ? '' : 's'} total`;
+      }
+
+      filtered.forEach(t => {
+        const statusClass = t.status === 'ACTIVE' ? 'pill-green' : (t.status === 'TRIAL' ? 'pill-amber' : 'pill-red');
+        
+        let deployPillClass = 'pill-blue';
+        let deployLabel = 'Cloud';
+        if (t.deployType === 'HYBRID') {
+          deployPillClass = 'pill-orange';
+          deployLabel = 'Hybrid';
+        } else if (t.deployType === 'ONPREM') {
+          deployPillClass = 'pill-purple';
+          deployLabel = 'On-Prem';
+        }
+
+        const planClass = t.plan === 'Enterprise' ? 'pill-purple' : (t.plan === 'Pro' ? 'pill-blue' : 'pill-orange');
+
+        tbody.innerHTML += `
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:12px 18px;">
+              <div style="font-weight:600; color:var(--tx-1);">${t.name}</div>
+              <div style="font-family:var(--mono);font-size:10px;color:var(--tx-3);">${t.email}</div>
+            </td>
+            <td style="padding:12px 18px; color:var(--tx-2);">${t.partner}</td>
+            <td style="padding:12px 18px;"><span class="pill ${deployPillClass}" style="font-size:9.5px;">${deployLabel}</span></td>
+            <td style="padding:12px 18px;"><span class="pill ${planClass}">${t.plan}</span></td>
+            <td style="padding:12px 18px; font-family:var(--mono); font-weight:600;">${t.pipelines}</td>
+            <td style="padding:12px 18px; font-family:var(--mono);">${t.storage}</td>
+            <td style="padding:12px 18px; font-family:var(--mono); font-size:11.5px; color:var(--tx-3);">${t.created}</td>
+            <td style="padding:12px 18px;"><span class="pill ${statusClass}" style="text-transform:uppercase; font-size:9.5px;">${t.status === 'ACTIVE' ? 'Active' : (t.status === 'TRIAL' ? 'Trial' : 'Suspended')}</span></td>
+            <td style="padding:12px 18px;">
+              <button class="btn-tbl" onclick="alert('Managing tenant details...')">Manage</button>
+              <a href="https://naresh-sanda.github.io/data-pipeline-controlpanel/" target="_blank" class="btn-tbl" style="text-decoration:none; display:inline-flex; align-items:center; gap:4px; margin-left:4px; border-color:var(--blue); color:var(--blue); background:#f0f8ff;" title="Launch Pipeline Builder">
+                <i class="bi bi-box-arrow-up-right" style="font-size:10px;"></i> Builder
+              </a>
+            </td>
+          </tr>
+        `;
+      });
     }
 
     // Global simulated user administration database
@@ -5681,11 +5758,80 @@
         closeDrawer();
         renderUsersList();
       } else if (pageId === 'pg-partners' || pageId === 'partners') {
-        alert('Partner successfully registered! Setup email sent.');
+        const pName = document.getElementById('part-name').value.trim();
+        const pCode = document.getElementById('part-code').value.trim().toUpperCase();
+        const pType = document.getElementById('part-type').value;
+        const pContact = document.getElementById('part-contact').value.trim();
+        const pEmail = document.getElementById('part-email').value.trim();
+        const pPhone = document.getElementById('part-phone').value.trim();
+        const pTier = document.getElementById('part-tier').value;
+        const pStatus = document.getElementById('part-status').value;
+
+        if (!pName || !pEmail) {
+          alert('Please fill out all required fields (*)');
+          return;
+        }
+
+        anvizentPartners.push({
+          id: anvizentPartners.length + 1,
+          name: pName,
+          code: pCode || 'PART',
+          type: pType,
+          tenantsCount: 0,
+          mrr: 0,
+          status: pStatus,
+          contact: pEmail,
+          phone: pPhone,
+          tier: pTier
+        });
+
+        alert(`Partner "${pName}" successfully registered as "${pType}"!`);
         closeDrawer();
+        renderPartnersList();
       } else if (pageId === 'pg-tenants' || pageId === 'tenants') {
-        alert('Tenant organization successfully provisioned and delegated!');
+        const tName = document.getElementById('ten-name').value.trim();
+        const tSubdomain = document.getElementById('ten-subdomain').value.trim();
+        const tPartnerSelect = document.getElementById('ten-partner').value;
+        const tEmail = document.getElementById('ten-email').value.trim();
+        const tPlan = document.getElementById('ten-plan').value;
+        const tDeployType = document.getElementById('ten-deploy-type').value;
+        const tRegion = document.getElementById('ten-region').value;
+        const tStorage = document.getElementById('ten-storage').value;
+        const tPipelines = document.getElementById('ten-pipelines').value || 10;
+
+        if (!tName || !tEmail) {
+          alert('Please fill out all required fields (*)');
+          return;
+        }
+
+        let partnerName = 'Anvizent Direct';
+        if (tPartnerSelect === 'sysint') partnerName = 'SysInt Partners';
+        else if (tPartnerSelect === 'databridge') partnerName = 'DataBridge LLC';
+        else if (tPartnerSelect === 'infofusion') partnerName = 'InfoFusion Inc';
+        else if (tPartnerSelect === 'nextflow') partnerName = 'NextFlow';
+
+        anvizentTenants.push({
+          id: anvizentTenants.length + 1,
+          name: tName,
+          partner: partnerName,
+          plan: tPlan,
+          pipelines: parseInt(tPipelines),
+          storage: tStorage,
+          created: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+          status: 'ACTIVE',
+          deployType: tDeployType,
+          email: tEmail,
+          subdomain: tSubdomain
+        });
+
+        // Increment tenant count in parent partner
+        const pObj = anvizentPartners.find(p => p.name === partnerName);
+        if (pObj) pObj.tenantsCount++;
+
+        alert(`Tenant organization "${tName}" successfully provisioned with ${tDeployType} deployment!`);
         closeDrawer();
+        renderTenantsList();
+        renderPartnersList(); // refresh counts
       } else if (pageId === 'pg-connections' || pageId === 'connections') {
         alert('Connection properties tested successfully and configuration saved!');
         closeDrawer();
